@@ -643,5 +643,11 @@
   },
   "Offline": {
     "One": "离线"
+  },
+  "GroupDefaultName": {
+    "One": "默认组"
+  },
+  "GroupShareName": {
+    "One": "共享组"
   }
 }

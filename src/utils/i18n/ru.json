@@ -630,5 +630,11 @@
   },
   "Offline": {
     "One": "Офлайн"
+  },
+  "GroupDefaultName": {
+    "One": "Группа по умолчанию"
+  },
+  "GroupShareName": {
+    "One": "Общая группа"
   }
 }

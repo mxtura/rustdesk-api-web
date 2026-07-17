@@ -630,5 +630,11 @@
   },
   "Offline": {
     "One": "Offline"
+  },
+  "GroupDefaultName": {
+    "One": "Default Group"
+  },
+  "GroupShareName": {
+    "One": "Shared Group"
   }
 }
