@@ -237,6 +237,31 @@ body {
 html.dark .el-dialog { background: rgba(16, 24, 38, 0.85) !important; }
 .el-overlay { background-color: rgba(4, 6, 12, 0.45); }
 
+/* message-box (confirm/prompt) — плотный фон, не просвечивает */
+.el-message-box {
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid var(--glass-border-strong);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-lift);
+}
+html.dark .el-message-box { background: rgba(16, 24, 38, 0.96) !important; }
+html:not(.dark) .el-message-box { background: rgba(255, 255, 255, 0.98) !important; }
+
+/* поповеры/выпадающие панели — плотный фон */
+.el-popover.el-popper {
+  background: var(--el-bg-color-overlay) !important;
+  border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+html:not(.dark) .el-popover.el-popper { background: #ffffff !important; }
+.el-popper__arrow::before {
+  background: var(--el-bg-color-overlay) !important;
+  border-color: var(--glass-border) !important;
+}
+html:not(.dark) .el-popper__arrow::before { background: #ffffff !important; }
+
 /* поля ввода */
 .el-input__wrapper,
 .el-textarea__inner,
