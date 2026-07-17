@@ -1,8 +1,8 @@
 <template>
   <el-card class="simple-card" shadow="hover" v-loading="form.loading">
     <template #header>
-      <div class="card-header">
-        <span>MUST_LOGIN</span>
+      <div class="sc-head">
+        <span class="sc-ic">🔐</span><div class="sc-txt"><div class="sc-title">{{ T('MustLoginTitle') }}</div><div class="sc-desc">{{ T('MustLoginDesc') }}</div></div>
       </div>
     </template>
     <el-form :disabled="!canSend">

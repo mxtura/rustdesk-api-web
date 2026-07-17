@@ -645,5 +645,41 @@
   },
   "ShowOffline": {
     "One": "Show offline"
+  },
+  "RelayServersTitle": {
+    "One": "Relay servers"
+  },
+  "RelayServersDesc": {
+    "One": "Relay server addresses"
+  },
+  "AlwaysRelayTitle": {
+    "One": "Always use relay"
+  },
+  "AlwaysRelayDesc": {
+    "One": "Force all traffic through relay"
+  },
+  "MustLoginTitle": {
+    "One": "Require login"
+  },
+  "MustLoginDesc": {
+    "One": "Login required before connecting"
+  },
+  "UsageTitle": {
+    "One": "Usage"
+  },
+  "UsageDesc": {
+    "One": "Relay bandwidth by IP"
+  },
+  "BlockListTitle": {
+    "One": "Block list"
+  },
+  "BlockListDesc": {
+    "One": "Blocked IP addresses"
+  },
+  "BlackListTitle": {
+    "One": "Black list"
+  },
+  "BlackListDesc": {
+    "One": "Banned IP addresses"
   }
 }

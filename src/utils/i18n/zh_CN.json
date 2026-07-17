@@ -661,5 +661,41 @@
   },
   "ShowOffline": {
     "One": "显示离线"
+  },
+  "RelayServersTitle": {
+    "One": "中继服务器"
+  },
+  "RelayServersDesc": {
+    "One": "中继地址"
+  },
+  "AlwaysRelayTitle": {
+    "One": "始终中继"
+  },
+  "AlwaysRelayDesc": {
+    "One": "强制走中继"
+  },
+  "MustLoginTitle": {
+    "One": "必须登录"
+  },
+  "MustLoginDesc": {
+    "One": "连接前需登录"
+  },
+  "UsageTitle": {
+    "One": "使用情况"
+  },
+  "UsageDesc": {
+    "One": "各IP中继流量"
+  },
+  "BlockListTitle": {
+    "One": "阻止列表"
+  },
+  "BlockListDesc": {
+    "One": "被阻止的IP"
+  },
+  "BlackListTitle": {
+    "One": "黑名单"
+  },
+  "BlackListDesc": {
+    "One": "黑名单IP"
   }
 }

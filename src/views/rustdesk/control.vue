@@ -291,9 +291,21 @@
 <style scoped lang="scss">
 .simple-card {
   min-width: 300px;
-  margin: 10px;
-  min-height: 300px;
+  margin: 8px;
+  min-height: 220px;
 }
+:deep(.sc-head) { display: flex; align-items: center; gap: 12px; }
+:deep(.sc-ic) {
+  font-size: 20px;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 11px;
+  background: var(--el-color-primary-light-9);
+  flex-shrink: 0;
+}
+:deep(.sc-txt) { min-width: 0; }
+:deep(.sc-title) { font-weight: 600; font-size: 14px; }
+:deep(.sc-desc) { font-size: 11px; color: var(--el-text-color-secondary); margin-top: 2px; }
 
 .scmd-tip {
   font-size: 13px;

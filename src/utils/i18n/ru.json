@@ -648,5 +648,41 @@
   },
   "ShowOffline": {
     "One": "Показать офлайн"
+  },
+  "RelayServersTitle": {
+    "One": "Ретрансляторы"
+  },
+  "RelayServersDesc": {
+    "One": "Адреса ретрансляторов"
+  },
+  "AlwaysRelayTitle": {
+    "One": "Всегда через relay"
+  },
+  "AlwaysRelayDesc": {
+    "One": "Весь трафик через ретранслятор"
+  },
+  "MustLoginTitle": {
+    "One": "Требовать вход"
+  },
+  "MustLoginDesc": {
+    "One": "Вход обязателен для подключения"
+  },
+  "UsageTitle": {
+    "One": "Использование"
+  },
+  "UsageDesc": {
+    "One": "Трафик relay по IP"
+  },
+  "BlockListTitle": {
+    "One": "Блок-лист"
+  },
+  "BlockListDesc": {
+    "One": "Заблокированные IP"
+  },
+  "BlackListTitle": {
+    "One": "Чёрный список"
+  },
+  "BlackListDesc": {
+    "One": "Забаненные IP"
   }
 }
