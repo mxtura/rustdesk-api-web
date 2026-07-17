@@ -26,16 +26,14 @@
         type="card"
     >
       <el-tab-pane :label="T('Simple')" name="Simple">
-        <el-space wrap>
+        <div class="ctrl-grid">
           <RelayServers ref="rs" :can-send="canSendIdServerCmd"/>
           <alwaysUseRelay :can-send="canSendIdServerCmd" @success="handleAlwaysUseRelaySuccess"/>
           <mustLogin :can-send="canControlMustLogin&&canSendIdServerCmd"/>
-          <usage :can-send="canSendRelayServerCmd"/>
+          <div class="ctrl-wide"><usage :can-send="canSendRelayServerCmd"/></div>
           <blocklist :can-send="canSendRelayServerCmd"/>
           <blacklist :can-send="canSendRelayServerCmd"/>
-        </el-space>
-
-
+        </div>
       </el-tab-pane>
       <el-tab-pane :label="T('Advanced')" name="Advanced">
         <el-card class="list-query" shadow="hover">
@@ -289,23 +287,24 @@
 </script>
 
 <style scoped lang="scss">
-.simple-card {
-  min-width: 300px;
-  margin: 8px;
-  min-height: 220px;
+/* ровная сетка контролов */
+.ctrl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+  align-items: start;
 }
-:deep(.sc-head) { display: flex; align-items: center; gap: 12px; }
-:deep(.sc-ic) {
-  font-size: 20px;
-  width: 40px; height: 40px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 11px;
-  background: var(--el-color-primary-light-9);
-  flex-shrink: 0;
-}
-:deep(.sc-txt) { min-width: 0; }
+.ctrl-wide { grid-column: 1 / -1; }
+.ctrl-wide :deep(.el-table) { max-width: 100%; }
+.simple-card { min-width: 0; overflow: hidden; }
+:deep(.simple-card .el-card__header) { padding: 12px 16px; }
+:deep(.simple-card .el-card__body) { padding: 14px 16px; }
+:deep(.simple-card .el-form-item) { margin-bottom: 12px; }
+:deep(.simple-card .el-form-item:last-child) { margin-bottom: 0; }
+
+:deep(.sc-head) { display: flex; flex-direction: column; gap: 2px; }
 :deep(.sc-title) { font-weight: 600; font-size: 14px; }
-:deep(.sc-desc) { font-size: 11px; color: var(--el-text-color-secondary); margin-top: 2px; }
+:deep(.sc-desc) { font-size: 11px; color: var(--el-text-color-secondary); }
 
 .scmd-tip {
   font-size: 13px;
