@@ -69,13 +69,9 @@
   import { list, create, update, detail, remove } from '@/api/group'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { T } from '@/utils/i18n'
+  import { groupDisplayName } from '@/utils/group'
 
-  // авто-группы: показываем локализованное имя по языку панели
-  const DEFAULT_GROUP_NAMES = new Set(['默认组', '默認组', '默認組', 'Default Group'])
-  const SHARE_GROUP_NAMES = new Set(['共享组', '共享組', 'Shared Group'])
-  const gname = (row) => DEFAULT_GROUP_NAMES.has(row.name)
-    ? T('GroupDefaultName')
-    : (SHARE_GROUP_NAMES.has(row.name) ? T('GroupShareName') : row.name)
+  const gname = (row) => groupDisplayName(row.name)
 
   const listRes = reactive({
     list: [], total: 0, loading: false,

@@ -123,6 +123,7 @@
   import { ElMessage } from 'element-plus'
   import { onMounted, ref, watch } from 'vue'
   import { Grid, Menu, MoreFilled, Message, Calendar, Document } from '@element-plus/icons'
+  import { groupDisplayName } from '@/utils/group'
 
   const {
     listRes,
@@ -158,15 +159,10 @@
     }
   }
 
-  // локализация авто-групп (сид создаётся на языке сервера — показываем по языку панели)
-  const DEFAULT_GROUP_NAMES = new Set(['默认组', '默認组', '默認組', 'Default Group'])
-  const SHARE_GROUP_NAMES = new Set(['共享组', '共享組', 'Shared Group'])
+  // локализация авто-групп по языку панели
   const groupName = (id) => {
     const g = listRes.groups?.find(x => x.id === id)
-    if (!g) return '-'
-    if (DEFAULT_GROUP_NAMES.has(g.name)) return T('GroupDefaultName')
-    if (SHARE_GROUP_NAMES.has(g.name)) return T('GroupShareName')
-    return g.name
+    return g ? groupDisplayName(g.name) : '-'
   }
 
   // аватар: первая буква + стабильный цвет по имени

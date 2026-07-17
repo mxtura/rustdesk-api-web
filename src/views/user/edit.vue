@@ -15,7 +15,7 @@
           <el-option
               v-for="item in groupsList"
               :key="item.id"
-              :label="item.name"
+              :label="gname(item.name)"
               :value="item.id"
           ></el-option>
         </el-select>
@@ -48,6 +48,7 @@
   import { useGetDetail, useSubmit } from '@/views/user/composables/edit'
   import { ENABLE_STATUS, DISABLE_STATUS } from '@/utils/common_options'
   import { T } from '@/utils/i18n'
+  import { groupDisplayName as gname } from '@/utils/group'
 
   const route = useRoute()
   const { form, item, getDetail, groupsList } = useGetDetail(route.params.id)
