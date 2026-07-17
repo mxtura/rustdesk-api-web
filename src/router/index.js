@@ -159,7 +159,7 @@ export const asyncRoutes = [
       {
         path: '/user/addressBook',
         name: 'UserAddressBook',
-        meta: { title: 'AddressBook', icon: 'Notebook' },
+        meta: { title: 'AddressBookManage', icon: 'Notebook', hide: true },
         component: () => import('@/views/address_book/index.vue'),
       },
       {
