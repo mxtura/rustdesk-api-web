@@ -2,6 +2,9 @@
   <div class="ab-wrap">
     <!-- РЕЙЛ -->
     <aside class="ab-rail">
+      <el-select v-if="isAdmin" v-model="userId" :placeholder="T('User')" filterable class="rail-user" @change="onUserChange">
+        <el-option v-for="u in allUsers" :key="u.id" :label="u.username" :value="u.id"/>
+      </el-select>
       <div class="rail-col">
         <el-select v-model="currentCol" class="rail-select" @change="onColChange">
           <el-option :value="0" :label="T('MyAddressBook')"/>
@@ -128,19 +131,23 @@
   import * as adminCol from '@/api/address_book_collection'
   import * as myTag from '@/api/my/tag'
   import * as adminTag from '@/api/tag'
+  import { loadAllUsers } from '@/global'
 
   const props = defineProps({ scope: { type: String, default: 'my' } })
-  const colApi = props.scope === 'admin' ? adminCol : myCol
-  const tagApi = props.scope === 'admin' ? adminTag : myTag
+  const isAdmin = props.scope === 'admin'
+  const colApi = isAdmin ? adminCol : myCol
+  const tagApi = isAdmin ? adminTag : myTag
 
   const appStore = useAppStore()
   const {
     listRes, listQuery, getList,
-    collectionListRes, getCollectionList,
+    collectionListRes, collectionListQuery, getCollectionList,
     tagListRes, tagListQuery, getTagList,
     del, formVisible, formData, toEdit, toAdd, submit, platformList,
   } = useRepositories(props.scope)
 
+  const { allUsers, getAllUsers } = loadAllUsers()
+  const userId = ref(null)
   const currentCol = ref(0)
   const selectedTags = ref([])
   const hideOffline = ref(false)
@@ -167,6 +174,12 @@
   })
 
   const reload = () => {
+    if (isAdmin) {
+      if (!userId.value) { listRes.list = []; tagListRes.list = []; return }
+      listQuery.user_id = userId.value
+      collectionListQuery.user_id = userId.value
+      tagListQuery.user_id = userId.value
+    }
     listQuery.collection_id = currentCol.value
     getList()
     tagListQuery.collection_id = currentCol.value
@@ -176,6 +189,13 @@
     selectedTags.value = []
     reload()
   }
+  const onUserChange = () => {
+    currentCol.value = 0
+    selectedTags.value = []
+    collectionListQuery.user_id = userId.value
+    getCollectionList()
+    reload()
+  }
   const toggleTag = (name) => {
     const i = selectedTags.value.indexOf(name)
     if (i >= 0) selectedTags.value.splice(i, 1)
@@ -183,8 +203,10 @@
   }
 
   const addDevice = () => {
+    if (isAdmin && !userId.value) { ElMessage.warning(T('PleaseSelectData')); return }
     toAdd()
     formData.collection_id = currentCol.value
+    formData.user_id = isAdmin ? userId.value : formData.user_id
     formData.tags = []
     tagListQuery.collection_id = currentCol.value
     getTagList()
@@ -192,9 +214,12 @@
 
   // коллекции
   const newCollection = async () => {
+    if (isAdmin && !userId.value) { ElMessage.warning(T('PleaseSelectData')); return }
     const r = await ElMessageBox.prompt(T('AddressBookName'), T('Create')).catch(() => false)
     if (!r || !r.value) return
-    const res = await colApi.create({ name: r.value }).catch(() => false)
+    const payload = { name: r.value }
+    if (isAdmin) payload.user_id = userId.value
+    const res = await colApi.create(payload).catch(() => false)
     if (res) { ElMessage.success(T('OperationSuccess')); getCollectionList() }
   }
   const renameCollection = async () => {
@@ -216,9 +241,12 @@
 
   // теги
   const addTag = async () => {
+    if (isAdmin && !userId.value) { ElMessage.warning(T('PleaseSelectData')); return }
     const r = await ElMessageBox.prompt(T('Tags'), T('Create')).catch(() => false)
     if (!r || !r.value) return
-    const res = await tagApi.create({ name: r.value, collection_id: currentCol.value }).catch(() => false)
+    const payload = { name: r.value, collection_id: currentCol.value }
+    if (isAdmin) payload.user_id = userId.value
+    const res = await tagApi.create(payload).catch(() => false)
     if (res) { ElMessage.success(T('OperationSuccess')); getTagList() }
   }
   const deleteTag = async (tag) => {
@@ -229,8 +257,12 @@
   }
 
   onMounted(() => {
-    getCollectionList()
-    reload()
+    if (isAdmin) {
+      getAllUsers()
+    } else {
+      getCollectionList()
+      reload()
+    }
   })
 </script>
 
@@ -254,6 +286,7 @@
   backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
 }
+.rail-user { width: 100%; }
 .rail-col { display: flex; gap: 6px; align-items: center; }
 .rail-select { flex: 1; }
 .rail-tags { flex: 1; }
