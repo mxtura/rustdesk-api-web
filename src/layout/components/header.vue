@@ -5,7 +5,7 @@
   </el-icon>
   <div class="header-logo">
     <img :src="setting.logo" alt="" class="logo">
-    <div class="title">{{setting.title}}</div>
+    <div class="title">{{roleTitle}}</div>
   </div>
   <Setting></Setting>
 </template>
@@ -15,6 +15,8 @@
   import HeaderMenu from '@/layout/components/menu/index.vue'
   import Setting from '@/layout/components/setting/index.vue'
   import { useAppStore } from '@/store/app'
+  import { useUserStore } from '@/store/user'
+  import { T } from '@/utils/i18n'
   import GTags from '@/layout/components/tags/index.vue'
 
   export default defineComponent({
@@ -25,12 +27,22 @@
     watch: {},
     setup (props) {
       const appStore = useAppStore()
+      const userStore = useUserStore()
       const setting = computed(() => appStore.setting)
+      // заголовок по роли: админ (route_names содержит '*') / обычный юзер
+      const roleTitle = computed(() => {
+        const isAdmin = (userStore.route_names || []).includes('*')
+        const key = isAdmin ? 'PanelTitleAdmin' : 'PanelTitleUser'
+        const t = T(key)
+        if (t !== key) return t
+        return isAdmin ? 'RustDesk · Admin' : 'RustDesk · Panel'
+      })
       const expandOrFoldSlider = () => {
         appStore.sideCollapse()
       }
       return {
         setting,
+        roleTitle,
         expandOrFoldSlider,
       }
     },

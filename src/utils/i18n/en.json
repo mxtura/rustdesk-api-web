@@ -1,4 +1,10 @@
 {
+  "PanelTitleAdmin": {
+    "One": "RustDesk · Admin"
+  },
+  "PanelTitleUser": {
+    "One": "RustDesk · Panel"
+  },
   "Login": {
     "One": "Login"
   },
