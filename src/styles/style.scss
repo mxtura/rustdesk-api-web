@@ -274,6 +274,17 @@ html:not(.dark) .el-popper__arrow::before { background: #ffffff !important; }
 .el-select__wrapper.is-focused {
   box-shadow: 0 0 0 1px var(--accent) inset !important;
 }
+/* в светлой теме белая glass-рамка не видна — даём контрастную */
+html:not(.dark) .el-input__wrapper,
+html:not(.dark) .el-textarea__inner,
+html:not(.dark) .el-select__wrapper {
+  background: rgba(255, 255, 255, 0.65) !important;
+  box-shadow: 0 0 0 1px rgba(28, 34, 51, 0.16) inset !important;
+}
+html:not(.dark) .el-input__wrapper.is-focus,
+html:not(.dark) .el-select__wrapper.is-focused {
+  box-shadow: 0 0 0 1px var(--accent) inset !important;
+}
 
 /* кнопки */
 .el-button--primary {
