@@ -25,7 +25,57 @@
       </el-form>
     </el-card>
     <el-card class="list-body" shadow="hover">
-      <el-table :data="listRes.list" v-loading="listRes.loading" border @selection-change="handleSelectionChange">
+      <div class="lb-head">
+        <el-radio-group v-model="viewMode" size="small">
+          <el-radio-button label="cards"><el-icon><Grid/></el-icon></el-radio-button>
+          <el-radio-button label="table"><el-icon><Menu/></el-icon></el-radio-button>
+        </el-radio-group>
+      </div>
+
+      <!-- ПЛИТКИ -->
+      <div v-if="viewMode==='cards'" class="ab-grid" v-loading="listRes.loading">
+        <div v-for="row in listRes.list" :key="row.row_id || row.id" class="ab-card">
+          <div class="ab-head">
+            <div class="ab-badge">
+              <PlatformIcons :name="platIcon(row)" style="width:24px;height:24px;display:inline-block" color="var(--basicBlack)"/>
+            </div>
+            <div class="ab-title">
+              <div class="ab-name">{{ row.alias || row.hostname || row.id }}</div>
+              <div class="ab-id" @click="handleClipboard(row.id, $event)">
+                {{ row.id }} <el-icon class="copy-ic"><CopyDocument/></el-icon>
+              </div>
+            </div>
+          </div>
+          <div class="ab-statusrow">
+            <el-tag size="small" effect="plain" class="ab-col">{{ colName(row) }}</el-tag>
+            <span v-if="row.peer?.version" class="ab-ver">v{{ row.peer.version }}</span>
+          </div>
+          <div v-if="tagArr(row).length" class="ab-tags">
+            <el-tag v-for="t in tagArr(row)" :key="t" size="small">{{ t }}</el-tag>
+          </div>
+          <div class="ab-specs">
+            <div v-if="row.username" class="spec"><el-icon><User/></el-icon><span>{{ row.username }}</span></div>
+            <div v-if="row.hostname" class="spec"><el-icon><Monitor/></el-icon><span>{{ row.hostname }}</span></div>
+          </div>
+          <div class="ab-actions">
+            <el-button type="primary" class="ab-connect" @click="connectByClient(row.id)">{{ T('Link') }}</el-button>
+            <el-dropdown trigger="click" class="ab-more">
+              <el-button :icon="MoreFilled"></el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item v-if="appStore.setting.appConfig.web_client" @click="toWebClientLink(row)">Web Client</el-dropdown-item>
+                  <el-dropdown-item v-if="appStore.setting.appConfig.web_client" @click="toShowShare(row)">{{ T('ShareByWebClient') }}</el-dropdown-item>
+                  <el-dropdown-item @click="toEdit(row)">{{ T('Edit') }}</el-dropdown-item>
+                  <el-dropdown-item divided @click="del(row)">{{ T('Delete') }}</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </div>
+        <el-empty v-if="!listRes.loading && !listRes.list.length" description="—"/>
+      </div>
+
+      <el-table v-else :data="listRes.list" v-loading="listRes.loading" border @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50" align="center"></el-table-column>
         <el-table-column prop="id" label="ID" align="center" width="200">
           <template #default="{row}">
@@ -182,8 +232,14 @@
   import { useAppStore } from '@/store/app'
   import { connectByClient } from '@/utils/peer'
   import { handleClipboard } from '@/utils/clipboard'
-  import { CopyDocument } from '@element-plus/icons'
+  import { CopyDocument, MoreFilled, Grid, Menu, User, Monitor } from '@element-plus/icons'
   import PlatformIcons from '@/components/icons/platform.vue'
+
+  const viewMode = ref(localStorage.getItem('ab_view_mode') || 'cards')
+  watch(viewMode, (v) => localStorage.setItem('ab_view_mode', v))
+  const tagArr = (row) => Array.isArray(row.tags) ? row.tags : (row.tags ? String(row.tags).split(',').filter(Boolean) : [])
+  const colName = (row) => row.collection_id === 0 ? T('MyAddressBook') : (collectionListRes.list.find(c => c.id === row.collection_id)?.name || '')
+  const platIcon = (row) => platformList.find(p => p.label === row.platform)?.icon
 
   const appStore = useAppStore()
   const {
@@ -256,6 +312,52 @@
 </script>
 
 <style scoped lang="scss">
+.lb-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+
+.ab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  min-height: 80px;
+}
+.ab-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.ab-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); border-color: var(--glass-border-strong); }
+
+.ab-head { display: flex; align-items: center; gap: 14px; }
+.ab-badge {
+  width: 46px; height: 46px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 13px;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+}
+.ab-title { flex: 1; min-width: 0; }
+.ab-name { font-weight: 600; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ab-id { font-size: 12px; color: var(--el-text-color-secondary); display: flex; align-items: center; gap: 5px; cursor: pointer; width: fit-content; margin-top: 2px; }
+.ab-id:hover { color: var(--accent); }
+.copy-ic { font-size: 13px; }
+
+.ab-statusrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ab-ver { font-size: 12px; color: var(--el-text-color-secondary); }
+.ab-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.ab-specs { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--glass-border); padding-top: 14px; }
+.ab-specs .spec { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; color: var(--el-text-color-regular); }
+.ab-specs .spec .el-icon { font-size: 15px; color: var(--el-text-color-secondary); flex-shrink: 0; }
+.ab-specs .spec span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.ab-actions { display: flex; gap: 8px; margin-top: auto; align-items: center; }
+.ab-connect { flex: 1; }
 
 .colors {
   display: flex;
