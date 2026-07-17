@@ -86,30 +86,36 @@
       <!-- ПЛИТКИ -->
       <div v-if="viewMode==='cards'" class="peer-grid" v-loading="listRes.loading">
         <div v-for="row in listRes.list" :key="row.row_id" class="peer-card" :class="{online: isOnline(row), selected: isSelected(row)}">
-          <div class="pc-top">
-            <el-checkbox class="pc-check" :model-value="isSelected(row)" @change="v => toggleSelect(row, v)" @click.stop/>
-            <div class="pc-os">{{ osIcon(row.os) }}</div>
+          <el-checkbox class="pc-check" :model-value="isSelected(row)" @change="v => toggleSelect(row, v)" @click.stop/>
+          <div class="pc-head">
+            <div class="pc-osbadge" :class="{on: isOnline(row)}">{{ osIcon(row.os) }}</div>
             <div class="pc-title">
-              <div class="pc-host">{{ row.alias || row.hostname || '-' }}</div>
+              <div class="pc-host" :title="row.alias || row.hostname">{{ row.alias || row.hostname || '—' }}</div>
               <div class="pc-id" @click="handleClipboard(row.id, $event)">
-                {{ row.id }} <el-icon><CopyDocument/></el-icon>
+                {{ row.id }} <el-icon class="copy-ic"><CopyDocument/></el-icon>
               </div>
             </div>
-            <span class="pc-status" :class="isOnline(row) ? 'green' : 'red'"></span>
           </div>
-          <div class="pc-meta">
-            <div><span>CPU</span><b :title="row.cpu">{{ row.cpu || '-' }}</b></div>
-            <div><span>{{ T('Memory') }}</span><b>{{ row.memory || '-' }}</b></div>
-            <div><span>{{ T('Os') }}</span><b :title="row.os">{{ row.os || '-' }}</b></div>
-            <div><span>{{ T('LastOnlineIp') }}</span><b>{{ row.last_online_ip || '-' }}</b></div>
-            <div><span>{{ T('Version') }}</span><b>{{ row.version || '-' }}</b></div>
-            <div><span>{{ T('LastOnlineTime') }}</span><b>{{ row.last_online_time ? timeAgo(row.last_online_time * 1000) : '-' }}</b></div>
+
+          <div class="pc-statusrow">
+            <span class="pc-badge" :class="isOnline(row) ? 'on' : 'off'">
+              <i class="bd"></i>{{ isOnline(row) ? T('Online') : (row.last_online_time ? timeAgo(row.last_online_time * 1000) : T('Offline')) }}
+            </span>
+            <span v-if="row.version" class="pc-ver">v{{ row.version }}</span>
           </div>
+
+          <div class="pc-specs">
+            <div class="spec" :title="row.cpu"><el-icon><Cpu/></el-icon><span>{{ row.cpu || '—' }}</span></div>
+            <div class="spec"><el-icon><Coin/></el-icon><span>{{ row.memory || '—' }}</span></div>
+            <div class="spec" :title="row.os"><el-icon><Monitor/></el-icon><span>{{ row.os || '—' }}</span></div>
+            <div class="spec"><el-icon><Connection/></el-icon><span>{{ row.last_online_ip || '—' }}</span></div>
+          </div>
+
           <div class="pc-actions">
-            <el-button type="primary" size="small" @click="connectByClient(row.id)">{{ T('Link') }}</el-button>
-            <el-button v-if="appStore.setting.appConfig.web_client" size="small" @click="toWebClientLink(row)">Web Client</el-button>
+            <el-button type="primary" class="pc-connect" @click="connectByClient(row.id)">{{ T('Link') }}</el-button>
+            <el-button v-if="appStore.setting.appConfig.web_client" class="pc-web" @click="toWebClientLink(row)">Web</el-button>
             <el-dropdown trigger="click" class="pc-more">
-              <el-button size="small" :icon="MoreFilled"></el-button>
+              <el-button :icon="MoreFilled"></el-button>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="doWol(row)">⚡ {{ T('Wol') }}</el-dropdown-item>
@@ -283,7 +289,7 @@
   import { loadAllUsers } from '@/global'
   import { useAppStore } from '@/store/app'
   import { connectByClient } from '@/utils/peer'
-  import { ArrowDown, ArrowUp, CopyDocument, Setting, MoreFilled, Grid, Menu, Close } from '@element-plus/icons'
+  import { ArrowDown, ArrowUp, CopyDocument, Setting, MoreFilled, Grid, Menu, Close, Cpu, Coin, Monitor, Connection } from '@element-plus/icons'
   import { handleClipboard } from '@/utils/clipboard'
   import { batchCreateFromPeers } from '@/api/address_book'
   import { useRepositories as useCollectionRepositories } from '@/views/address_book/collection'
@@ -714,34 +720,66 @@
 }
 
 .peer-card {
+  position: relative;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 16px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
+  overflow: hidden;
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
+/* акцентная полоса слева у онлайн-устройств */
+.peer-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+.peer-card.online::before { background: linear-gradient(180deg, #22c55e, #16a34a); }
 .peer-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-lift);
   border-color: var(--glass-border-strong);
 }
-.peer-card:not(.online) .pc-os { opacity: 0.45; }
 .peer-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-soft); }
-.pc-check { flex-shrink: 0; }
 
-.pc-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* чекбокс — в углу, проявляется на ховере/выборе */
+.pc-check {
+  position: absolute;
+  top: 12px; right: 12px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 2;
 }
-.pc-os { font-size: 30px; line-height: 1; }
+.peer-card:hover .pc-check,
+.peer-card.selected .pc-check { opacity: 1; }
+
+/* шапка: бейдж ОС + имя */
+.pc-head { display: flex; align-items: center; gap: 14px; }
+.pc-osbadge {
+  width: 46px; height: 46px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  border-radius: 13px;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  transition: all 0.2s ease;
+}
+.pc-osbadge.on {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.4);
+}
+.peer-card:not(.online) .pc-osbadge { opacity: 0.6; }
 .pc-title { flex: 1; min-width: 0; }
 .pc-host {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -754,45 +792,66 @@
   gap: 5px;
   cursor: pointer;
   width: fit-content;
+  margin-top: 2px;
 }
 .pc-id:hover { color: var(--accent); }
-.pc-status {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.pc-status.green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
-.pc-status.red { background: #6b7280; }
+.copy-ic { font-size: 13px; }
 
-.pc-meta {
+/* строка статуса: пилюля + версия */
+.pc-statusrow { display: flex; align-items: center; justify-content: space-between; }
+.pc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.pc-badge .bd { width: 7px; height: 7px; border-radius: 50%; }
+.pc-badge.on { background: rgba(34, 197, 94, 0.14); color: #22c55e; }
+.pc-badge.on .bd { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+.pc-badge.off { background: var(--glass-bg-strong); color: var(--el-text-color-secondary); }
+.pc-badge.off .bd { background: #6b7280; }
+.pc-ver { font-size: 12px; color: var(--el-text-color-secondary); font-variant-numeric: tabular-nums; }
+
+/* спеки: иконка + значение */
+.pc-specs {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px 14px;
+  padding: 4px 0;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 14px;
 }
-.pc-meta > div { display: flex; flex-direction: column; min-width: 0; }
-.pc-meta span {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--el-text-color-secondary);
-  margin-bottom: 2px;
-}
-.pc-meta b {
+.pc-specs .spec {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
   font-size: 13px;
-  font-weight: 500;
+  color: var(--el-text-color-regular);
+}
+.pc-specs .spec .el-icon {
+  font-size: 15px;
+  color: var(--el-text-color-secondary);
+  flex-shrink: 0;
+}
+.pc-specs .spec span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* действия */
 .pc-actions {
   display: flex;
   gap: 8px;
   margin-top: auto;
   align-items: center;
 }
-.pc-actions .pc-more { margin-left: auto; }
+.pc-connect { flex: 1; }
+.pc-actions .pc-more { margin-left: 0; }
 
 /* панель редактирования колонок */
 .col-edit-panel {

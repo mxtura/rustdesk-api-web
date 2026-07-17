@@ -637,5 +637,11 @@
   },
   "ViewTable": {
     "One": "表格"
+  },
+  "Online": {
+    "One": "在線"
+  },
+  "Offline": {
+    "One": "離線"
   }
 }

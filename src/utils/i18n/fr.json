@@ -624,5 +624,11 @@
   },
   "ViewTable": {
     "One": "Table"
+  },
+  "Online": {
+    "One": "Online"
+  },
+  "Offline": {
+    "One": "Offline"
   }
 }
