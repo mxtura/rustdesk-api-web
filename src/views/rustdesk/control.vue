@@ -1,18 +1,26 @@
 <template>
-  <div>
-    <h4 v-html="T('ServerCmdTips', {wiki: '<a target=\'_blank\' href=\'https://github.com/lejianwen/rustdesk-api/wiki/Rustdesk-Command\'>WIKI</a>'})"></h4>
-    <h5>
-      <span>ID {{ T('Status') }}: </span>
-      <el-tag v-if="canSendIdServerCmd" type="success">{{ T('Available') }}</el-tag>
-      <el-tag v-else type="danger">{{ T('NotAvailable') }}</el-tag>
-      <el-button size="small" type="text" @click="refreshCanSendIdServerCmd">{{ T('Refresh') }}</el-button>
-    </h5>
-    <h5>
-      <span>RELAY {{ T('Status') }}: </span>
-      <el-tag v-if="canSendRelayServerCmd" type="success">{{ T('Available') }}</el-tag>
-      <el-tag v-else type="danger">{{ T('NotAvailable') }}</el-tag>
-      <el-button size="small" type="text" @click="refreshCanSendRelayServerCmd">{{ T('Refresh') }}</el-button>
-    </h5>
+  <div class="scmd">
+    <div class="scmd-tip" v-html="T('ServerCmdTips', {wiki: '<a target=\'_blank\' href=\'https://github.com/lejianwen/rustdesk-api/wiki/Rustdesk-Command\'>WIKI</a>'})"></div>
+
+    <div class="scmd-status">
+      <div class="st-card" :class="canSendIdServerCmd ? 'on' : 'off'">
+        <span class="st-dot"></span>
+        <div class="st-body">
+          <div class="st-name">ID {{ T('Status') }}</div>
+          <div class="st-val">{{ canSendIdServerCmd ? T('Available') : T('NotAvailable') }}</div>
+        </div>
+        <el-button size="small" text @click="refreshCanSendIdServerCmd">{{ T('Refresh') }}</el-button>
+      </div>
+      <div class="st-card" :class="canSendRelayServerCmd ? 'on' : 'off'">
+        <span class="st-dot"></span>
+        <div class="st-body">
+          <div class="st-name">RELAY {{ T('Status') }}</div>
+          <div class="st-val">{{ canSendRelayServerCmd ? T('Available') : T('NotAvailable') }}</div>
+        </div>
+        <el-button size="small" text @click="refreshCanSendRelayServerCmd">{{ T('Refresh') }}</el-button>
+      </div>
+    </div>
+
     <el-tabs
         v-model="activeName"
         type="card"
@@ -285,5 +293,42 @@
   min-width: 300px;
   margin: 10px;
   min-height: 300px;
+}
+
+.scmd-tip {
+  font-size: 13px;
+  color: var(--el-text-color-secondary);
+  margin-bottom: 16px;
+}
+.scmd-tip :deep(a) { color: var(--accent); }
+
+.scmd-status {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.st-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  min-width: 240px;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+.st-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.st-card.on .st-dot { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+.st-card.off .st-dot { background: #ef4444; }
+.st-body { flex: 1; }
+.st-name { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--el-text-color-secondary); }
+.st-val { font-size: 15px; font-weight: 600; }
+.st-card.on .st-val { color: #22c55e; }
+.st-card.off .st-val { color: var(--el-text-color-regular); }
+
+/* карточки Simple-контролов — стеклянные */
+:deep(.simple-card) {
+  border-radius: var(--radius-lg) !important;
 }
 </style>
