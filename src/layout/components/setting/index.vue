@@ -44,36 +44,34 @@
 
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item @click="showChangePwd">{{ T('ChangePassword') }}</el-dropdown-item>
-          <el-dropdown-item @click="logout">{{ T('Logout') }}</el-dropdown-item>
+          <el-dropdown-item @click="toProfile">{{ T('Userinfo') }}</el-dropdown-item>
+          <el-dropdown-item divided @click="logout">{{ T('Logout') }}</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-    <changePwdDialog v-model:visible="changePwdVisible"></changePwdDialog>
   </div>
 </template>
 
 <script setup>
   import { useUserStore } from '@/store/user'
   import { useAppStore } from '@/store/app'
-  import changePwdDialog from '@/components/changePwdDialog.vue'
-  import { ref } from 'vue'
   import { T } from '@/utils/i18n'
+  import { useRouter } from 'vue-router'
   import { useDark } from '@vueuse/core'
   import { Sunny, Moon } from '@element-plus/icons'
 
   const userStore = useUserStore()
   const user = userStore
   const appStore = useAppStore()
+  const router = useRouter()
 
   const logout = () => {
     userStore.logout()
     window.location.reload()
   }
 
-  const changePwdVisible = ref(false)
-  const showChangePwd = () => {
-    changePwdVisible.value = true
+  const toProfile = () => {
+    router.push('/')
   }
   const changeLang = (v) => {
     appStore.changeLang(v)
