@@ -83,11 +83,17 @@
 
   const captchaCode = ref('')
   const redirect = route.query?.redirect
+  // куда вести после входа: дашборд доступен только с правами (админ/*), иначе личный раздел
+  const landingPath = (userData) => {
+    const names = userData?.route_names || []
+    const canDash = names.includes('*') || names.includes('Dashboard')
+    return canDash ? '/dashboard' : '/'
+  }
   const login = async () => {
     const res = await userStore.login(form).catch(e => e)
     if (!res.code) {
       ElMessage.success(T('LoginSuccess'))
-      router.push({ path: redirect || '/dashboard', replace: true })
+      router.push({ path: redirect || landingPath(res.data || res), replace: true })
       return
     }
     if (res.code === 110) {
@@ -155,7 +161,7 @@
         // 删除code，确保跳转之前对code进行清楚
         removeCode()
         ElMessage.success(T('LoginSuccess'))
-        router.push({ path: redirect || '/dashboard', replace: true })
+        router.push({ path: redirect || landingPath(res.data || res), replace: true })
       }
     } else {
       // 如果code不存在, 现实登陆页面

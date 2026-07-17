@@ -86,7 +86,13 @@
 
   }
 
-  const html = computed(_ => marked(appStore.setting.hello||''))
+  const html = computed(() => {
+    const raw = appStore.setting.hello || ''
+    // серверное приветствие по умолчанию на китайском — заменяем локализованным
+    const isDefault = !raw.trim() || /你好|欢迎|歡迎/.test(raw)
+    const text = isDefault ? T('WelcomeHello', { name: userStore.username }) : raw
+    return marked(text)
+  })
 
 </script>
 

@@ -636,5 +636,8 @@
   },
   "GroupShareName": {
     "One": "Общая группа"
+  },
+  "WelcomeHello": {
+    "One": "👏 Привет, {name}! Добро пожаловать в RustDesk API"
   }
 }

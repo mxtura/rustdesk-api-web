@@ -649,5 +649,8 @@
   },
   "GroupShareName": {
     "One": "共享組"
+  },
+  "WelcomeHello": {
+    "One": "👏 你好 {name}，歡迎使用 RustDesk API"
   }
 }
