@@ -26,11 +26,13 @@
         type="card"
     >
       <el-tab-pane :label="T('Simple')" name="Simple">
-        <div class="ctrl-grid">
+        <div class="settings-card">
           <RelayServers ref="rs" :can-send="canSendIdServerCmd"/>
           <alwaysUseRelay :can-send="canSendIdServerCmd" @success="handleAlwaysUseRelaySuccess"/>
           <mustLogin :can-send="canControlMustLogin&&canSendIdServerCmd"/>
-          <div class="ctrl-wide"><usage :can-send="canSendRelayServerCmd"/></div>
+        </div>
+        <usage :can-send="canSendRelayServerCmd"/>
+        <div class="ctrl-grid2">
           <blocklist :can-send="canSendRelayServerCmd"/>
           <blacklist :can-send="canSendRelayServerCmd"/>
         </div>
@@ -287,16 +289,36 @@
 </script>
 
 <style scoped lang="scss">
-/* ровная сетка контролов */
-.ctrl-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 14px;
-  align-items: start;
+/* карточка настроек-строк */
+.settings-card {
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 16px;
+  overflow: hidden;
 }
-.ctrl-wide { grid-column: 1 / -1; }
-.ctrl-wide :deep(.el-table) { max-width: 100%; }
-.simple-card { min-width: 0; overflow: hidden; }
+:deep(.set-row) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--glass-border);
+}
+:deep(.set-row:last-child) { border-bottom: none; }
+:deep(.set-info) { min-width: 0; }
+:deep(.set-title) { font-weight: 600; font-size: 14px; }
+:deep(.set-desc) { font-size: 12px; color: var(--el-text-color-secondary); margin-top: 2px; }
+:deep(.set-ctrl) { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+/* usage + списки */
+.ctrl-grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.simple-card { min-width: 0; width: 100%; overflow: hidden; }
 :deep(.simple-card .el-card__header) { padding: 12px 16px; }
 :deep(.simple-card .el-card__body) { padding: 14px 16px; }
 :deep(.simple-card .el-form-item) { margin-bottom: 12px; }

@@ -1,20 +1,14 @@
 <template>
-  <el-card class="simple-card" shadow="hover" v-loading="form.loading">
-    <template #header>
-      <div class="sc-head">
-        <div class="sc-txt"><div class="sc-title">{{ T('RelayServersTitle') }}</div><div class="sc-desc">{{ T('RelayServersDesc') }}</div></div>
-      </div>
-    </template>
-    <el-form :disabled="!canSend">
-      <el-form-item>
-        <el-input v-model="form.option"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="get">{{ T('Refresh') }}</el-button>
-        <el-button @click="save" type="primary">{{ T('Save') }}</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
+    <div class="set-row" v-loading="form.loading">
+    <div class="set-info">
+      <div class="set-title">{{ T('RelayServersTitle') }}</div>
+      <div class="set-desc">{{ T('RelayServersDesc') }}</div>
+    </div>
+    <div class="set-ctrl">
+      <el-input v-model="form.option" :disabled="!canSend" placeholder="ip:port,ip:port" style="width: 260px"/>
+      <el-button @click="save" type="primary" :disabled="!canSend">{{ T('Save') }}</el-button>
+    </div>
+  </div>
 </template>
 <script setup>
 

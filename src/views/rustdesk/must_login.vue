@@ -1,20 +1,13 @@
 <template>
-  <el-card class="simple-card" shadow="hover" v-loading="form.loading">
-    <template #header>
-      <div class="sc-head">
-        <div class="sc-txt"><div class="sc-title">{{ T('MustLoginTitle') }}</div><div class="sc-desc">{{ T('MustLoginDesc') }}</div></div>
-      </div>
-    </template>
-    <el-form :disabled="!canSend">
-      <el-form-item>
-        <el-switch v-model="form.option" active-value="Y" inactive-value="N"></el-switch>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="get">{{ T('Refresh') }}</el-button>
-        <el-button @click="save" type="primary">{{ T('Save') }}</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
+    <div class="set-row" v-loading="form.loading">
+    <div class="set-info">
+      <div class="set-title">{{ T('MustLoginTitle') }}</div>
+      <div class="set-desc">{{ T('MustLoginDesc') }}</div>
+    </div>
+    <div class="set-ctrl">
+      <el-switch v-model="form.option" active-value="Y" inactive-value="N" :disabled="!canSend" @change="save"/>
+    </div>
+  </div>
 </template>
 <script setup>
 
