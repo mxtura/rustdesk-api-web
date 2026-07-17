@@ -61,7 +61,6 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="toTag(row)">{{ T('UserTags') }}</el-dropdown-item>
-                  <el-dropdown-item @click="changePass(row)">{{ T('ResetPassword') }}</el-dropdown-item>
                   <el-dropdown-item divided @click="remove(row)">{{ T('Delete') }}</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -98,7 +97,6 @@
                 <el-dropdown-menu>
                   <el-dropdown-item @click="toTag(row)">{{ T('UserTags') }}</el-dropdown-item>
                   <el-dropdown-item @click="toAddressBook(row)">{{ T('UserAddressBook') }}</el-dropdown-item>
-                  <el-dropdown-item @click="changePass(row)">{{ T('ResetPassword') }}</el-dropdown-item>
                   <el-dropdown-item divided @click="remove(row)">{{ T('Delete') }}</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -123,7 +121,7 @@
 </template>
 
 <script setup>
-  import { useRepositories, useDel, useToEditOrAdd, useChangePwd } from '@/views/user/composables'
+  import { useRepositories, useDel, useToEditOrAdd } from '@/views/user/composables'
   import { T } from '@/utils/i18n'
   import { DISABLE_STATUS, ENABLE_STATUS } from '@/utils/common_options'
   import { update } from '@/api/user'
@@ -157,7 +155,6 @@
   const editId = ref(0)
   const openAdd = () => { editId.value = 0; editVisible.value = true }
   const openEdit = (row) => { editId.value = row.id; editVisible.value = true }
-  const { changePass } = useChangePwd()
   const { del } = useDel()
 
   const remove = async (row) => {
