@@ -1,6 +1,8 @@
 <template>
-  <div class="form-card">
-    <el-form ref="root" label-width="120px" :model="form" :rules="rules">
+  <div class="edit-wrap">
+    <el-card class="edit-card" shadow="never">
+      <div class="edit-title">{{ route.params.id ? T('UserEdit') : T('UserAdd') }}</div>
+      <el-form ref="root" label-position="top" :model="form" :rules="rules">
       <el-form-item :label="T('Username')" prop="username">
         <el-input v-model="form.username"></el-input>
       </el-form-item>
@@ -40,6 +42,7 @@
         <el-button @click="submit" type="primary">{{ T('Submit') }}</el-button>
       </el-form-item>
     </el-form>
+    </el-card>
   </div>
 </template>
 
@@ -58,6 +61,23 @@
 </script>
 
 <style lang="scss" scoped>
-.form-card {
+.edit-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+}
+.edit-card {
+  width: 100%;
+  max-width: 560px;
+}
+.edit-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.edit-card :deep(.el-form-item__label) {
+  padding-bottom: 2px;
+  font-size: 13px;
+  color: var(--el-text-color-secondary);
 }
 </style>
