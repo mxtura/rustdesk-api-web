@@ -4,6 +4,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { list as groups } from '@/api/group'
 import { T } from '@/utils/i18n'
+import { ENABLE_STATUS } from '@/utils/common_options'
 
 export function useGetDetail (id) {
   let item = ref({})  //保留原始值
@@ -16,6 +17,9 @@ export function useGetDetail (id) {
   }
   if (id > 0) {
     onMounted(_ => {getDetail(id)})
+  } else {
+    // дефолты для нового пользователя: включён, не админ
+    form.value = { status: ENABLE_STATUS, is_admin: false }
   }
 
   const getGroups = async () => {
@@ -51,12 +55,12 @@ export function useSubmit (form, id) {
 
   const submitCreate = async () => {
     const res = await create(form.value).catch(_ => false)
-    return res.code === 0
+    return res && res.code === 0
   }
 
   const submitUpdate = async () => {
     const res = await update(form.value).catch(_ => false)
-    return res.code === 0
+    return res && res.code === 0
   }
   const submitFunc = id > 0 ? submitUpdate : submitCreate
 
@@ -69,7 +73,7 @@ export function useSubmit (form, id) {
     const res = await submitFunc()
     if (res) {
       ElMessage.success(T('OperationSuccess'))
-      router.back()
+      router.push('/user/index')
     }
   }
 
