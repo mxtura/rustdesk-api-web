@@ -3,6 +3,7 @@
           class="menus"
           :collapse="isCollapse"
           :default-active="activeIndex"
+          unique-opened
           background-color="#2d3a4b"
           text-color="#fff"
           active-text-color="#409eff"

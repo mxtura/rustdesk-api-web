@@ -32,6 +32,21 @@ const constantRoutes = [
   },
 ]
 export const asyncRoutes = [
+  {
+    path: '/g-dash',
+    name: 'DashboardGroup',
+    redirect: '/dashboard',
+    meta: { title: 'Дашборд', icon: 'Odometer' },
+    component: () => import('@/layout/index.vue'),
+    children: [
+      {
+        path: '/dashboard',
+        name: 'Dashboard',
+        meta: { title: 'Дашборд', icon: 'Odometer' },
+        component: () => import('@/views/dashboard/index.vue'),
+      },
+    ],
+  },
   // {
   //   path: '/',
   //   name: 'Index',
@@ -99,107 +114,148 @@ export const asyncRoutes = [
       },
     ],
   },
+  // ===== Устройства =====
   {
-    path: '/user',
-    name: 'User',
-    redirect: '/user/index',
-    meta: { title: 'System', icon: 'Setting' },
+    path: '/g-devices',
+    name: 'GroupDevices',
+    redirect: '/user/peer',
+    meta: { title: 'Устройства', icon: 'Monitor' },
     component: () => import('@/layout/index.vue'),
     children: [
       {
-        path: 'peer',
+        path: '/user/peer',
         name: 'Peer',
-        meta: { title: 'PeerManage', icon: 'Monitor' /*keepAlive: true*/ },
+        meta: { title: 'PeerManage', icon: 'Monitor' },
         component: () => import('@/views/peer/index.vue'),
       },
       {
-        path: 'group',
+        path: '/user/group',
         name: 'UserGroup',
-        meta: { title: 'GroupManage', icon: 'ChatRound' /*keepAlive: true*/ },
+        meta: { title: 'GroupManage', icon: 'ChatRound' },
         component: () => import('@/views/group/index.vue'),
       },
       {
-        path: 'deviceGroup',
+        path: '/user/deviceGroup',
         name: 'DeviceGroup',
-        meta: { title: 'DeviceGroupManage', icon: 'ChatRound' /*keepAlive: true*/ },
+        meta: { title: 'DeviceGroupManage', icon: 'Grid' },
         component: () => import('@/views/group/deviceGroupList.vue'),
       },
+    ],
+  },
+  // ===== Адресная книга =====
+  {
+    path: '/g-addrbook',
+    name: 'GroupAddrBook',
+    redirect: '/user/addressBook',
+    meta: { title: 'Адресная книга', icon: 'Notebook' },
+    component: () => import('@/layout/index.vue'),
+    children: [
       {
-        path: 'index',
+        path: '/user/addressBookName',
+        name: 'UserAddressBookName',
+        meta: { title: 'AddressBookNameManage', icon: 'Collection' },
+        component: () => import('@/views/address_book/collection.vue'),
+      },
+      {
+        path: '/user/addressBook',
+        name: 'UserAddressBook',
+        meta: { title: 'AddressBookManage', icon: 'Notebook' },
+        component: () => import('@/views/address_book/index.vue'),
+      },
+      {
+        path: '/user/tag',
+        name: 'UserTag',
+        meta: { title: 'TagsManage', icon: 'CollectionTag' },
+        component: () => import('@/views/tag/index.vue'),
+      },
+    ],
+  },
+  // ===== Пользователи и доступ =====
+  {
+    path: '/g-users',
+    name: 'GroupUsers',
+    redirect: '/user/index',
+    meta: { title: 'Пользователи', icon: 'User' },
+    component: () => import('@/layout/index.vue'),
+    children: [
+      {
+        path: '/user/index',
         name: 'UserList',
-        meta: { title: 'UserManage', icon: 'User' /*keepAlive: true*/ },
+        meta: { title: 'UserManage', icon: 'User' },
         component: () => import('@/views/user/index.vue'),
       },
       {
-        path: 'add',
+        path: '/user/add',
         name: 'UserAdd',
         meta: { title: 'UserAdd', hide: true },
         component: () => import('@/views/user/edit.vue'),
       },
       {
-        path: 'edit/:id',
+        path: '/user/edit/:id',
         name: 'UserEdit',
         meta: { title: 'UserEdit', hide: true },
         component: () => import('@/views/user/edit.vue'),
       },
       {
-        path: 'addressBookName',
-        name: 'UserAddressBookName',
-        meta: { title: 'AddressBookNameManage', icon: 'Collection' /*keepAlive: true*/ },
-        component: () => import('@/views/address_book/collection.vue'),
-      },
-      {
-        path: 'addressBook',
-        name: 'UserAddressBook',
-        meta: { title: 'AddressBookManage', icon: 'Notebook' /*keepAlive: true*/ },
-        component: () => import('@/views/address_book/index.vue'),
-      },
-      {
-        path: 'tag',
-        name: 'UserTag',
-        meta: { title: 'TagsManage', icon: 'CollectionTag' /*keepAlive: true*/ },
-        component: () => import('@/views/tag/index.vue'),
-      },
-      {
         path: '/oauth',
         name: 'Oauth',
-        meta: { title: 'OauthManage', icon: 'Link' /*keepAlive: true*/ },
+        meta: { title: 'OauthManage', icon: 'Link' },
         component: () => import('@/views/oauth/index.vue'),
       },
       {
         path: '/userToken',
         name: 'UserToken',
-        meta: { title: 'UserToken', icon: 'Ticket' /*keepAlive: true*/ },
+        meta: { title: 'UserToken', icon: 'Ticket' },
         component: () => import('@/views/user/token.vue'),
       },
+    ],
+  },
+  // ===== Логи и аудит =====
+  {
+    path: '/g-logs',
+    name: 'GroupLogs',
+    redirect: '/loginLog',
+    meta: { title: 'Логи и аудит', icon: 'Tickets' },
+    component: () => import('@/layout/index.vue'),
+    children: [
       {
         path: '/loginLog',
         name: 'LoginLog',
-        meta: { title: 'LoginLog', icon: 'List' /*keepAlive: true*/ },
+        meta: { title: 'LoginLog', icon: 'List' },
         component: () => import('@/views/login/log.vue'),
       },
       {
         path: '/auditConn',
         name: 'AuditConn',
-        meta: { title: 'AuditConnLog', icon: 'Tickets' /*keepAlive: true*/ },
+        meta: { title: 'AuditConnLog', icon: 'Tickets' },
         component: () => import('@/views/audit/connList.vue'),
       },
       {
         path: '/auditFile',
         name: 'AuditFile',
-        meta: { title: 'AuditFileLog', icon: 'Files' /*keepAlive: true*/ },
+        meta: { title: 'AuditFileLog', icon: 'Files' },
         component: () => import('@/views/audit/fileList.vue'),
       },
       {
         path: '/shareRecord',
         name: 'ShareRecord',
-        meta: { title: 'ShareRecord', icon: 'Share' /*keepAlive: true*/ },
+        meta: { title: 'ShareRecord', icon: 'Share' },
         component: () => import('@/views/share_record/index.vue'),
       },
+    ],
+  },
+  // ===== Сервер =====
+  {
+    path: '/g-server',
+    name: 'GroupServer',
+    redirect: '/serverCmd',
+    meta: { title: 'Сервер', icon: 'Tools' },
+    component: () => import('@/layout/index.vue'),
+    children: [
       {
         path: '/serverCmd',
         name: 'ServerCmd',
-        meta: { title: 'ServerCmd', icon: 'Tools' /*keepAlive: true*/ },
+        meta: { title: 'ServerCmd', icon: 'Tools' },
         component: () => import('@/views/rustdesk/control.vue'),
       },
     ],

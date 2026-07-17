@@ -87,7 +87,7 @@
     const res = await userStore.login(form).catch(e => e)
     if (!res.code) {
       ElMessage.success(T('LoginSuccess'))
-      router.push({ path: redirect || '/', replace: true })
+      router.push({ path: redirect || '/dashboard', replace: true })
       return
     }
     if (res.code === 110) {
@@ -155,7 +155,7 @@
         // 删除code，确保跳转之前对code进行清楚
         removeCode()
         ElMessage.success(T('LoginSuccess'))
-        router.push({ path: redirect || '/', replace: true })
+        router.push({ path: redirect || '/dashboard', replace: true })
       }
     } else {
       // 如果code不存在, 现实登陆页面
@@ -174,17 +174,19 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #2d3a4b;
   padding: 20px;
   box-sizing: border-box;
 }
 
 .login-card {
-  width: 360px;
-  background-color: #283342;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 380px;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border-strong);
+  padding: 44px 40px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
   text-align: center;
 }
 
@@ -280,18 +282,7 @@ h1 {
 
 .el-form-item {
   ::v-deep(.el-form-item__label) {
-    color: #fff;
-  }
-
-  .el-input {
-    ::v-deep(.el-input__wrapper) {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: transparent;
-    }
-
-    ::v-deep(input) {
-      color: #fff;
-    }
+    color: var(--el-text-color-regular);
   }
 }
 </style>

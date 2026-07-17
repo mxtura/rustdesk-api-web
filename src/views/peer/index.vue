@@ -62,51 +62,110 @@
       </el-form>
     </el-card>
     <el-card class="list-body" shadow="hover">
-      <div style="text-align: right; margin-bottom: 10px">
-        <el-button :icon="Setting" @click="showColumnSetting"></el-button>
+      <div class="lb-head">
+        <el-radio-group v-model="viewMode" size="small">
+          <el-radio-button label="cards"><el-icon><Grid/></el-icon></el-radio-button>
+          <el-radio-button label="table"><el-icon><Menu/></el-icon></el-radio-button>
+        </el-radio-group>
+        <el-button v-if="viewMode==='table'" :type="editCols ? 'primary' : ''" :icon="Setting" @click="editCols = !editCols">
+          {{ editCols ? 'Готово' : 'Столбцы' }}
+        </el-button>
+      </div>
+      <transition name="el-fade-in-linear">
+        <div v-if="viewMode==='table' && editCols" class="col-edit-panel">
+          <span class="cep-tip">↔ тяните заголовки мышкой &nbsp;·&nbsp; × скрыть колонку &nbsp;·&nbsp; + добавить</span>
+          <div class="col-add-bar">
+            <el-tag v-for="c in hiddenColumns" :key="c.name" class="cab-chip" effect="plain" @click="showCol(c)">
+              + {{ colLabel(c) }}
+            </el-tag>
+            <span v-if="!hiddenColumns.length" class="cab-empty">все колонки показаны</span>
+          </div>
+        </div>
+      </transition>
+
+      <!-- ПЛИТКИ -->
+      <div v-if="viewMode==='cards'" class="peer-grid" v-loading="listRes.loading">
+        <div v-for="row in listRes.list" :key="row.row_id" class="peer-card" :class="{online: isOnline(row), selected: isSelected(row)}">
+          <div class="pc-top">
+            <el-checkbox class="pc-check" :model-value="isSelected(row)" @change="v => toggleSelect(row, v)" @click.stop/>
+            <div class="pc-os">{{ osIcon(row.os) }}</div>
+            <div class="pc-title">
+              <div class="pc-host">{{ row.alias || row.hostname || '-' }}</div>
+              <div class="pc-id" @click="handleClipboard(row.id, $event)">
+                {{ row.id }} <el-icon><CopyDocument/></el-icon>
+              </div>
+            </div>
+            <span class="pc-status" :class="isOnline(row) ? 'green' : 'red'"></span>
+          </div>
+          <div class="pc-meta">
+            <div><span>CPU</span><b :title="row.cpu">{{ row.cpu || '-' }}</b></div>
+            <div><span>{{ T('Memory') }}</span><b>{{ row.memory || '-' }}</b></div>
+            <div><span>{{ T('Os') }}</span><b :title="row.os">{{ row.os || '-' }}</b></div>
+            <div><span>{{ T('LastOnlineIp') }}</span><b>{{ row.last_online_ip || '-' }}</b></div>
+            <div><span>{{ T('Version') }}</span><b>{{ row.version || '-' }}</b></div>
+            <div><span>{{ T('LastOnlineTime') }}</span><b>{{ row.last_online_time ? timeAgo(row.last_online_time * 1000) : '-' }}</b></div>
+          </div>
+          <div class="pc-actions">
+            <el-button type="primary" size="small" @click="connectByClient(row.id)">{{ T('Link') }}</el-button>
+            <el-button v-if="appStore.setting.appConfig.web_client" size="small" @click="toWebClientLink(row)">Web Client</el-button>
+            <el-dropdown trigger="click" class="pc-more">
+              <el-button size="small" :icon="MoreFilled"></el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="doWol(row)">⚡ Разбудить (WoL)</el-dropdown-item>
+                  <el-dropdown-item @click="toAddressBook(row)">{{ T('AddToAddressBook') }}</el-dropdown-item>
+                  <el-dropdown-item @click="toEdit(row)">{{ T('Edit') }}</el-dropdown-item>
+                  <el-dropdown-item divided @click="del(row)">{{ T('Delete') }}</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </div>
+        <el-empty v-if="!listRes.loading && !listRes.list.length" description="—"/>
       </div>
 
-      <el-table :data="listRes.list" v-loading="listRes.loading" border size="small" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center"/>
-        <template v-for="c in visibleColumns.filter(cc => cc.visible)" :key="c">
-          <el-table-column v-if="c.name==='id'" prop="id" label="ID" align="center" width="150">
-            <template #default="{row}">
-              <span>{{ row.id }} <el-icon @click="handleClipboard(row.id, $event)"><CopyDocument/></el-icon></span>
+      <el-table v-else ref="peerTable" :data="listRes.list" v-loading="listRes.loading" border size="small" @selection-change="handleSelectionChange" row-key="row_id">
+        <el-table-column type="selection" width="45" align="center"/>
+        <el-table-column v-for="c in shownColumns" :key="c.name" :prop="c.name" :min-width="colWidth(c)" align="center" show-overflow-tooltip>
+          <template #header>
+            <span class="col-h" :class="{editing: editCols}" :data-col="c.name">
+              {{ colLabel(c) }}
+              <el-icon v-if="editCols" class="col-x" @click.stop="hideCol(c)"><Close/></el-icon>
+            </span>
+          </template>
+          <template #default="{row}">
+            <template v-if="c.name==='id'">
+              {{ row.id }} <el-icon class="copy-ic" @click="handleClipboard(row.id, $event)"><CopyDocument/></el-icon>
             </template>
-          </el-table-column>
-          <el-table-column v-if="c.name==='cpu'" prop="cpu" label="CPU" align="center" width="100" show-overflow-tooltip/>
-          <el-table-column v-if="c.name==='hostname'" prop="hostname" :label="T('Hostname')" align="center" width="120"/>
-          <el-table-column v-if="c.name==='memory'" prop="memory" :label="T('Memory')" align="center" width="120"/>
-          <el-table-column v-if="c.name==='os'" prop="os" :label="T('Os')" align="center" width="120" show-overflow-tooltip/>
-          <el-table-column v-if="c.name==='last_online_time'" prop="last_online_time" :label="T('LastOnlineTime')" align="center" min-width="120">
-            <template #default="{row}">
+            <template v-else-if="c.name==='last_online_time'">
               <div class="last_oline_time">
-                <span> {{ row.last_online_time ? timeAgo(row.last_online_time * 1000) : '-' }}</span> <span class="dot" :class="{red: timeDis(row.last_online_time) >= 60, green: timeDis(row.last_online_time)< 60}"></span>
+                <span>{{ row.last_online_time ? timeAgo(row.last_online_time * 1000) : '-' }}</span>
+                <span class="dot" :class="{red: timeDis(row.last_online_time) >= 60, green: timeDis(row.last_online_time) < 60}"></span>
               </div>
             </template>
-          </el-table-column>
-          <el-table-column v-if="c.name==='last_online_ip'" prop="last_online_ip" :label="T('LastOnlineIp')" align="center" min-width="120"/>
-          <el-table-column v-if="c.name==='username'" prop="username" :label="T('Username')" align="center" width="120"/>
-          <el-table-column v-if="c.name==='group_id'" prop="group_id" :label="T('Group')" align="center" width="120">
-            <template #default="{row}">
-              <span v-if="row.group_id"> <el-tag>{{ groupListRes.list?.find(g => g.id === row.group_id)?.name }} </el-tag> </span>
-              <span v-else> - </span>
+            <template v-else-if="c.name==='group_id'">
+              <el-tag v-if="row.group_id">{{ groupListRes.list?.find(g => g.id === row.group_id)?.name }}</el-tag>
+              <span v-else>-</span>
             </template>
-          </el-table-column>
-          <el-table-column v-if="c.name==='uuid'" prop="uuid" :label="T('Uuid')" align="center" width="120" show-overflow-tooltip/>
-          <el-table-column v-if="c.name==='version'" prop="version" :label="T('Version')" align="center" width="80"/>
-          <el-table-column v-if="c.name==='alias'" prop="alias" :label="T('Alias')" align="center" width="80"/>
-          <el-table-column v-if="c.name==='created_at'" prop="created_at" :label="T('CreatedAt')" align="center" width="150"/>
-          <el-table-column v-if="c.name==='updated_at'" prop="updated_at" :label="T('UpdatedAt')" align="center" width="150"/>
-        </template>
+            <template v-else>{{ row[c.name] || '-' }}</template>
+          </template>
+        </el-table-column>
 
-        <el-table-column :label="T('Actions')" align="center" width="500" class-name="table-actions" fixed="right">
+        <el-table-column :label="T('Actions')" align="center" width="170" class-name="table-actions">
           <template #default="{row}">
-            <el-button type="success" @click="connectByClient(row.id)">{{ T('Link') }}</el-button>
-            <el-button v-if="appStore.setting.appConfig.web_client" type="success" @click="toWebClientLink(row)">Web Client</el-button>
-            <el-button type="primary" @click="toAddressBook(row)">{{ T('AddToAddressBook') }}</el-button>
-            <el-button @click="toEdit(row)">{{ T('Edit') }}</el-button>
-            <el-button type="danger" @click="del(row)">{{ T('Delete') }}</el-button>
+            <el-button type="primary" size="small" @click="connectByClient(row.id)">{{ T('Link') }}</el-button>
+            <el-dropdown trigger="click">
+              <el-button size="small" :icon="MoreFilled"></el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item v-if="appStore.setting.appConfig.web_client" @click="toWebClientLink(row)">Web Client</el-dropdown-item>
+                  <el-dropdown-item @click="doWol(row)">⚡ Разбудить (WoL)</el-dropdown-item>
+                  <el-dropdown-item @click="toAddressBook(row)">{{ T('AddToAddressBook') }}</el-dropdown-item>
+                  <el-dropdown-item @click="toEdit(row)">{{ T('Edit') }}</el-dropdown-item>
+                  <el-dropdown-item divided @click="del(row)">{{ T('Delete') }}</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
@@ -159,6 +218,9 @@
         <el-form-item :label="T('Alias')" prop="alias">
           <el-input v-model="formData.alias"></el-input>
         </el-form-item>
+        <el-form-item label="MAC (WoL)" prop="mac">
+          <el-input v-model="formData.mac" placeholder="AA:BB:CC:DD:EE:FF"></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button @click="formVisible = false">{{ T('Cancel') }}</el-button>
           <el-button @click="submit" type="primary">{{ T('Submit') }}</el-button>
@@ -205,33 +267,13 @@
       </el-form>
     </el-dialog>
 
-    <el-dialog v-model="columnSettingVisible" title="Column Setting">
-      <div v-for="(row, key) in visibleColumns" :key="key" style="margin-bottom: 10px;display: flex;align-items: center">
-        <div style="width: 200px">
-          <el-checkbox v-model="row.visible" :label="true">{{ T(row.label) }}</el-checkbox>
-        </div>
-        <div @click="upColumn(key)" style="width: 100px;cursor: pointer">
-          <el-icon :size="20">
-            <ArrowUp/>
-          </el-icon>
-        </div>
-        <div @click="downColumn(key)" style="width: 100px;cursor: pointer">
-          <el-icon :size="20">
-            <ArrowDown/>
-          </el-icon>
-        </div>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="columnSettingVisible = false">{{ T('Cancel') }}</el-button>
-        <el-button type="primary" @click="saveColumnSetting">{{ T('Save') }}</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script setup>
-  import { computed, onActivated, onMounted, reactive, ref, watch } from 'vue'
-  import { batchRemove, create, list, remove, update } from '@/api/peer'
+  import { computed, onActivated, onMounted, onUnmounted, nextTick, reactive, ref, watch } from 'vue'
+  import Sortable from 'sortablejs'
+  import { batchRemove, create, list, remove, update, wol } from '@/api/peer'
   import { list as groupList } from '@/api/device_group'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { toWebClientLink } from '@/utils/webclient'
@@ -241,7 +283,7 @@
   import { loadAllUsers } from '@/global'
   import { useAppStore } from '@/store/app'
   import { connectByClient } from '@/utils/peer'
-  import { ArrowDown, ArrowUp, CopyDocument, Setting } from '@element-plus/icons'
+  import { ArrowDown, ArrowUp, CopyDocument, Setting, MoreFilled, Grid, Menu, Close } from '@element-plus/icons'
   import { handleClipboard } from '@/utils/clipboard'
   import { batchCreateFromPeers } from '@/api/address_book'
   import { useRepositories as useCollectionRepositories } from '@/views/address_book/collection'
@@ -283,8 +325,8 @@
     ip: '',
   })
 
-  const getList = async () => {
-    listRes.loading = true
+  const getList = async (silent) => {
+    if (!silent) listRes.loading = true
     const res = await list(listQuery).catch(_ => false)
     listRes.loading = false
     if (res) {
@@ -292,6 +334,11 @@
       listRes.total = res.data.total
     }
   }
+
+  // живой статус: тихое автообновление каждые 15с
+  let poll = null
+  onMounted(() => { poll = setInterval(() => { if (!document.hidden) getList(true) }, 15000) })
+  onUnmounted(() => { if (poll) clearInterval(poll) })
   const handlerQuery = () => {
     if (listQuery.page === 1) {
       getList()
@@ -335,7 +382,18 @@
     username: '',
     uuid: '',
     version: '',
+    mac: '',
   })
+
+  // Wake-on-LAN
+  const doWol = async (row) => {
+    if (!row.mac) {
+      ElMessage.warning('У устройства не задан MAC. Укажите его в «Редактировать».')
+      return
+    }
+    const res = await wol({ row_id: row.row_id }).catch(_ => false)
+    if (res) ElMessage.success('Magic packet отправлен')
+  }
 
   const toEdit = (row) => {
     formVisible.value = true
@@ -356,6 +414,7 @@
     formData.username = ''
     formData.uuid = ''
     formData.version = ''
+    formData.mac = ''
   }
   const submit = async () => {
     const api = formData.row_id ? update : create
@@ -371,6 +430,21 @@
     let now = new Date().getTime()
     let after = new Date(time * 1000).getTime()
     return (now - after) / 1000
+  }
+
+  // режим отображения: плитки / таблица
+  const viewMode = ref(localStorage.getItem('peer_view_mode') || 'cards')
+  watch(viewMode, (v) => localStorage.setItem('peer_view_mode', v))
+
+  const isOnline = (row) => !!row.last_online_time && timeDis(row.last_online_time) < 60
+
+  const osIcon = (os) => {
+    const s = (os || '').toLowerCase()
+    if (s.includes('win')) return '🪟'
+    if (s.includes('mac') || s.includes('ios') || s.includes('darwin')) return '🍎'
+    if (s.includes('android')) return '🤖'
+    if (s.includes('linux')) return '🐧'
+    return '🖥️'
   }
 
   const timeFilters = computed(() => [
@@ -461,6 +535,12 @@
   const handleSelectionChange = (val) => {
     multipleSelection.value = val
   }
+  // мультивыбор для плиток
+  const isSelected = (row) => multipleSelection.value.some(r => r.row_id === row.row_id)
+  const toggleSelect = (row, val) => {
+    if (val) { if (!isSelected(row)) multipleSelection.value.push(row) }
+    else multipleSelection.value = multipleSelection.value.filter(r => r.row_id !== row.row_id)
+  }
   const toBatchDelete = async () => {
     if (!multipleSelection.value.length) {
       ElMessage.warning(T('PleaseSelectData'))
@@ -525,53 +605,234 @@
   }
   // 批量添加到地址簿 end
 
-  const columnSettingVisible = ref(false)
-  const allColumns = ref([
-    { name: 'id', visible: true, label: 'Id' },
-    { name: 'cpu', visible: true, label: 'Cpu' },
-    { name: 'hostname', visible: true, label: 'Hostname' },
-    { name: 'memory', visible: true, label: 'Memory' },
-    { name: 'os', visible: true, label: 'Os' },
-    { name: 'last_online_time', visible: true, label: 'LastOnlineTime' },
-    { name: 'last_online_ip', visible: true, label: 'LastOnlineIp' },
-    { name: 'username', visible: true, label: 'Username' },
-    { name: 'group_id', visible: true, label: 'Group' },
-    { name: 'uuid', visible: true, label: 'Uuid' },
-    { name: 'version', visible: true, label: 'Version' },
-    { name: 'alias', visible: true, label: 'Alias' },
-    { name: 'created_at', visible: true, label: 'CreatedAt' },
-    { name: 'updated_at', visible: true, label: 'UpdatedAt' },
-  ])
-  const visibleColumns = ref(JSON.parse(localStorage.getItem('peer_visible_columns')) || allColumns.value)
-  const showColumnSetting = () => {
-    columnSettingVisible.value = true
+  // метаданные колонок (label/ширина) — отдельно от порядка/видимости
+  const COL_META = {
+    id: { label: 'ID', raw: true, width: 150 },
+    cpu: { label: 'CPU', raw: true, minWidth: 160 },
+    hostname: { label: 'Hostname', width: 120 },
+    memory: { label: 'Memory', width: 100 },
+    os: { label: 'Os', minWidth: 150 },
+    last_online_time: { label: 'LastOnlineTime', minWidth: 150 },
+    last_online_ip: { label: 'LastOnlineIp', width: 130 },
+    username: { label: 'Username', width: 120 },
+    group_id: { label: 'Group', width: 110 },
+    uuid: { label: 'Uuid', minWidth: 150 },
+    version: { label: 'Version', width: 90 },
+    alias: { label: 'Alias', width: 100 },
+    created_at: { label: 'CreatedAt', width: 160 },
+    updated_at: { label: 'UpdatedAt', width: 160 },
   }
-  const saveColumnSetting = () => {
-    localStorage.setItem('peer_visible_columns', JSON.stringify(visibleColumns.value))
-    ElMessage.success(T('OperationSuccess'))
-    columnSettingVisible.value = false
+  const defaultColumns = [
+    { name: 'id', visible: true },
+    { name: 'hostname', visible: true },
+    { name: 'memory', visible: true },
+    { name: 'os', visible: true },
+    { name: 'last_online_time', visible: true },
+    { name: 'last_online_ip', visible: true },
+    { name: 'username', visible: true },
+    { name: 'group_id', visible: true },
+    { name: 'version', visible: true },
+    { name: 'cpu', visible: false },
+    { name: 'uuid', visible: false },
+    { name: 'alias', visible: false },
+    { name: 'created_at', visible: false },
+    { name: 'updated_at', visible: false },
+  ]
+  const loadColumns = () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('peer_columns_v2'))
+      if (Array.isArray(saved) && saved.length) {
+        const names = new Set(saved.map(c => c.name))
+        const merged = saved.filter(c => COL_META[c.name])
+        defaultColumns.forEach(dc => { if (!names.has(dc.name)) merged.push({ ...dc }) })
+        return merged
+      }
+    } catch (e) { /* ignore */ }
+    return defaultColumns.map(c => ({ ...c }))
   }
+  const visibleColumns = ref(loadColumns())
+  const shownColumns = computed(() => visibleColumns.value.filter(c => c.visible))
+  const hiddenColumns = computed(() => visibleColumns.value.filter(c => !c.visible))
+  const editCols = ref(false)
+  const colLabel = (c) => { const m = COL_META[c.name] || {}; return m.raw ? m.label : T(m.label || c.name) }
+  const colWidth = (c) => { const m = COL_META[c.name] || {}; return m.minWidth || m.width || 110 }
+  const persistCols = () => localStorage.setItem('peer_columns_v2', JSON.stringify(visibleColumns.value))
+  const hideCol = (c) => { c.visible = false; persistCols() }
+  const showCol = (c) => { c.visible = true; persistCols() }
 
-  const upColumn = (index) => {
-    if (index === 0) return
-    const col = visibleColumns.value[index]
-    visibleColumns.value.splice(index, 1)
-    visibleColumns.value.splice(index - 1, 0, col)
-
+  // drag-reorder заголовков мышкой
+  const peerTable = ref(null)
+  let colSortable = null
+  const applyDomOrder = () => {
+    const el = peerTable.value?.$el?.querySelector('.el-table__header-wrapper thead tr')
+    if (!el) return
+    const order = [...el.querySelectorAll('.col-h[data-col]')].map(s => s.dataset.col)
+    if (!order.length) return
+    const seen = new Set(order)
+    const reordered = order.map(n => visibleColumns.value.find(c => c.name === n)).filter(Boolean)
+    const rest = visibleColumns.value.filter(c => !seen.has(c.name))
+    visibleColumns.value = [...reordered, ...rest]
+    persistCols()
   }
-  const downColumn = (index) => {
-    if (index === visibleColumns.value.length - 1) return
-    const col = visibleColumns.value[index]
-    visibleColumns.value.splice(index, 1)
-    visibleColumns.value.splice(index + 1, 0, col)
-
+  const initColSortable = async () => {
+    if (viewMode.value !== 'table') return
+    await nextTick()
+    const el = peerTable.value?.$el?.querySelector('.el-table__header-wrapper thead tr')
+    if (!el) return
+    if (colSortable) { colSortable.destroy(); colSortable = null }
+    colSortable = Sortable.create(el, {
+      animation: 180,
+      draggable: 'th.el-table__cell',
+      filter: '.el-table-column--selection, .table-actions',
+      onMove: (e) => !(e.related.classList.contains('el-table-column--selection') || e.related.classList.contains('table-actions')),
+      onEnd: applyDomOrder,
+    })
   }
+  onMounted(() => { nextTick(initColSortable) })
+  watch(viewMode, initColSortable)
+  watch(shownColumns, initColSortable)
 </script>
 
 <style scoped lang="scss">
 .list-query .el-select {
   --el-select-width: 180px;
 }
+
+.lb-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* сетка плиток */
+.peer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  min-height: 80px;
+}
+
+.peer-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.peer-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+  border-color: var(--glass-border-strong);
+}
+.peer-card:not(.online) .pc-os { opacity: 0.45; }
+.peer-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-soft); }
+.pc-check { flex-shrink: 0; }
+
+.pc-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pc-os { font-size: 30px; line-height: 1; }
+.pc-title { flex: 1; min-width: 0; }
+.pc-host {
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pc-id {
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  width: fit-content;
+}
+.pc-id:hover { color: var(--accent); }
+.pc-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pc-status.green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+.pc-status.red { background: #6b7280; }
+
+.pc-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+}
+.pc-meta > div { display: flex; flex-direction: column; min-width: 0; }
+.pc-meta span {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--el-text-color-secondary);
+  margin-bottom: 2px;
+}
+.pc-meta b {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pc-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  align-items: center;
+}
+.pc-actions .pc-more { margin-left: auto; }
+
+/* панель редактирования колонок */
+.col-edit-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  border-radius: var(--radius-md);
+  background: var(--el-color-primary-light-9);
+  border: 1px solid var(--glass-border);
+}
+.cep-tip { font-size: 12px; color: var(--el-text-color-secondary); }
+.col-add-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.cab-chip { cursor: pointer; transition: all 0.15s ease; }
+.cab-chip:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.cab-empty { font-size: 12px; color: var(--el-text-color-secondary); }
+
+/* заголовок колонки + крестик удаления */
+:deep(.col-h) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+:deep(.col-h.editing) { cursor: grab; }
+:deep(.col-x) {
+  cursor: pointer;
+  font-size: 13px;
+  padding: 2px;
+  border-radius: 50%;
+  color: var(--el-text-color-secondary);
+  transition: all 0.15s ease;
+}
+:deep(.col-x:hover) { color: #fff; background: var(--el-color-danger); }
+/* в режиме правки — курсор перетаскивания на заголовках */
+:deep(.el-table__header-wrapper thead th.el-table__cell) { transition: background 0.15s ease; }
+.copy-ic { cursor: pointer; vertical-align: middle; }
+:deep(.sortable-ghost) { opacity: 0.4; }
+:deep(.sortable-chosen) { background: var(--el-color-primary-light-9); }
 
 .last_oline_time {
   display: flex;

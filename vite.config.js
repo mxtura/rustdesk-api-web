@@ -27,6 +27,7 @@ const conf = {
         target: process.env.VITE_SERVER_PATH,
         // rewrite: path => path.replace(/^\/api/, '/api'), //为了模拟
         changeOrigin: true,
+        secure: false, // бэкенд с self-signed сертификатом
       },
     },
   },

@@ -8,55 +8,37 @@
         <el-header class="app-header">
           <g-header></g-header>
         </el-header>
-        <div class="header-tags">
-          <tags></tags>
-        </div>
 
         <el-main class="app-main">
           <router-view v-slot="{ Component }">
             <transition mode="out-in" name="el-fade-in-linear">
-              <keep-alive :include="cachedTags">
-                <component :is="Component"/>
-              </keep-alive>
+              <component :is="Component"/>
             </transition>
           </router-view>
         </el-main>
       </el-container>
     </el-container>
+    <g-search></g-search>
   </el-config-provider>
 </template>
 
 <script setup>
   import { useAppStore } from '@/store/app'
-  import { useTagsStore } from '@/store/tags'
   import { ref, computed } from 'vue'
-  import Tags from '@/layout/components/tags/index.vue'
   import GAside from '@/layout/components/aside.vue'
   import GHeader from '@/layout/components/header.vue'
+  import GSearch from '@/components/GSearch.vue'
 
   const appStore = useAppStore()
-  const tagStore = useTagsStore()
   const sideBarWidth = computed(() => appStore.setting.locale.sideBarWidth)
   const leftWidth = computed(() => appStore.setting.sideIsCollapse ? '64px' : 'var(--sideBarWidth)')
-
-  const cachedTags = ref([])
-
-  cachedTags.value = tagStore.cached
 </script>
 
 <style lang="scss" scoped>
 .app-header {
-  background-color: #3f454b;
-  color: var(--basicWhite);
+  color: var(--el-text-color-primary);
   display: flex;
-  height: 50px;
-}
-
-.header-tags {
-  height: auto;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  padding: 0;
+  height: 56px;
 }
 
 .app-left {
@@ -66,6 +48,8 @@
 .app-container {
   min-height: 100vh;
 }
+
+.app-main {
+  padding: 20px;
+}
 </style>
-
-

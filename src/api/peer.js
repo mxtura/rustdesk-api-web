@@ -45,6 +45,14 @@ export function batchRemove (data) {
   })
 }
 
+export function wol (data) {
+  return request({
+    url: '/peer/wol',
+    method: 'post',
+    data,
+  })
+}
+
 export function simpleData (data) {
   return request({
     url: '/peer/simpleData',
