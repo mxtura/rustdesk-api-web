@@ -36,13 +36,13 @@ export const asyncRoutes = [
     path: '/g-dash',
     name: 'DashboardGroup',
     redirect: '/dashboard',
-    meta: { title: 'Дашборд', icon: 'Odometer' },
+    meta: { title: 'Dashboard', icon: 'Odometer' },
     component: () => import('@/layout/index.vue'),
     children: [
       {
         path: '/dashboard',
         name: 'Dashboard',
-        meta: { title: 'Дашборд', icon: 'Odometer' },
+        meta: { title: 'Dashboard', icon: 'Odometer' },
         component: () => import('@/views/dashboard/index.vue'),
       },
     ],
@@ -119,7 +119,7 @@ export const asyncRoutes = [
     path: '/g-devices',
     name: 'GroupDevices',
     redirect: '/user/peer',
-    meta: { title: 'Устройства', icon: 'Monitor' },
+    meta: { title: 'MenuDevices', icon: 'Monitor' },
     component: () => import('@/layout/index.vue'),
     children: [
       {
@@ -147,7 +147,7 @@ export const asyncRoutes = [
     path: '/g-addrbook',
     name: 'GroupAddrBook',
     redirect: '/user/addressBook',
-    meta: { title: 'Адресная книга', icon: 'Notebook' },
+    meta: { title: 'MenuAddressBook', icon: 'Notebook' },
     component: () => import('@/layout/index.vue'),
     children: [
       {
@@ -175,7 +175,7 @@ export const asyncRoutes = [
     path: '/g-users',
     name: 'GroupUsers',
     redirect: '/user/index',
-    meta: { title: 'Пользователи', icon: 'User' },
+    meta: { title: 'MenuUsers', icon: 'User' },
     component: () => import('@/layout/index.vue'),
     children: [
       {
@@ -215,7 +215,7 @@ export const asyncRoutes = [
     path: '/g-logs',
     name: 'GroupLogs',
     redirect: '/loginLog',
-    meta: { title: 'Логи и аудит', icon: 'Tickets' },
+    meta: { title: 'MenuLogs', icon: 'Tickets' },
     component: () => import('@/layout/index.vue'),
     children: [
       {
@@ -249,7 +249,7 @@ export const asyncRoutes = [
     path: '/g-server',
     name: 'GroupServer',
     redirect: '/serverCmd',
-    meta: { title: 'Сервер', icon: 'Tools' },
+    meta: { title: 'MenuServer', icon: 'Tools' },
     component: () => import('@/layout/index.vue'),
     children: [
       {

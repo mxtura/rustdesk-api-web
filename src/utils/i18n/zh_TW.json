@@ -547,5 +547,95 @@
   },
   "Remark": {
     "One": "備註"
+  },
+  "Dashboard": {
+    "One": "儀表板"
+  },
+  "MenuDevices": {
+    "One": "設備"
+  },
+  "MenuAddressBook": {
+    "One": "地址簿"
+  },
+  "MenuUsers": {
+    "One": "用戶"
+  },
+  "MenuLogs": {
+    "One": "日誌與審計"
+  },
+  "MenuServer": {
+    "One": "伺服器"
+  },
+  "DevicesOnline": {
+    "One": "在線設備"
+  },
+  "LoginsToday": {
+    "One": "今日登入"
+  },
+  "LoginsTotal": {
+    "One": "登入總數"
+  },
+  "LoginActivity14d": {
+    "One": "登入活動 · 14天"
+  },
+  "RecentLogins": {
+    "One": "最近登入"
+  },
+  "QuickConnectPlaceholder": {
+    "One": "輸入設備ID進行連接…"
+  },
+  "Connect": {
+    "One": "連接"
+  },
+  "SearchPlaceholder": {
+    "One": "按ID、主機名、用戶搜索…"
+  },
+  "SearchStart": {
+    "One": "開始輸入設備ID或名稱"
+  },
+  "NothingFound": {
+    "One": "未找到"
+  },
+  "Favorites": {
+    "One": "收藏"
+  },
+  "Recent": {
+    "One": "最近"
+  },
+  "KbdConnect": {
+    "One": "連接"
+  },
+  "KbdClose": {
+    "One": "關閉"
+  },
+  "KbdOpen": {
+    "One": "打開"
+  },
+  "Done": {
+    "One": "完成"
+  },
+  "ColumnsHint": {
+    "One": "拖動表頭 · × 隱藏 · + 添加"
+  },
+  "AllColumnsShown": {
+    "One": "所有欄已顯示"
+  },
+  "Wol": {
+    "One": "喚醒 (WoL)"
+  },
+  "WolSent": {
+    "One": "已發送喚醒包"
+  },
+  "WolNoMac": {
+    "One": "未設置MAC，請在「編輯」中填寫。"
+  },
+  "MacWol": {
+    "One": "MAC (WoL)"
+  },
+  "ViewCards": {
+    "One": "卡片"
+  },
+  "ViewTable": {
+    "One": "表格"
   }
 }

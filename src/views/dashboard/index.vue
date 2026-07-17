@@ -4,8 +4,8 @@
     <el-card class="quick-connect" shadow="never">
       <div class="qc-row">
         <el-icon class="qc-ic"><Monitor/></el-icon>
-        <el-input v-model="quickId" placeholder="Введите ID устройства для подключения…" class="qc-input" clearable @keyup.enter="doConnect"/>
-        <el-button type="primary" :disabled="!quickId" @click="doConnect">Подключить</el-button>
+        <el-input v-model="quickId" :placeholder="T('QuickConnectPlaceholder')" class="qc-input" clearable @keyup.enter="doConnect"/>
+        <el-button type="primary" :disabled="!quickId" @click="doConnect">{{ T('Connect') }}</el-button>
         <el-popover placement="bottom-end" :width="212" trigger="click" @show="genQr">
           <template #reference>
             <el-button :disabled="!quickId" :icon="Grid">QR</el-button>
@@ -24,28 +24,28 @@
         <div class="stat-ic ic-green">🖥️</div>
         <div class="stat-body">
           <div class="stat-val">{{ onlineCount }}<span class="stat-sub">/ {{ peerTotal }}</span></div>
-          <div class="stat-label">Устройства онлайн</div>
+          <div class="stat-label">{{ T('DevicesOnline') }}</div>
         </div>
       </div>
       <div class="stat-card">
         <div class="stat-ic ic-blue">👥</div>
         <div class="stat-body">
           <div class="stat-val">{{ userTotal }}</div>
-          <div class="stat-label">Пользователи</div>
+          <div class="stat-label">{{ T('MenuUsers') }}</div>
         </div>
       </div>
       <div class="stat-card">
         <div class="stat-ic ic-violet">🔗</div>
         <div class="stat-body">
           <div class="stat-val">{{ loginsToday }}</div>
-          <div class="stat-label">Входов сегодня</div>
+          <div class="stat-label">{{ T('LoginsToday') }}</div>
         </div>
       </div>
       <div class="stat-card">
         <div class="stat-ic ic-amber">📋</div>
         <div class="stat-body">
           <div class="stat-val">{{ logTotal }}</div>
-          <div class="stat-label">Всего входов</div>
+          <div class="stat-label">{{ T('LoginsTotal') }}</div>
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
     <div class="dash-row">
       <!-- график активности -->
       <el-card class="dash-chart" shadow="never">
-        <div class="card-title">Активность входов · 14 дней</div>
+        <div class="card-title">{{ T('LoginActivity14d') }}</div>
         <div class="chart">
           <div v-for="(d, i) in activity" :key="i" class="bar-col" :title="`${d.label}: ${d.count}`">
             <div class="bar" :style="{ height: barH(d.count) + '%' }"></div>
@@ -64,7 +64,7 @@
 
       <!-- последние входы -->
       <el-card class="dash-recent" shadow="never">
-        <div class="card-title">Последние входы</div>
+        <div class="card-title">{{ T('RecentLogins') }}</div>
         <div v-if="!recent.length" class="recent-empty">—</div>
         <div v-for="(r, i) in recent" :key="i" class="recent-item">
           <span class="ri-dot" :class="r.type === 'oauth' ? 'v' : 'b'"></span>
@@ -81,6 +81,7 @@
 
 <script setup>
   import { ref, onMounted, computed } from 'vue'
+  import { T } from '@/utils/i18n'
   import { list as peerList } from '@/api/peer'
   import { list as userList } from '@/api/user'
   import { list as loginLogList } from '@/api/login_log'

@@ -547,5 +547,95 @@
   },
   "Remark": {
     "One": "备注"
+  },
+  "Dashboard": {
+    "One": "仪表盘"
+  },
+  "MenuDevices": {
+    "One": "设备"
+  },
+  "MenuAddressBook": {
+    "One": "地址簿"
+  },
+  "MenuUsers": {
+    "One": "用户"
+  },
+  "MenuLogs": {
+    "One": "日志与审计"
+  },
+  "MenuServer": {
+    "One": "服务器"
+  },
+  "DevicesOnline": {
+    "One": "在线设备"
+  },
+  "LoginsToday": {
+    "One": "今日登录"
+  },
+  "LoginsTotal": {
+    "One": "登录总数"
+  },
+  "LoginActivity14d": {
+    "One": "登录活动 · 14天"
+  },
+  "RecentLogins": {
+    "One": "最近登录"
+  },
+  "QuickConnectPlaceholder": {
+    "One": "输入设备ID进行连接…"
+  },
+  "Connect": {
+    "One": "连接"
+  },
+  "SearchPlaceholder": {
+    "One": "按ID、主机名、用户搜索…"
+  },
+  "SearchStart": {
+    "One": "开始输入设备ID或名称"
+  },
+  "NothingFound": {
+    "One": "未找到"
+  },
+  "Favorites": {
+    "One": "收藏"
+  },
+  "Recent": {
+    "One": "最近"
+  },
+  "KbdConnect": {
+    "One": "连接"
+  },
+  "KbdClose": {
+    "One": "关闭"
+  },
+  "KbdOpen": {
+    "One": "打开"
+  },
+  "Done": {
+    "One": "完成"
+  },
+  "ColumnsHint": {
+    "One": "拖动表头 · × 隐藏 · + 添加"
+  },
+  "AllColumnsShown": {
+    "One": "所有列已显示"
+  },
+  "Wol": {
+    "One": "唤醒 (WoL)"
+  },
+  "WolSent": {
+    "One": "已发送唤醒包"
+  },
+  "WolNoMac": {
+    "One": "未设置MAC，请在\"编辑\"中填写。"
+  },
+  "MacWol": {
+    "One": "MAC (WoL)"
+  },
+  "ViewCards": {
+    "One": "卡片"
+  },
+  "ViewTable": {
+    "One": "表格"
   }
 }

@@ -534,6 +534,95 @@
   },
   "Remark": {
     "One": "Примечание"
+  },
+  "Dashboard": {
+    "One": "Дашборд"
+  },
+  "MenuDevices": {
+    "One": "Устройства"
+  },
+  "MenuAddressBook": {
+    "One": "Адресная книга"
+  },
+  "MenuUsers": {
+    "One": "Пользователи"
+  },
+  "MenuLogs": {
+    "One": "Логи и аудит"
+  },
+  "MenuServer": {
+    "One": "Сервер"
+  },
+  "DevicesOnline": {
+    "One": "Устройства онлайн"
+  },
+  "LoginsToday": {
+    "One": "Входов сегодня"
+  },
+  "LoginsTotal": {
+    "One": "Всего входов"
+  },
+  "LoginActivity14d": {
+    "One": "Активность входов · 14 дней"
+  },
+  "RecentLogins": {
+    "One": "Последние входы"
+  },
+  "QuickConnectPlaceholder": {
+    "One": "Введите ID устройства для подключения…"
+  },
+  "Connect": {
+    "One": "Подключить"
+  },
+  "SearchPlaceholder": {
+    "One": "Поиск по ID, имени хоста, пользователю…"
+  },
+  "SearchStart": {
+    "One": "Начните вводить ID или имя устройства"
+  },
+  "NothingFound": {
+    "One": "Ничего не найдено"
+  },
+  "Favorites": {
+    "One": "Избранное"
+  },
+  "Recent": {
+    "One": "Недавние"
+  },
+  "KbdConnect": {
+    "One": "подключиться"
+  },
+  "KbdClose": {
+    "One": "закрыть"
+  },
+  "KbdOpen": {
+    "One": "открыть"
+  },
+  "Done": {
+    "One": "Готово"
+  },
+  "ColumnsHint": {
+    "One": "Тяните заголовки · × скрыть · + добавить"
+  },
+  "AllColumnsShown": {
+    "One": "все колонки показаны"
+  },
+  "Wol": {
+    "One": "Разбудить (WoL)"
+  },
+  "WolSent": {
+    "One": "Magic packet отправлен"
+  },
+  "WolNoMac": {
+    "One": "У устройства не задан MAC. Укажите его в «Редактировать»."
+  },
+  "MacWol": {
+    "One": "MAC (WoL)"
+  },
+  "ViewCards": {
+    "One": "Плитки"
+  },
+  "ViewTable": {
+    "One": "Таблица"
   }
 }
-

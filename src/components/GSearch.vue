@@ -3,7 +3,7 @@
     <el-input
         ref="inp"
         v-model="q"
-        placeholder="Поиск по ID, имени хоста, пользователю…"
+        :placeholder="T('SearchPlaceholder')"
         :prefix-icon="Search"
         size="large"
         clearable
@@ -11,7 +11,7 @@
     />
     <div class="cmdk-list">
       <template v-if="q">
-        <div v-if="!results.length" class="cmdk-empty">Ничего не найдено</div>
+        <div v-if="!results.length" class="cmdk-empty">{{ T('NothingFound') }}</div>
         <div v-for="p in results" :key="p.id" class="cmdk-item" @click="go(p)">
           <span class="ci-os">{{ osIcon(p.os) }}</span>
           <div class="ci-main">
@@ -23,7 +23,7 @@
       </template>
       <template v-else>
         <template v-if="favPeers.length">
-          <div class="cmdk-sec">★ Избранное</div>
+          <div class="cmdk-sec">★ {{ T('Favorites') }}</div>
           <div v-for="p in favPeers" :key="'f' + p.id" class="cmdk-item" @click="go(p)">
             <span class="ci-os">{{ osIcon(p.os) }}</span>
             <div class="ci-main">
@@ -34,7 +34,7 @@
           </div>
         </template>
         <template v-if="recent.length">
-          <div class="cmdk-sec">Недавние</div>
+          <div class="cmdk-sec">{{ T('Recent') }}</div>
           <div v-for="p in recent" :key="'r' + p.id" class="cmdk-item" @click="go(p)">
             <span class="ci-os">{{ osIcon(p.os) }}</span>
             <div class="ci-main">
@@ -43,13 +43,13 @@
             </div>
           </div>
         </template>
-        <div v-if="!favPeers.length && !recent.length" class="cmdk-empty">Начните вводить ID или имя устройства</div>
+        <div v-if="!favPeers.length && !recent.length" class="cmdk-empty">{{ T('SearchStart') }}</div>
       </template>
     </div>
     <div class="cmdk-foot">
-      <span><kbd>Enter</kbd> подключиться</span>
-      <span><kbd>Esc</kbd> закрыть</span>
-      <span><kbd>Ctrl</kbd>+<kbd>K</kbd> открыть</span>
+      <span><kbd>Enter</kbd> {{ T('KbdConnect') }}</span>
+      <span><kbd>Esc</kbd> {{ T('KbdClose') }}</span>
+      <span><kbd>Ctrl</kbd>+<kbd>K</kbd> {{ T('KbdOpen') }}</span>
     </div>
   </el-dialog>
 </template>
@@ -57,6 +57,7 @@
 <script setup>
   import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
   import { Search, StarFilled } from '@element-plus/icons'
+  import { T } from '@/utils/i18n'
   import { list as peerList } from '@/api/peer'
   import { connectByClient } from '@/utils/peer'
 

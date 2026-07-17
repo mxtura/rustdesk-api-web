@@ -68,17 +68,17 @@
           <el-radio-button label="table"><el-icon><Menu/></el-icon></el-radio-button>
         </el-radio-group>
         <el-button v-if="viewMode==='table'" :type="editCols ? 'primary' : ''" :icon="Setting" @click="editCols = !editCols">
-          {{ editCols ? 'Готово' : 'Столбцы' }}
+          {{ editCols ? T('Done') : T('Columns') }}
         </el-button>
       </div>
       <transition name="el-fade-in-linear">
         <div v-if="viewMode==='table' && editCols" class="col-edit-panel">
-          <span class="cep-tip">↔ тяните заголовки мышкой &nbsp;·&nbsp; × скрыть колонку &nbsp;·&nbsp; + добавить</span>
+          <span class="cep-tip">{{ T('ColumnsHint') }}</span>
           <div class="col-add-bar">
             <el-tag v-for="c in hiddenColumns" :key="c.name" class="cab-chip" effect="plain" @click="showCol(c)">
               + {{ colLabel(c) }}
             </el-tag>
-            <span v-if="!hiddenColumns.length" class="cab-empty">все колонки показаны</span>
+            <span v-if="!hiddenColumns.length" class="cab-empty">{{ T('AllColumnsShown') }}</span>
           </div>
         </div>
       </transition>
@@ -112,7 +112,7 @@
               <el-button size="small" :icon="MoreFilled"></el-button>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="doWol(row)">⚡ Разбудить (WoL)</el-dropdown-item>
+                  <el-dropdown-item @click="doWol(row)">⚡ {{ T('Wol') }}</el-dropdown-item>
                   <el-dropdown-item @click="toAddressBook(row)">{{ T('AddToAddressBook') }}</el-dropdown-item>
                   <el-dropdown-item @click="toEdit(row)">{{ T('Edit') }}</el-dropdown-item>
                   <el-dropdown-item divided @click="del(row)">{{ T('Delete') }}</el-dropdown-item>
@@ -159,7 +159,7 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item v-if="appStore.setting.appConfig.web_client" @click="toWebClientLink(row)">Web Client</el-dropdown-item>
-                  <el-dropdown-item @click="doWol(row)">⚡ Разбудить (WoL)</el-dropdown-item>
+                  <el-dropdown-item @click="doWol(row)">⚡ {{ T('Wol') }}</el-dropdown-item>
                   <el-dropdown-item @click="toAddressBook(row)">{{ T('AddToAddressBook') }}</el-dropdown-item>
                   <el-dropdown-item @click="toEdit(row)">{{ T('Edit') }}</el-dropdown-item>
                   <el-dropdown-item divided @click="del(row)">{{ T('Delete') }}</el-dropdown-item>
@@ -218,7 +218,7 @@
         <el-form-item :label="T('Alias')" prop="alias">
           <el-input v-model="formData.alias"></el-input>
         </el-form-item>
-        <el-form-item label="MAC (WoL)" prop="mac">
+        <el-form-item :label="T('MacWol')" prop="mac">
           <el-input v-model="formData.mac" placeholder="AA:BB:CC:DD:EE:FF"></el-input>
         </el-form-item>
         <el-form-item>
@@ -388,11 +388,11 @@
   // Wake-on-LAN
   const doWol = async (row) => {
     if (!row.mac) {
-      ElMessage.warning('У устройства не задан MAC. Укажите его в «Редактировать».')
+      ElMessage.warning(T('WolNoMac'))
       return
     }
     const res = await wol({ row_id: row.row_id }).catch(_ => false)
-    if (res) ElMessage.success('Magic packet отправлен')
+    if (res) ElMessage.success(T('WolSent'))
   }
 
   const toEdit = (row) => {

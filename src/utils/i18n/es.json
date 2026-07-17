@@ -531,5 +531,95 @@
   },
   "Remark": {
     "One": "Remark"
+  },
+  "Dashboard": {
+    "One": "Dashboard"
+  },
+  "MenuDevices": {
+    "One": "Devices"
+  },
+  "MenuAddressBook": {
+    "One": "Address Book"
+  },
+  "MenuUsers": {
+    "One": "Users"
+  },
+  "MenuLogs": {
+    "One": "Logs & Audit"
+  },
+  "MenuServer": {
+    "One": "Server"
+  },
+  "DevicesOnline": {
+    "One": "Devices online"
+  },
+  "LoginsToday": {
+    "One": "Logins today"
+  },
+  "LoginsTotal": {
+    "One": "Total logins"
+  },
+  "LoginActivity14d": {
+    "One": "Login activity · 14 days"
+  },
+  "RecentLogins": {
+    "One": "Recent logins"
+  },
+  "QuickConnectPlaceholder": {
+    "One": "Enter device ID to connect…"
+  },
+  "Connect": {
+    "One": "Connect"
+  },
+  "SearchPlaceholder": {
+    "One": "Search by ID, hostname, user…"
+  },
+  "SearchStart": {
+    "One": "Start typing a device ID or name"
+  },
+  "NothingFound": {
+    "One": "Nothing found"
+  },
+  "Favorites": {
+    "One": "Favorites"
+  },
+  "Recent": {
+    "One": "Recent"
+  },
+  "KbdConnect": {
+    "One": "connect"
+  },
+  "KbdClose": {
+    "One": "close"
+  },
+  "KbdOpen": {
+    "One": "open"
+  },
+  "Done": {
+    "One": "Done"
+  },
+  "ColumnsHint": {
+    "One": "Drag headers · × to hide · + to add"
+  },
+  "AllColumnsShown": {
+    "One": "all columns shown"
+  },
+  "Wol": {
+    "One": "Wake (WoL)"
+  },
+  "WolSent": {
+    "One": "Magic packet sent"
+  },
+  "WolNoMac": {
+    "One": "MAC is not set. Set it in Edit."
+  },
+  "MacWol": {
+    "One": "MAC (WoL)"
+  },
+  "ViewCards": {
+    "One": "Cards"
+  },
+  "ViewTable": {
+    "One": "Table"
   }
 }
