@@ -1,37 +1,47 @@
 <template>
-  <div>
-    <el-card :title="T('Userinfo')" shadow="hover">
-      <el-form class="info-form" ref="form" label-width="120px" label-suffix="：">
-        <el-form-item :label="T('Username')">
-          <div>{{ userStore.username }}</div>
-        </el-form-item>
-        <el-form-item :label="T('Email')">
-          <div>{{ userStore.email }}</div>
-        </el-form-item>
-        <el-form-item :label="T('Password')" prop="password">
-          <el-button type="danger" @click="showChangePwd">{{ T('ChangePassword') }}</el-button>
-        </el-form-item>
-        <el-form-item label="OIDC">
-          <el-table :data="oidcData" border fit>
-            <el-table-column :label="T('IdP')" prop="op" align="center"></el-table-column>
-            <el-table-column :label="T('Status')" prop="status" align="center">
-              <template #default="{ row }">
-                <el-tag v-if="row.status === 1" type="success">{{ T('HasBind') }}</el-tag>
-                <el-tag v-else type="danger">{{ T('NoBind') }}</el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column :label="T('Actions')" align="center" width="200">
-              <template #default="{ row }">
-                <el-button v-if="row.status === 1" type="danger" size="small" @click="toUnBind(row)">{{ T('UnBind') }}</el-button>
-                <el-button v-else type="success" size="small" @click="toBind(row)">{{ T('ToBind') }}</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-form-item>
-      </el-form>
-    </el-card>
-    <el-card shadow="hover" style="margin-top: 20px">
-      <div v-html="html"></div>
+  <div class="prof-wrap">
+    <el-card class="prof-card" shadow="never">
+      <div class="prof-head">
+        <div class="prof-avatar">{{ initial }}</div>
+        <div class="prof-id">
+          <div class="prof-name">{{ userStore.username }}</div>
+          <div class="prof-sub">{{ userStore.email || '—' }}</div>
+        </div>
+      </div>
+
+      <div class="prof-rows">
+        <div class="prow">
+          <span class="pk">{{ T('Username') }}</span>
+          <span class="pv">{{ userStore.username }}</span>
+        </div>
+        <div class="prow">
+          <span class="pk">Email</span>
+          <span class="pv">{{ userStore.email || '—' }}</span>
+        </div>
+        <div class="prow">
+          <span class="pk">{{ T('Password') }}</span>
+          <el-button @click="showChangePwd">{{ T('ChangePassword') }}</el-button>
+        </div>
+      </div>
+
+      <div class="prof-oidc">
+        <div class="po-title">OIDC</div>
+        <el-table :data="oidcData" fit>
+          <el-table-column :label="T('IdP')" prop="op" align="center"></el-table-column>
+          <el-table-column :label="T('Status')" prop="status" align="center">
+            <template #default="{ row }">
+              <el-tag v-if="row.status === 1" type="success">{{ T('HasBind') }}</el-tag>
+              <el-tag v-else type="info">{{ T('NoBind') }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column :label="T('Actions')" align="center" width="160">
+            <template #default="{ row }">
+              <el-button v-if="row.status === 1" type="danger" size="small" @click="toUnBind(row)">{{ T('UnBind') }}</el-button>
+              <el-button v-else type="primary" size="small" @click="toBind(row)">{{ T('ToBind') }}</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-card>
     <changePwdDialog v-model:visible="changePwdVisible"></changePwdDialog>
   </div>
@@ -41,15 +51,13 @@
   import changePwdDialog from '@/components/changePwdDialog.vue'
   import { computed, ref } from 'vue'
   import { useUserStore } from '@/store/user'
-  import { useAppStore } from '@/store/app'
   import { bind, unbind } from '@/api/oauth'
   import { myOauth } from '@/api/user'
   import { ElMessageBox } from 'element-plus'
   import { T } from '@/utils/i18n'
-  import { marked } from 'marked'
 
-  const appStore = useAppStore()
   const userStore = useUserStore()
+  const initial = computed(() => (userStore.username || '?').charAt(0).toUpperCase())
   const changePwdVisible = ref(false)
   const showChangePwd = () => {
     changePwdVisible.value = true
@@ -86,20 +94,46 @@
 
   }
 
-  const html = computed(() => {
-    const raw = appStore.setting.hello || ''
-    // серверное приветствие по умолчанию на китайском — заменяем локализованным
-    const isDefault = !raw.trim() || /你好|欢迎|歡迎/.test(raw)
-    const text = isDefault ? T('WelcomeHello', { name: userStore.username }) : raw
-    return marked(text)
-  })
-
 </script>
 
 <style scoped lang="scss">
-.info-form {
-  width: 600px;
-  margin: 0 auto;
+.prof-wrap { display: flex; justify-content: center; padding: 12px; }
+.prof-card { width: 100%; max-width: 620px; }
 
+.prof-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.prof-avatar {
+  width: 60px; height: 60px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 600; color: #fff;
+  background: var(--accent-grad);
+  flex-shrink: 0;
+}
+.prof-name { font-size: 20px; font-weight: 600; }
+.prof-sub { font-size: 13px; color: var(--el-text-color-secondary); margin-top: 2px; }
+
+.prof-rows { padding: 12px 0; }
+.prow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.prow:last-child { border-bottom: none; }
+.pk { font-size: 13px; color: var(--el-text-color-secondary); }
+.pv { font-weight: 500; }
+
+.prof-oidc { margin-top: 12px; }
+.po-title {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--el-text-color-secondary); margin-bottom: 10px;
 }
 </style>
