@@ -7,7 +7,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handlerQuery">{{ T('Filter') }}</el-button>
-          <el-button @click="toAdd">{{ T('Add') }}</el-button>
+          <el-button @click="openAdd">{{ T('Add') }}</el-button>
           <el-button @click="toExport">{{ T('Export') }}</el-button>
         </el-form-item>
       </el-form>
@@ -54,7 +54,7 @@
           <div class="uc-actions">
             <el-button type="primary" class="uc-book" :icon="Notebook" @click="toAddressBook(row)">{{ T('AddressBook') }}</el-button>
             <el-tooltip :content="T('Edit')" placement="top">
-              <el-button :icon="Edit" @click="toEdit(row)"/>
+              <el-button :icon="Edit" @click="openEdit(row)"/>
             </el-tooltip>
             <el-dropdown trigger="click" class="uc-more">
               <el-button :icon="MoreFilled"></el-button>
@@ -91,7 +91,7 @@
         <el-table-column prop="created_at" :label="T('CreatedAt')" align="center" min-width="120"/>
         <el-table-column :label="T('Actions')" align="center" width="150" class-name="table-actions">
           <template #default="{row}">
-            <el-button type="primary" size="small" @click="toEdit(row)">{{ T('Edit') }}</el-button>
+            <el-button type="primary" size="small" @click="openEdit(row)">{{ T('Edit') }}</el-button>
             <el-dropdown trigger="click">
               <el-button size="small" :icon="MoreFilled"></el-button>
               <template #dropdown>
@@ -117,6 +117,8 @@
                      :total="listRes.total">
       </el-pagination>
     </el-card>
+
+    <user-edit-dialog v-model:visible="editVisible" :user-id="editId" @success="handlerQuery"/>
   </div>
 </template>
 
@@ -129,6 +131,7 @@
   import { onMounted, ref, watch } from 'vue'
   import { Grid, Menu, MoreFilled, Message, Calendar, Document, Notebook, Edit } from '@element-plus/icons'
   import { groupDisplayName } from '@/utils/group'
+  import UserEditDialog from '@/views/user/UserEditDialog.vue'
 
   const {
     listRes,
@@ -147,7 +150,13 @@
   watch(() => listQuery.page, getList)
   watch(() => listQuery.page_size, handlerQuery)
 
-  const { toEdit, toAdd, toAddressBook, toTag } = useToEditOrAdd()
+  const { toAddressBook, toTag } = useToEditOrAdd()
+
+  // редактирование/создание в модалке поверх списка
+  const editVisible = ref(false)
+  const editId = ref(0)
+  const openAdd = () => { editId.value = 0; editVisible.value = true }
+  const openEdit = (row) => { editId.value = row.id; editVisible.value = true }
   const { changePass } = useChangePwd()
   const { del } = useDel()
 
