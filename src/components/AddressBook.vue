@@ -1,8 +1,18 @@
 <template>
-  <div class="ab-wrap">
+  <div class="ab-page">
+    <!-- шапка админа: назад к пользователям + чей это раздел -->
+    <div v-if="isAdmin && lockedUserId" class="ab-header">
+      <el-button :icon="ArrowLeft" @click="backToUsers">{{ T('Users') }}</el-button>
+      <div class="ab-header-title">
+        <span class="aht-avatar">{{ (lockedUsername || '?').charAt(0).toUpperCase() }}</span>
+        <span>{{ T('AddressBook') }} · <b>{{ lockedUsername }}</b></span>
+      </div>
+    </div>
+
+    <div class="ab-wrap">
     <!-- РЕЙЛ -->
     <aside class="ab-rail">
-      <el-select v-if="isAdmin" v-model="userId" :placeholder="T('User')" filterable class="rail-user" @change="onUserChange">
+      <el-select v-if="isAdmin && !lockedUserId" v-model="userId" :placeholder="T('User')" filterable class="rail-user" @change="onUserChange">
         <el-option v-for="u in allUsers" :key="u.id" :label="u.username" :value="u.id"/>
       </el-select>
       <div class="rail-col">
@@ -113,6 +123,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -124,8 +135,9 @@
   import { connectByClient } from '@/utils/peer'
   import { toWebClientLink } from '@/utils/webclient'
   import { handleClipboard } from '@/utils/clipboard'
-  import { MoreFilled, Plus, Close, Search } from '@element-plus/icons'
+  import { MoreFilled, Plus, Close, Search, ArrowLeft } from '@element-plus/icons'
   import PlatformIcons from '@/components/icons/platform.vue'
+  import { useRoute, useRouter } from 'vue-router'
   import { useRepositories } from '@/views/address_book'
   import * as myCol from '@/api/my/address_book_collection'
   import * as adminCol from '@/api/address_book_collection'
@@ -146,8 +158,13 @@
     del, formVisible, formData, toEdit, toAdd, submit, platformList,
   } = useRepositories(props.scope)
 
+  const route = useRoute()
+  const router = useRouter()
   const { allUsers, getAllUsers } = loadAllUsers()
-  const userId = ref(null)
+  const lockedUserId = isAdmin && route.query?.user_id ? parseInt(route.query.user_id) : null
+  const userId = ref(lockedUserId)
+  const lockedUsername = computed(() => allUsers.value.find(u => u.id === lockedUserId)?.username || '')
+  const backToUsers = () => router.push('/user/index')
   const currentCol = ref(0)
   const selectedTags = ref([])
   const hideOffline = ref(false)
@@ -259,6 +276,7 @@
   onMounted(() => {
     if (isAdmin) {
       getAllUsers()
+      if (lockedUserId) onUserChange()
     } else {
       getCollectionList()
       reload()
@@ -267,10 +285,28 @@
 </script>
 
 <style scoped lang="scss">
+.ab-page { display: flex; flex-direction: column; gap: 16px; }
+.ab-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+.ab-header-title { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+.aht-avatar {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-grad); color: #fff; font-weight: 600;
+}
+
 .ab-wrap {
   display: flex;
   gap: 16px;
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 180px);
 }
 
 /* рейл */
