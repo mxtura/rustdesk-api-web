@@ -39,7 +39,10 @@
                 :inactive-value="DISABLE_STATUS"
                 @change="changeStatus(row)"
             />
-            <el-tag v-if="row.group_id" size="small">{{ groupName(row.group_id) }}</el-tag>
+            <div class="uc-badges">
+              <el-tag v-if="row.is_admin" size="small" type="warning" effect="dark">Admin</el-tag>
+              <el-tag v-if="row.group_id" size="small">{{ groupName(row.group_id) }}</el-tag>
+            </div>
           </div>
 
           <div class="uc-specs">
@@ -49,13 +52,15 @@
           </div>
 
           <div class="uc-actions">
-            <el-button type="primary" class="uc-edit" @click="toEdit(row)">{{ T('Edit') }}</el-button>
+            <el-button type="primary" class="uc-book" :icon="Notebook" @click="toAddressBook(row)">{{ T('AddressBook') }}</el-button>
+            <el-tooltip :content="T('Edit')" placement="top">
+              <el-button :icon="Edit" @click="toEdit(row)"/>
+            </el-tooltip>
             <el-dropdown trigger="click" class="uc-more">
               <el-button :icon="MoreFilled"></el-button>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="toTag(row)">{{ T('UserTags') }}</el-dropdown-item>
-                  <el-dropdown-item @click="toAddressBook(row)">{{ T('UserAddressBook') }}</el-dropdown-item>
                   <el-dropdown-item @click="changePass(row)">{{ T('ResetPassword') }}</el-dropdown-item>
                   <el-dropdown-item divided @click="remove(row)">{{ T('Delete') }}</el-dropdown-item>
                 </el-dropdown-menu>
@@ -122,7 +127,7 @@
   import { update } from '@/api/user'
   import { ElMessage } from 'element-plus'
   import { onMounted, ref, watch } from 'vue'
-  import { Grid, Menu, MoreFilled, Message, Calendar, Document } from '@element-plus/icons'
+  import { Grid, Menu, MoreFilled, Message, Calendar, Document, Notebook, Edit } from '@element-plus/icons'
   import { groupDisplayName } from '@/utils/group'
 
   const {
@@ -231,6 +236,7 @@
 }
 
 .uc-statusrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.uc-badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
 .uc-specs {
   display: grid;
@@ -251,5 +257,5 @@
 .uc-specs .spec span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .uc-actions { display: flex; gap: 8px; margin-top: auto; align-items: center; }
-.uc-edit { flex: 1; }
+.uc-book { flex: 1; }
 </style>
