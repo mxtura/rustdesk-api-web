@@ -2,7 +2,7 @@
   <el-card class="simple-card" shadow="hover" v-loading="form.loading">
     <template #header>
       <div class="sc-head">
-        <span class="sc-ic">♻️</span><div class="sc-txt"><div class="sc-title">{{ T('AlwaysRelayTitle') }}</div><div class="sc-desc">{{ T('AlwaysRelayDesc') }}</div></div>
+        <div class="sc-txt"><div class="sc-title">{{ T('AlwaysRelayTitle') }}</div><div class="sc-desc">{{ T('AlwaysRelayDesc') }}</div></div>
       </div>
     </template>
     <el-form :disabled="!canSend">
