@@ -622,5 +622,14 @@
   },
   "WelcomeHello": {
     "One": "👏 Hi {name}, welcome to RustDesk API"
+  },
+  "NoTag": {
+    "One": "No tag"
+  },
+  "HideOffline": {
+    "One": "Hide offline"
+  },
+  "ShowOffline": {
+    "One": "Show offline"
   }
 }

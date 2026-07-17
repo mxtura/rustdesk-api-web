@@ -85,19 +85,19 @@ export const asyncRoutes = [
       {
         path: 'address_book_collection',
         name: 'MyAddressBookCollection',
-        meta: { title: 'AddressBookName', icon: 'Collection' /*keepAlive: true*/ },
+        meta: { title: 'AddressBookName', icon: 'Collection', hide: true },
         component: () => import('@/views/my/address_book/collection.vue'),
       },
       {
         path: 'address_book',
         name: 'MyAddressBookList',
-        meta: { title: 'AddressBooks', icon: 'Notebook' /*keepAlive: true*/ },
+        meta: { title: 'AddressBook', icon: 'Notebook' },
         component: () => import('@/views/my/address_book/index.vue'),
       },
       {
         path: 'tag',
         name: 'MyTagList',
-        meta: { title: 'Tags', icon: 'CollectionTag' /*keepAlive: true*/ },
+        meta: { title: 'Tags', icon: 'CollectionTag', hide: true },
         component: () => import('@/views/my/tag/index.vue'),
       },
       {

@@ -639,5 +639,14 @@
   },
   "WelcomeHello": {
     "One": "👏 Привет, {name}! Добро пожаловать в RustDesk API"
+  },
+  "NoTag": {
+    "One": "Без метки"
+  },
+  "HideOffline": {
+    "One": "Скрыть офлайн"
+  },
+  "ShowOffline": {
+    "One": "Показать офлайн"
   }
 }

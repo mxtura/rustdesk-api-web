@@ -652,5 +652,14 @@
   },
   "WelcomeHello": {
     "One": "👏 你好 {name}，欢迎使用 RustDesk API"
+  },
+  "NoTag": {
+    "One": "无标签"
+  },
+  "HideOffline": {
+    "One": "隐藏离线"
+  },
+  "ShowOffline": {
+    "One": "显示离线"
   }
 }
