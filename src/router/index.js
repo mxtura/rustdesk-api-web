@@ -147,7 +147,7 @@ export const asyncRoutes = [
     path: '/g-addrbook',
     name: 'GroupAddrBook',
     redirect: '/user/addressBook',
-    meta: { title: 'MenuAddressBook', icon: 'Notebook' },
+    meta: { title: 'MenuAddressBook', icon: 'Notebook', hide: true },
     component: () => import('@/layout/index.vue'),
     children: [
       {
