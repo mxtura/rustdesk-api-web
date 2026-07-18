@@ -3,20 +3,13 @@ import * as path from 'path'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
-    // vue-i18n: включаем JIT-компиляцию сообщений и в проде (иначе {param} не интерполируется)
-    define: {
-      __VUE_I18N_FULL_INSTALL__: true,
-      __VUE_I18N_LEGACY_API__: false,
-      __INTLIFY_JIT_COMPILATION__: true,
-      __INTLIFY_DROP_MESSAGE_COMPILER__: false,
-      __INTLIFY_PROD_DEVTOOLS__: false,
-    },
     base: './', // раздаётся из подкаталога/корня — относительные пути
     resolve: {
       alias: {
@@ -72,6 +65,11 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       vue(),
+      // прекомпиляция локалей vue-i18n (runtimeOnly — без компилятора сообщений в проде)
+      VueI18nPlugin({
+        include: [path.resolve(__dirname, './src/utils/i18n/**')],
+        runtimeOnly: true,
+      }),
       // авто-импорт композиционных API (Vue/Router/Pinia/VueUse) — меньше boilerplate
       AutoImport({
         imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],

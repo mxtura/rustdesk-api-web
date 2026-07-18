@@ -6,13 +6,13 @@ import ko from '@/utils/i18n/ko.json'
 import ru from '@/utils/i18n/ru.json'
 import es from '@/utils/i18n/es.json'
 import zhTW from '@/utils/i18n/zh_TW.json'
-import { useAppStore } from '@/store/app'
+const defaultLocale = localStorage.getItem('lang') || navigator.language || 'zh-CN'
 
 // Движок — vue-i18n (плюрализация "one | other", интерполяция {param}, фолбэк, предупреждения о пропусках).
 export const i18n = createI18n({
   legacy: false,
   globalInjection: true,
-  locale: 'en',
+  locale: defaultLocale,
   fallbackLocale: 'en',
   missingWarn: false,
   fallbackWarn: false,
@@ -28,8 +28,7 @@ export const i18n = createI18n({
 })
 
 // Обёртка совместимости со старым API T(key, params, num) — чтобы не трогать ~50 файлов.
-// Локаль берём из appStore (как и раньше). num — счётчик для плюрализации.
+// Локаль — глобальная (см. main.js, синхронизируется с appStore). num — счётчик плюрализации.
 export function T(key, params = {}, num) {
-  const locale = useAppStore().setting.lang
-  return i18n.global.t(key, num ?? 1, { named: params, locale })
+  return typeof num === 'number' ? i18n.global.t(key, num, params) : i18n.global.t(key, params)
 }

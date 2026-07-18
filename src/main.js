@@ -1,4 +1,5 @@
-import { createApp } from 'vue'
+import { createApp, watch } from 'vue'
+import { useAppStore } from '@/store/app'
 import 'element-plus/dist/index.css'
 import App from './App.vue'
 import ElementPlus from 'element-plus'
@@ -26,6 +27,16 @@ app.use(ElementPlus, { locale: zhCn })
 app.use(pinia)
 app.use(i18n)
 app.use(router)
+
+// синхронизация локали vue-i18n с настройкой языка в appStore
+const appStore = useAppStore()
+if (appStore.setting.lang) i18n.global.locale.value = appStore.setting.lang
+watch(
+  () => appStore.setting.lang,
+  l => {
+    if (l) i18n.global.locale.value = l
+  },
+)
 app.use(VueQueryPlugin, {
   queryClientConfig: {
     defaultOptions: {
