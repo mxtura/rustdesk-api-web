@@ -21,3 +21,8 @@ yarn.lock
 # авто-генерируемые декларации unplugin-*
 src/auto-imports.d.ts
 src/components.d.ts
+
+# playwright
+/test-results/
+/playwright-report/
+/e2e-results/
