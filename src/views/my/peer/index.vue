@@ -189,7 +189,8 @@
 </template>
 
 <script setup>
-  import { computed, onActivated, onMounted, reactive, ref, watch } from 'vue'
+  import { computed, onMounted, reactive, ref, watch, watchEffect } from 'vue'
+  import { useQuery } from '@tanstack/vue-query'
   import { list } from '@/api/my/peer'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { toWebClientLink } from '@/utils/webclient'
@@ -237,21 +238,23 @@
     hostname: '',
   })
 
-  const getList = async () => {
-    listRes.loading = true
-    const res = await list(listQuery).catch(_ => false)
-    listRes.loading = false
-    if (res) {
-      listRes.list = res.data.list
-      listRes.total = res.data.total
-    }
-  }
+  // загрузка через TanStack Query: кэш, дедуп и авто-обновление онлайна каждые 30с.
+  // ключ — только page/page_size + тик фильтра (не live-поля, иначе рефетч на каждый символ).
+  const filterTick = ref(0)
+  const { data: peersData, isFetching, refetch } = useQuery({
+    queryKey: ['my-peers', computed(() => listQuery.page), computed(() => listQuery.page_size), filterTick],
+    queryFn: () => list({ ...listQuery }),
+    refetchInterval: 30000,
+    placeholderData: prev => prev,
+  })
+  watchEffect(() => {
+    listRes.list = peersData.value?.data?.list || []
+    listRes.total = peersData.value?.data?.total || 0
+    listRes.loading = isFetching.value
+  })
   const handlerQuery = () => {
-    if (listQuery.page === 1) {
-      getList()
-    } else {
-      listQuery.page = 1
-    }
+    if (listQuery.page !== 1) listQuery.page = 1
+    else filterTick.value++
   }
 
   /*const del = async (row) => {
@@ -270,12 +273,10 @@
       getList()
     }
   }*/
-  onMounted(getList)
-  onActivated(getList)
-
-  watch(() => listQuery.page, getList)
-
-  watch(() => listQuery.page_size, handlerQuery)
+  // смена размера страницы — вернуться на первую (page входит в queryKey → рефетч сам)
+  watch(() => listQuery.page_size, () => {
+    if (listQuery.page !== 1) listQuery.page = 1
+  })
 
   const formVisible = ref(false)
   const formData = reactive({
