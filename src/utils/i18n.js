@@ -30,5 +30,9 @@ export const i18n = createI18n({
 // Обёртка совместимости со старым API T(key, params, num) — чтобы не трогать ~50 файлов.
 // Локаль — глобальная (см. main.js, синхронизируется с appStore). num — счётчик плюрализации.
 export function T(key, params = {}, num) {
-  return typeof num === 'number' ? i18n.global.t(key, num, params) : i18n.global.t(key, params)
+  // как старый T: нестроковый/пустой ключ возвращаем как есть (vue-i18n на undefined кидает ошибку)
+  if (typeof key !== 'string' || key === '') return key ?? ''
+  return typeof num === 'number'
+    ? i18n.global.t(key, num, { named: params })
+    : i18n.global.t(key, params)
 }

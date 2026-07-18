@@ -68,7 +68,7 @@ export default defineConfig(({ mode }) => {
       // прекомпиляция локалей vue-i18n (runtimeOnly — без компилятора сообщений в проде)
       VueI18nPlugin({
         include: [path.resolve(__dirname, './src/utils/i18n/**')],
-        runtimeOnly: true,
+        runtimeOnly: false,
       }),
       // авто-импорт композиционных API (Vue/Router/Pinia/VueUse) — меньше boilerplate
       AutoImport({
