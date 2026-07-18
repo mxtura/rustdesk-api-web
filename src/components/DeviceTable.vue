@@ -52,67 +52,99 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { ref, computed, watch, nextTick, onMounted } from 'vue'
   import { T } from '@/utils/i18n'
   import { timeAgo } from '@/utils/time'
   import { handleClipboard } from '@/utils/clipboard'
   import { Setting, Close, CopyDocument } from '@element-plus/icons-vue'
   import Sortable from 'sortablejs'
+  import type { ColumnDef, Peer } from '@/types/models'
+
+  interface ColState {
+    name: string
+    visible: boolean
+  }
+  interface ColMeta {
+    label: string
+    raw?: boolean
+    width?: number
+    minWidth?: number
+  }
 
   // Единая таблица устройств с настройкой/перетаскиванием колонок.
-  // columns: [{name, label, raw?, width?, minWidth?, visible?}]
-  const props = defineProps({
-    list: { type: Array, default: () => [] },
-    loading: { type: Boolean, default: false },
-    columns: { type: Array, required: true },
-    storageKey: { type: String, required: true },
-    selectable: { type: Boolean, default: true },
-    rowKey: { type: String, default: 'row_id' },
-    actionsWidth: { type: [Number, String], default: 180 },
-  })
-  const emit = defineEmits(['selection-change'])
+  const props = withDefaults(
+    defineProps<{
+      list?: Peer[]
+      loading?: boolean
+      columns: ColumnDef[]
+      storageKey: string
+      selectable?: boolean
+      rowKey?: string
+      actionsWidth?: number | string
+    }>(),
+    { list: () => [], loading: false, selectable: true, rowKey: 'row_id', actionsWidth: 180 },
+  )
+  const emit = defineEmits<{ 'selection-change': [rows: Peer[]] }>()
 
-  const COL_META = {}
-  const defaultColumns = props.columns.map(c => {
+  const COL_META: Record<string, ColMeta> = {}
+  const defaultColumns: ColState[] = props.columns.map(c => {
     COL_META[c.name] = { label: c.label || c.name, raw: c.raw, width: c.width, minWidth: c.minWidth }
     return { name: c.name, visible: c.visible !== false }
   })
 
-  const loadColumns = () => {
+  const loadColumns = (): ColState[] => {
     try {
-      const saved = JSON.parse(localStorage.getItem(props.storageKey))
+      const saved = JSON.parse(localStorage.getItem(props.storageKey) || 'null')
       if (Array.isArray(saved) && saved.length) {
-        const names = new Set(saved.map(c => c.name))
-        const merged = saved.filter(c => COL_META[c.name])
-        defaultColumns.forEach(dc => { if (!names.has(dc.name)) merged.push({ ...dc }) })
+        const names = new Set(saved.map((c: ColState) => c.name))
+        const merged = saved.filter((c: ColState) => COL_META[c.name])
+        defaultColumns.forEach(dc => {
+          if (!names.has(dc.name)) merged.push({ ...dc })
+        })
         return merged
       }
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      /* ignore */
+    }
     return defaultColumns.map(c => ({ ...c }))
   }
-  const visibleColumns = ref(loadColumns())
+  const visibleColumns = ref<ColState[]>(loadColumns())
   const shownColumns = computed(() => visibleColumns.value.filter(c => c.visible))
   const hiddenColumns = computed(() => visibleColumns.value.filter(c => !c.visible))
   const editCols = ref(false)
-  const colLabel = (c) => { const m = COL_META[c.name] || {}; return m.raw ? m.label : T(m.label || c.name) }
-  const colWidth = (c) => { const m = COL_META[c.name] || {}; return m.minWidth || m.width || 110 }
+  const colLabel = (c: ColState) => {
+    const m = COL_META[c.name] || ({} as ColMeta)
+    return m.raw ? m.label : T(m.label || c.name)
+  }
+  const colWidth = (c: ColState) => {
+    const m = COL_META[c.name] || ({} as ColMeta)
+    return m.minWidth || m.width || 110
+  }
   const persistCols = () => localStorage.setItem(props.storageKey, JSON.stringify(visibleColumns.value))
-  const hideCol = (c) => { c.visible = false; persistCols() }
-  const showCol = (c) => { c.visible = true; persistCols() }
-  const secAgo = (t) => (Date.now() / 1000 - t)
-  const copyId = (id, e) => handleClipboard(id, e)
+  const hideCol = (c: ColState) => {
+    c.visible = false
+    persistCols()
+  }
+  const showCol = (c: ColState) => {
+    c.visible = true
+    persistCols()
+  }
+  const secAgo = (t?: number) => Date.now() / 1000 - (t || 0)
+  const copyId = (id: string, e: MouseEvent) => handleClipboard(id, e)
 
   // drag-reorder заголовков мышкой
-  const peerTable = ref(null)
-  let colSortable = null
+  const peerTable = ref<any>(null)
+  let colSortable: any = null
   const applyDomOrder = () => {
     const el = peerTable.value?.$el?.querySelector('.el-table__header-wrapper thead tr')
     if (!el) return
-    const order = [...el.querySelectorAll('.col-h[data-col]')].map(s => s.dataset.col)
+    const order = [...el.querySelectorAll('.col-h[data-col]')].map((s: any) => s.dataset.col as string)
     if (!order.length) return
     const seen = new Set(order)
-    const reordered = order.map(n => visibleColumns.value.find(c => c.name === n)).filter(Boolean)
+    const reordered = order
+      .map(n => visibleColumns.value.find(c => c.name === n))
+      .filter(Boolean) as ColState[]
     const rest = visibleColumns.value.filter(c => !seen.has(c.name))
     visibleColumns.value = [...reordered, ...rest]
     persistCols()
@@ -121,12 +153,19 @@
     await nextTick()
     const el = peerTable.value?.$el?.querySelector('.el-table__header-wrapper thead tr')
     if (!el) return
-    if (colSortable) { colSortable.destroy(); colSortable = null }
+    if (colSortable) {
+      colSortable.destroy()
+      colSortable = null
+    }
     colSortable = Sortable.create(el, {
       animation: 180,
       draggable: 'th.el-table__cell',
       filter: '.el-table-column--selection, .table-actions',
-      onMove: (e) => !(e.related.classList.contains('el-table-column--selection') || e.related.classList.contains('table-actions')),
+      onMove: (e: any) =>
+        !(
+          e.related.classList.contains('el-table-column--selection') ||
+          e.related.classList.contains('table-actions')
+        ),
       onEnd: applyDomOrder,
     })
   }

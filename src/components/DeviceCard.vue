@@ -31,23 +31,27 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { computed } from 'vue'
   import { T } from '@/utils/i18n'
   import { timeAgo } from '@/utils/time'
   import { handleClipboard } from '@/utils/clipboard'
   import { CopyDocument, Cpu, Coin, Monitor, Connection } from '@element-plus/icons-vue'
+  import type { Peer } from '@/types/models'
 
   // Единая карточка устройства для страниц пиров (админ и личные).
-  const props = defineProps({
-    row: { type: Object, required: true },
-    selectable: { type: Boolean, default: false },
-    selected: { type: Boolean, default: false },
-  })
-  const emit = defineEmits(['toggle'])
+  const props = withDefaults(
+    defineProps<{
+      row: Peer
+      selectable?: boolean
+      selected?: boolean
+    }>(),
+    { selectable: false, selected: false },
+  )
+  const emit = defineEmits<{ toggle: [value: boolean] }>()
 
-  const isOnline = computed(() =>
-    !!props.row.last_online_time && (Date.now() / 1000 - props.row.last_online_time) < 60,
+  const isOnline = computed(
+    () => !!props.row.last_online_time && (Date.now() / 1000 - props.row.last_online_time) < 60,
   )
   const osIcon = computed(() => {
     const s = (props.row.os || '').toLowerCase()
@@ -57,7 +61,7 @@
     if (s.includes('linux')) return '🐧'
     return '🖥️'
   })
-  const copyId = (e) => handleClipboard(props.row.id, e)
+  const copyId = (e: MouseEvent) => handleClipboard(props.row.id, e)
 </script>
 
 <style scoped lang="scss">
