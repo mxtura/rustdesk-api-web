@@ -30,7 +30,7 @@
     "One": "修改密碼"
   },
   "Userinfo": {
-    "One": "使用者資訊"
+    "One": "個人資料"
   },
   "ParamRequired": {
     "One": "{param} 是必須的"
@@ -195,7 +195,7 @@
     "One": "ToEnglish"
   },
   "My": {
-    "One": "我的"
+    "One": "個人"
   },
   "Info": {
     "One": "資訊"
@@ -492,7 +492,7 @@
     "One": "驗證碼"
   },
   "ServerCmd": {
-    "One": "服務端命令"
+    "One": "伺服器設定"
   },
   "Simple": {
     "One": "簡單"
@@ -528,7 +528,7 @@
     "One": "結果"
   },
   "DeviceGroupManage": {
-    "One": "設備組管理"
+    "One": "裝置群組"
   },
   "Import": {
     "One": "導入"

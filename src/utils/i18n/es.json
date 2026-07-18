@@ -30,7 +30,7 @@
     "One": "Cambiar contraseña"
   },
   "Userinfo": {
-    "One": "Información del usuario"
+    "One": "Perfil"
   },
   "ParamRequired": {
     "One": "{param} es requerido"
@@ -195,7 +195,7 @@
     "One": "Cambiar a chino"
   },
   "My": {
-    "One": "Mi"
+    "One": "Personal"
   },
   "Info": {
     "One": "Información"
@@ -461,7 +461,7 @@
     "One": "Token del usuario"
   },
   "MyPeer": {
-    "One": "Mis pares"
+    "One": "Mis dispositivos"
   },
   "BatchAddToAB": {
     "One": "Agregar en bloque a la libreta de direcciones"
@@ -473,7 +473,7 @@
     "One": "Usuario"
   },
   "ShareRecord": {
-    "One": "Registro de compartición"
+    "One": "Registros de acceso"
   },
   "Second": {
     "One": "Segundo"
@@ -482,7 +482,7 @@
     "One": "Captcha"
   },
   "ServerCmd": {
-    "One": "Comando del servidor"
+    "One": "Servidor"
   },
   "Simple": {
     "One": "Simple"
@@ -681,5 +681,11 @@
   },
   "BlackListDesc": {
     "One": "Banned IP addresses"
+  },
+  "DeviceGroupManage": {
+    "One": "Grupos de dispositivos"
+  },
+  "View": {
+    "One": "Ver"
   }
 }

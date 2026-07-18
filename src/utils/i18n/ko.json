@@ -30,7 +30,7 @@
     "One": "비밀번호 변경"
   },
   "Userinfo": {
-    "One": "사용자 정보"
+    "One": "프로필"
   },
   "ParamRequired": {
     "One": "{param} 은 필수입니다"
@@ -195,7 +195,7 @@
     "One": "영어로 변경"
   },
   "My": {
-    "One": "내"
+    "One": "개인"
   },
   "Info": {
     "One": "정보"
@@ -447,7 +447,7 @@
     "One": "사용자 토큰"
   },
   "MyPeer": {
-    "One": "내 피어"
+    "One": "내 기기"
   },
   "BatchAddToAB": {
     "One": "주소록에 일괄 추가"
@@ -468,7 +468,7 @@
     "One": "Captcha"
   },
   "ServerCmd": {
-    "One": "서버 명령"
+    "One": "서버 설정"
   },
   "Simple": {
     "One": "간단"
@@ -667,5 +667,11 @@
   },
   "BlackListDesc": {
     "One": "Banned IP addresses"
+  },
+  "DeviceGroupManage": {
+    "One": "기기 그룹"
+  },
+  "View": {
+    "One": "보기"
   }
 }

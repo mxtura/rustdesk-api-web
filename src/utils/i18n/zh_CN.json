@@ -30,7 +30,7 @@
     "One": "修改密码"
   },
   "Userinfo": {
-    "One": "用户信息"
+    "One": "个人资料"
   },
   "ParamRequired": {
     "One": "{param} 是必须的"
@@ -195,7 +195,7 @@
     "One": "ToEnglish"
   },
   "My": {
-    "One": "我的"
+    "One": "个人"
   },
   "Info": {
     "One": "信息"
@@ -492,7 +492,7 @@
     "One": "验证码"
   },
   "ServerCmd": {
-    "One": "服务端命令"
+    "One": "服务器设置"
   },
   "Simple": {
     "One": "简单"
@@ -528,7 +528,7 @@
     "One": "结果"
   },
   "DeviceGroupManage": {
-    "One": "设备组管理"
+    "One": "设备分组"
   },
   "Import": {
     "One": "导入"

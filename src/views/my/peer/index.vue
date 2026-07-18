@@ -29,7 +29,35 @@
       </el-form>
     </el-card>
     <el-card class="list-body" shadow="hover">
-      <el-table :data="listRes.list" v-loading="listRes.loading" border size="small" @selection-change="handleSelectionChange">
+      <div class="lb-head">
+        <el-radio-group v-model="viewMode" size="small">
+          <el-radio-button label="cards"><el-icon><Grid/></el-icon></el-radio-button>
+          <el-radio-button label="table"><el-icon><Menu/></el-icon></el-radio-button>
+        </el-radio-group>
+      </div>
+
+      <!-- ПЛИТКИ -->
+      <div v-if="viewMode==='cards'" class="peer-grid" v-loading="listRes.loading">
+        <device-card v-for="row in listRes.list" :key="row.row_id || row.id" :row="row">
+          <template #actions="{ row }">
+            <el-button type="primary" class="pc-connect" @click="connectByClient(row.id)">{{ T('Link') }}</el-button>
+            <el-button v-if="appStore.setting.appConfig.web_client" class="pc-web" @click="toWebClientLink(row)">Web</el-button>
+            <el-dropdown trigger="click" class="pc-more">
+              <el-button :icon="MoreFilled"></el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="toAddressBook(row)">{{ T('AddToAddressBook') }}</el-dropdown-item>
+                  <el-dropdown-item @click="toView(row)">{{ T('View') }}</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </template>
+        </device-card>
+        <el-empty v-if="!listRes.loading && !listRes.list.length" description="—"/>
+      </div>
+
+      <!-- ТАБЛИЦА -->
+      <el-table v-else :data="listRes.list" v-loading="listRes.loading" border size="small" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"/>
         <el-table-column prop="id" label="ID" align="center" width="150">
           <template #default="{row}">
@@ -189,11 +217,15 @@
   import { useRepositories as useABRepositories } from '@/views/address_book/index'
   import { useAppStore } from '@/store/app'
   import { connectByClient } from '@/utils/peer'
-  import { CopyDocument } from '@element-plus/icons'
+  import { CopyDocument, Grid, Menu, MoreFilled } from '@element-plus/icons'
   import { handleClipboard } from '@/utils/clipboard'
   import { batchCreateFromPeers } from '@/api/my/address_book'
+  import DeviceCard from '@/components/DeviceCard.vue'
 
   const appStore = useAppStore()
+  // режим отображения: плитки / таблица
+  const viewMode = ref(localStorage.getItem('my_peer_view_mode') || 'cards')
+  watch(viewMode, (v) => localStorage.setItem('my_peer_view_mode', v))
   const listRes = reactive({
     list: [], total: 0, loading: false,
   })
@@ -381,6 +413,22 @@
 .list-query .el-select {
   --el-select-width: 180px;
 }
+
+.lb-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.peer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  min-height: 80px;
+}
+
+.pc-web { min-width: 60px; }
 
 .last_oline_time {
   display: flex;

@@ -30,7 +30,7 @@
     "One": "Modifier le mot de passe"
   },
   "Userinfo": {
-    "One": "Informations utilisateur"
+    "One": "Profil"
   },
   "ParamRequired": {
     "One": "{param} est obligatoire"
@@ -198,7 +198,7 @@
     "One": "Changer la langue"
   },
   "My": {
-    "One": "Moi"
+    "One": "Personnel"
   },
   "Info": {
     "One": "Info"
@@ -464,7 +464,7 @@
     "One": "Jeton"
   },
   "MyPeer": {
-    "One": "Mon appareil"
+    "One": "Mes appareils"
   },
   "BatchAddToAB": {
     "One": "Ajout par lots au carnet d'adresses"
@@ -476,7 +476,7 @@
     "One": "Utilisateur"
   },
   "ShareRecord": {
-    "One": "Enregistrement des partages"
+    "One": "Partages"
   },
   "Second": {
     "One": "Seconde"
@@ -485,7 +485,7 @@
     "One": "Captcha"
   },
   "ServerCmd": {
-    "One": "Commande serveur"
+    "One": "Serveur"
   },
   "Simple": {
     "One": "Simple"
@@ -684,5 +684,8 @@
   },
   "BlackListDesc": {
     "One": "Banned IP addresses"
+  },
+  "DeviceGroupManage": {
+    "One": "Groupes d'appareils"
   }
 }

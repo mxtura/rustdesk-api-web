@@ -36,7 +36,7 @@
     "One": "Change Password"
   },
   "Userinfo": {
-    "One": "User Info"
+    "One": "Profile"
   },
   "ParamRequired": {
     "One": "{param} is required"
@@ -201,7 +201,7 @@
     "One": "切换中文"
   },
   "My": {
-    "One": "My"
+    "One": "Personal"
   },
   "Info": {
     "One": "Info"
@@ -476,7 +476,7 @@
     "One": "User"
   },
   "ShareRecord": {
-    "One": "Share Record"
+    "One": "Share Records"
   },
   "Second": {
     "One": "Second"
@@ -485,7 +485,7 @@
     "One": "Captcha"
   },
   "ServerCmd": {
-    "One": "Server Cmd"
+    "One": "Server Settings"
   },
   "Simple": {
     "One": "Simple"
@@ -521,7 +521,7 @@
     "One": "Result"
   },
   "DeviceGroupManage": {
-    "One": "Device Group Manage"
+    "One": "Device Groups"
   },
   "Drop file here or click to upload": {
     "One": "Drop file here or click to upload"
@@ -687,5 +687,11 @@
   },
   "BlackListDesc": {
     "One": "Banned IP addresses"
+  },
+  "MyPeer": {
+    "One": "My Devices"
+  },
+  "View": {
+    "One": "View"
   }
 }
