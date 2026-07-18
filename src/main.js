@@ -7,6 +7,7 @@ import { router } from '@/router'
 import 'normalize.css/normalize.css'
 import { pinia } from '@/store'
 import { VueQueryPlugin } from '@tanstack/vue-query'
+import { i18n } from '@/utils/i18n'
 import '@/permission'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/styles/style.scss'
@@ -23,6 +24,7 @@ if (localStorage.getItem('vueuse-color-scheme') === 'dark') {
 const app = createApp(App)
 app.use(ElementPlus, { locale: zhCn })
 app.use(pinia)
+app.use(i18n)
 app.use(router)
 app.use(VueQueryPlugin, {
   queryClientConfig: {

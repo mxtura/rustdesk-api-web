@@ -1,697 +1,229 @@
 {
-  "PanelTitleAdmin": {
-    "One": "RustDesk · Админ"
-  },
-  "PanelTitleUser": {
-    "One": "RustDesk · Панель"
-  },
-  "Login": {
-    "One": "Вход"
-  },
-  "Logout": {
-    "One": "Выход"
-  },
-  "Register": {
-    "One": "Регистрация"
-  },
-  "Confirm": {
-    "One": "Подтвердить"
-  },
-  "Username": {
-    "One": "Имя пользователя"
-  },
-  "Password": {
-    "One": "Пароль"
-  },
-  "LoginSuccess": {
-    "One": "Успешный вход"
-  },
-  "ForgotPassword": {
-    "One": "Забыли пароль"
-  },
-  "ResetPassword": {
-    "One": "Сбросить пароль"
-  },
-  "ChangePassword": {
-    "One": "Сменить пароль"
-  },
-  "Userinfo": {
-    "One": "Профиль"
-  },
-  "ParamRequired": {
-    "One": "Поле {param} обязательно"
-  },
-  "HasBind": {
-    "One": "Связано"
-  },
-  "NoBind": {
-    "One": "Не связано"
-  },
-  "UnBind": {
-    "One": "Отвязать"
-  },
-  "ToBind": {
-    "One": "Привязать"
-  },
-  "Confirm?": {
-    "One": "Подтвердить {param}?"
-  },
-  "Cancel": {
-    "One": "Отмена"
-  },
-  "Platform": {
-    "One": "Платформа"
-  },
-  "Status": {
-    "One": "Статус"
-  },
-  "Actions": {
-    "One": "Действия"
-  },
-  "Filter": {
-    "One": "Фильтр"
-  },
-  "Add": {
-    "One": "Добавить"
-  },
-  "Hostname": {
-    "One": "Имя хоста"
-  },
-  "Alias": {
-    "One": "Псевдоним"
-  },
-  "Hash": {
-    "One": "Хэш"
-  },
-  "Tags": {
-    "One": "Теги"
-  },
-  "Edit": {
-    "One": "Редактировать"
-  },
-  "Delete": {
-    "One": "Удалить"
-  },
-  "Create": {
-    "One": "Создать"
-  },
-  "Update": {
-    "One": "Обновить"
-  },
-  "LoginName": {
-    "One": "Имя для входа"
-  },
-  "Submit": {
-    "One": "Отправить"
-  },
-  "OperationSuccess": {
-    "One": "Операция выполнена успешно"
-  },
-  "Owner": {
-    "One": "Владелец"
-  },
-  "Name": {
-    "One": "Имя"
-  },
-  "Color": {
-    "One": "Цвет"
-  },
-  "CreatedAt": {
-    "One": "Создано"
-  },
-  "UpdatedAt": {
-    "One": "Обновлено"
-  },
-  "Memory": {
-    "One": "Память"
-  },
-  "Os": {
-    "One": "ОС"
-  },
-  "Uuid": {
-    "One": "UUID"
-  },
-  "Version": {
-    "One": "Версия"
-  },
-  "Type": {
-    "One": "Тип"
-  },
-  "Group": {
-    "One": "Группа"
-  },
-  "CommonGroup": {
-    "One": "Общая группа"
-  },
-  "CommonGroupNote": {
-    "One": "Только администраторы могут видеть участников группы и их устройства"
-  },
-  "SharedGroup": {
-    "One": "Общая группа"
-  },
-  "SharedGroupNote": {
-    "One": "Все пользователи могут видеть участников группы и их устройства"
-  },
-  "Nickname": {
-    "One": "Псевдоним"
-  },
-  "UserTags": {
-    "One": "Теги пользователя"
-  },
-  "UserAddressBook": {
-    "One": "Адресная книга пользователя"
-  },
-  "IsAdmin": {
-    "One": "Является администратором"
-  },
-  "PleaseInputNewPassword": {
-    "One": "Пожалуйста, введите новый пароль"
-  },
-  "AutoRegister": {
-    "One": "Авто-регистрация"
-  },
-  "AutoRegisterNote": {
-    "One": "Если включено, аккаунт будет автоматически зарегистрирован, когда пользователь входит через OAuth без привязки к существующему аккаунту"
-  },
-  "ThirdName": {
-    "One": "Название стороннего сервиса"
-  },
-  "Close": {
-    "One": "Закрыть"
-  },
-  "OauthBinding": {
-    "One": "Вы авторизуете привязку"
-  },
-  "OauthLogining": {
-    "One": "Вы авторизуете вход"
-  },
-  "OauthCloseNote": {
-    "One": "Если это не было авторизовано вами, пожалуйста, закройте страницу"
-  },
-  "OperationSuccessAndCloseAfter3Seconds": {
-    "One": "Операция выполнена успешно, закройте через 3 секунды"
-  },
-  "ConfirmOauth": {
-    "One": "Подтвердить Oauth"
-  },
-  "Device": {
-    "One": "Устройство"
-  },
-  "ChangeLang": {
-    "One": "Переключить на китайский"
-  },
-  "My": {
-    "One": "Личное"
-  },
-  "Info": {
-    "One": "Информация"
-  },
-  "AddressBooks": {
-    "One": "Адресные книги"
-  },
-  "System": {
-    "One": "Система"
-  },
-  "PeerManage": {
-    "One": "Пиры"
-  },
-  "AddressBookManage": {
-    "One": "Адресные книги"
-  },
-  "GroupManage": {
-    "One": "Группы"
-  },
-  "UserManage": {
-    "One": "Пользователи"
-  },
-  "UserAdd": {
-    "One": "Добавить пользователя"
-  },
-  "UserEdit": {
-    "One": "Редактировать пользователя"
-  },
-  "TagsManage": {
-    "One": "Теги"
-  },
-  "OauthManage": {
-    "One": "Oauth"
-  },
-  "LoginLog": {
-    "One": "Журнал входов"
-  },
-  "LastOnlineTime": {
-    "One": "Последнее время онлайн"
-  },
-  "JustNow": {
-    "One": "Только что"
-  },
-  "MinutesAgo": {
-    "One": "{param} минуту назад",
-    "Other": "{param} минут назад"
-  },
-  "HoursAgo": {
-    "One": "{param} час назад",
-    "Other": "{param} часов назад"
-  },
-  "DaysAgo": {
-    "One": "{param} день назад",
-    "Other": "{param} дней назад"
-  },
-  "MonthsAgo": {
-    "One": "{param} месяц назад",
-    "Other": "{param} месяцев назад"
-  },
-  "YearsAgo": {
-    "One": "{param} год назад",
-    "Other": "{param} лет назад"
-  },
-  "MinutesLess": {
-    "One": "Менее {param} минуты",
-    "Other": "Менее {param} минут"
-  },
-  "HoursLess": {
-    "One": "Менее {param} часа",
-    "Other": "Менее {param} часов"
-  },
-  "DaysLess": {
-    "One": "Менее {param} дня",
-    "Other": "Менее {param} дней"
-  },
-  "Export": {
-    "One": "Экспорт"
-  },
-  "AddToAddressBook": {
-    "One": "Добавить в адресную книгу"
-  },
-  "BatchDelete": {
-    "One": "Пакетное удаление"
-  },
-  "PleaseSelectData": {
-    "One": "Пожалуйста, выберите данные"
-  },
-  "PasswordType": {
-    "One": "Тип пароля"
-  },
-  "OncePassword": {
-    "One": "Одноразовый пароль"
-  },
-  "FixedPassword": {
-    "One": "Фиксированный пароль"
-  },
-  "FixedPasswordWarning": {
-    "One": "Фиксированные пароли могут быть скомпрометированы, поэтому используйте их с осторожностью; рекомендуется использовать одноразовые пароли"
-  },
-  "ExpireTime": {
-    "One": "Время истечения"
-  },
-  "ShareByWebClient": {
-    "One": "Поделиться через веб-клиент"
-  },
-  "Minutes": {
-    "One": "{param} минута",
-    "Other": "{param} минуты"
-  },
-  "Hours": {
-    "One": "{param} час",
-    "Other": "{param} часа"
-  },
-  "Days": {
-    "One": "{param} день",
-    "Other": "{param} дня"
-  },
-  "Weeks": {
-    "One": "{param} неделя",
-    "Other": "{param} недели"
-  },
-  "Months": {
-    "One": "{param} месяц",
-    "Other": "{param} месяца"
-  },
-  "Forever": {
-    "One": "Навсегда"
-  },
-  "Error": {
-    "One": "Ошибка"
-  },
-  "IDNotExist": {
-    "One": "ID не существует"
-  },
-  "RemoteDesktopOffline": {
-    "One": "Удаленный рабочий стол отключен"
-  },
-  "KeyMismatch": {
-    "One": "Несоответствие ключа"
-  },
-  "KeyOveruse": {
-    "One": "Чрезмерное использование ключа"
-  },
-  "Link": {
-    "One": "Ссылка"
-  },
-  "CopySuccess": {
-    "One": "Копирование успешно"
-  },
-  "CopyFailed": {
-    "One": "Ошибка копирования"
-  },
-  "Timeout": {
-    "One": "Время ожидания истекло"
-  },
-  "AuditConnLog": {
-    "One": "Журнал соединений"
-  },
-  "Peer": {
-    "One": "Партнер",
-    "Other": "Партнеры"
-  },
-  "FromPeer": {
-    "One": "От партнера"
-  },
-  "FromName": {
-    "One": "От имени"
-  },
-  "CloseTime": {
-    "One": "Время закрытия"
-  },
-  "AuditFileLog": {
-    "One": "Журнал файлов"
-  },
-  "Common": {
-    "One": "Общий"
-  },
-  "File": {
-    "One": "Файл"
-  },
-  "Num": {
-    "One": "Номер"
-  },
-  "Ip": {
-    "One": "IP"
-  },
-  "FileName": {
-    "One": "Имя файла"
-  },
-  "FileInfo": {
-    "One": "Информация о файле"
-  },
-  "Path": {
-    "One": "Путь"
-  },
-  "IndexNum": {
-    "One": "Индексный номер"
-  },
-  "ToRemote": {
-    "One": "К удаленному"
-  },
-  "ToLocal": {
-    "One": "К локальному"
-  },
-  "AddressBookName": {
-    "One": "Имя адресной книги"
-  },
-  "AddRule": {
-    "One": "Добавить правило"
-  },
-  "ShareRules": {
-    "One": "Правила обмена"
-  },
-  "Rule": {
-    "One": "Правило"
-  },
-  "Read": {
-    "One": "Чтение"
-  },
-  "ReadWrite": {
-    "One": "Чтение и запись"
-  },
-  "FullControl": {
-    "One": "Полный доступ"
-  },
-  "ShareTo": {
-    "One": "Поделиться с"
-  },
-  "MyAddressBook": {
-    "One": "Моя адресная книга"
-  },
-  "AddressBook": {
-    "One": "Адресная книга"
-  },
-  "AddressBookNameManage": {
-    "One": "Имена адресных книг"
-  },
-  "MyAddressBookTips": {
-    "One": "«Моя адресная книга» является стандартным для системы, не может быть изменена или удалена"
-  },
-  "LastOnlineIp": {
-    "One": "Последний IP онлайн"
-  },
-  "OldPassword": {
-    "One": "Старый пароль"
-  },
-  "NewPasswordEqualOldPassword": {
-    "One": "Новый пароль совпадает со старым паролем"
-  },
-  "NewPassword": {
-    "One": "Новый пароль"
-  },
-  "ConfirmPassword": {
-    "One": "Подтвердите пароль"
-  },
-  "PasswordNotMatchConfirmPassword": {
-    "One": "Пароль и подтверждение пароля не совпадают"
-  },
-  "ToLogin": {
-    "One": "Войти"
-  },
-  "UserToken": {
-    "One": "Токен пользователя"
-  },
-  "MyPeer": {
-    "One": "Мои устройства"
-  },
-  "BatchAddToAB": {
-    "One": "Пакетное добавление в адресную книгу"
-  },
-  "BatchEditTags": {
-    "One": "Пакетное редактирование тегов"
-  },
-  "User": {
-    "One": "Пользователь"
-  },
-  "ShareRecord": {
-    "One": "Записи доступа"
-  },
-  "Second": {
-    "One": "Секунда"
-  },
-  "Captcha": {
-    "One": "Captcha"
-  },
-  "ServerCmd": {
-    "One": "Настройки сервера"
-  },
-  "Simple": {
-    "One": "Простой"
-  },
-  "Advanced": {
-    "One": "Расширенный"
-  },
-  "Available": {
-    "One": "Доступно"
-  },
-  "NotAvailable": {
-    "One": "Недоступно"
-  },
-  "ServerCmdTips": {
-    "One": "Эта функция экспериментальная. Пожалуйста, убедитесь, что API и hbbs и hbbr находятся на одном адресе обратной петли. Для получения дополнительной информации обратитесь к {wiki}"
-  },
-  "Refresh": {
-    "One": "Обновить"
-  },
-  "Save": {
-    "One": "Сохранить"
-  },
-  "SendCustom": {
-    "One": "Отправить настраиваемое"
-  },
-  "Send": {
-    "One": "Отправить"
-  },
-  "SendCmd": {
-    "One": "Отправить команду"
-  },
-  "Result": {
-    "One": "Результат"
-  },
-  "DeviceGroupManage": {
-    "One": "Группы устройств"
-  },
-  "Drop file here or click to upload": {
-    "One": "Перетащите файл сюда или нажмите, чтобы загрузить"
-  },
-  "Please upload csv file": {
-    "One": "Пожалуйста, загрузите файл csv"
-  },
-  "Columns": {
-    "One": "Столбцы"
-  },
-  "You can reference export file": {
-    "One": "Вы можете ссылаться на экспортируемый файл"
-  },
-  "Remark": {
-    "One": "Примечание"
-  },
-  "Dashboard": {
-    "One": "Дашборд"
-  },
-  "MenuDevices": {
-    "One": "Устройства"
-  },
-  "MenuAddressBook": {
-    "One": "Адресная книга"
-  },
-  "MenuUsers": {
-    "One": "Пользователи"
-  },
-  "MenuLogs": {
-    "One": "Логи и аудит"
-  },
-  "MenuServer": {
-    "One": "Сервер"
-  },
-  "DevicesOnline": {
-    "One": "Устройства онлайн"
-  },
-  "LoginsToday": {
-    "One": "Входов сегодня"
-  },
-  "LoginsTotal": {
-    "One": "Всего входов"
-  },
-  "LoginActivity14d": {
-    "One": "Активность входов · 14 дней"
-  },
-  "RecentLogins": {
-    "One": "Последние входы"
-  },
-  "QuickConnectPlaceholder": {
-    "One": "Введите ID устройства для подключения…"
-  },
-  "Connect": {
-    "One": "Подключить"
-  },
-  "SearchPlaceholder": {
-    "One": "Поиск по ID, имени хоста, пользователю…"
-  },
-  "SearchStart": {
-    "One": "Начните вводить ID или имя устройства"
-  },
-  "NothingFound": {
-    "One": "Ничего не найдено"
-  },
-  "Favorites": {
-    "One": "Избранное"
-  },
-  "Recent": {
-    "One": "Недавние"
-  },
-  "KbdConnect": {
-    "One": "подключиться"
-  },
-  "KbdClose": {
-    "One": "закрыть"
-  },
-  "KbdOpen": {
-    "One": "открыть"
-  },
-  "Done": {
-    "One": "Готово"
-  },
-  "ColumnsHint": {
-    "One": "Тяните заголовки · × скрыть · + добавить"
-  },
-  "AllColumnsShown": {
-    "One": "все колонки показаны"
-  },
-  "Wol": {
-    "One": "Разбудить (WoL)"
-  },
-  "WolSent": {
-    "One": "Magic packet отправлен"
-  },
-  "WolNoMac": {
-    "One": "У устройства не задан MAC. Укажите его в «Редактировать»."
-  },
-  "MacWol": {
-    "One": "MAC (WoL)"
-  },
-  "ViewCards": {
-    "One": "Плитки"
-  },
-  "ViewTable": {
-    "One": "Таблица"
-  },
-  "Online": {
-    "One": "Онлайн"
-  },
-  "Offline": {
-    "One": "Офлайн"
-  },
-  "GroupDefaultName": {
-    "One": "Группа по умолчанию"
-  },
-  "GroupShareName": {
-    "One": "Общая группа"
-  },
-  "WelcomeHello": {
-    "One": "👏 Привет, {name}! Добро пожаловать в RustDesk API"
-  },
-  "NoTag": {
-    "One": "Без метки"
-  },
-  "HideOffline": {
-    "One": "Скрыть офлайн"
-  },
-  "ShowOffline": {
-    "One": "Показать офлайн"
-  },
-  "RelayServersTitle": {
-    "One": "Ретрансляторы"
-  },
-  "RelayServersDesc": {
-    "One": "Адреса ретрансляторов"
-  },
-  "AlwaysRelayTitle": {
-    "One": "Всегда через relay"
-  },
-  "AlwaysRelayDesc": {
-    "One": "Весь трафик через ретранслятор"
-  },
-  "MustLoginTitle": {
-    "One": "Требовать вход"
-  },
-  "MustLoginDesc": {
-    "One": "Вход обязателен для подключения"
-  },
-  "UsageTitle": {
-    "One": "Использование"
-  },
-  "UsageDesc": {
-    "One": "Трафик relay по IP"
-  },
-  "BlockListTitle": {
-    "One": "Блок-лист"
-  },
-  "BlockListDesc": {
-    "One": "Заблокированные IP"
-  },
-  "BlackListTitle": {
-    "One": "Чёрный список"
-  },
-  "BlackListDesc": {
-    "One": "Забаненные IP"
-  },
-  "View": {
-    "One": "Просмотр"
-  }
+  "PanelTitleAdmin": "RustDesk · Админ",
+  "PanelTitleUser": "RustDesk · Панель",
+  "Login": "Вход",
+  "Logout": "Выход",
+  "Register": "Регистрация",
+  "Confirm": "Подтвердить",
+  "Username": "Имя пользователя",
+  "Password": "Пароль",
+  "LoginSuccess": "Успешный вход",
+  "ForgotPassword": "Забыли пароль",
+  "ResetPassword": "Сбросить пароль",
+  "ChangePassword": "Сменить пароль",
+  "Userinfo": "Профиль",
+  "ParamRequired": "Поле {param} обязательно",
+  "HasBind": "Связано",
+  "NoBind": "Не связано",
+  "UnBind": "Отвязать",
+  "ToBind": "Привязать",
+  "Confirm?": "Подтвердить {param}?",
+  "Cancel": "Отмена",
+  "Platform": "Платформа",
+  "Status": "Статус",
+  "Actions": "Действия",
+  "Filter": "Фильтр",
+  "Add": "Добавить",
+  "Hostname": "Имя хоста",
+  "Alias": "Псевдоним",
+  "Hash": "Хэш",
+  "Tags": "Теги",
+  "Edit": "Редактировать",
+  "Delete": "Удалить",
+  "Create": "Создать",
+  "Update": "Обновить",
+  "LoginName": "Имя для входа",
+  "Submit": "Отправить",
+  "OperationSuccess": "Операция выполнена успешно",
+  "Owner": "Владелец",
+  "Name": "Имя",
+  "Color": "Цвет",
+  "CreatedAt": "Создано",
+  "UpdatedAt": "Обновлено",
+  "Memory": "Память",
+  "Os": "ОС",
+  "Uuid": "UUID",
+  "Version": "Версия",
+  "Type": "Тип",
+  "Group": "Группа",
+  "CommonGroup": "Общая группа",
+  "CommonGroupNote": "Только администраторы могут видеть участников группы и их устройства",
+  "SharedGroup": "Общая группа",
+  "SharedGroupNote": "Все пользователи могут видеть участников группы и их устройства",
+  "Nickname": "Псевдоним",
+  "UserTags": "Теги пользователя",
+  "UserAddressBook": "Адресная книга пользователя",
+  "IsAdmin": "Является администратором",
+  "PleaseInputNewPassword": "Пожалуйста, введите новый пароль",
+  "AutoRegister": "Авто-регистрация",
+  "AutoRegisterNote": "Если включено, аккаунт будет автоматически зарегистрирован, когда пользователь входит через OAuth без привязки к существующему аккаунту",
+  "ThirdName": "Название стороннего сервиса",
+  "Close": "Закрыть",
+  "OauthBinding": "Вы авторизуете привязку",
+  "OauthLogining": "Вы авторизуете вход",
+  "OauthCloseNote": "Если это не было авторизовано вами, пожалуйста, закройте страницу",
+  "OperationSuccessAndCloseAfter3Seconds": "Операция выполнена успешно, закройте через 3 секунды",
+  "ConfirmOauth": "Подтвердить Oauth",
+  "Device": "Устройство",
+  "ChangeLang": "Переключить на китайский",
+  "My": "Личное",
+  "Info": "Информация",
+  "AddressBooks": "Адресные книги",
+  "System": "Система",
+  "PeerManage": "Пиры",
+  "AddressBookManage": "Адресные книги",
+  "GroupManage": "Группы",
+  "UserManage": "Пользователи",
+  "UserAdd": "Добавить пользователя",
+  "UserEdit": "Редактировать пользователя",
+  "TagsManage": "Теги",
+  "OauthManage": "Oauth",
+  "LoginLog": "Журнал входов",
+  "LastOnlineTime": "Последнее время онлайн",
+  "JustNow": "Только что",
+  "MinutesAgo": "{param} минуту назад | {param} минут назад",
+  "HoursAgo": "{param} час назад | {param} часов назад",
+  "DaysAgo": "{param} день назад | {param} дней назад",
+  "MonthsAgo": "{param} месяц назад | {param} месяцев назад",
+  "YearsAgo": "{param} год назад | {param} лет назад",
+  "MinutesLess": "Менее {param} минуты | Менее {param} минут",
+  "HoursLess": "Менее {param} часа | Менее {param} часов",
+  "DaysLess": "Менее {param} дня | Менее {param} дней",
+  "Export": "Экспорт",
+  "AddToAddressBook": "Добавить в адресную книгу",
+  "BatchDelete": "Пакетное удаление",
+  "PleaseSelectData": "Пожалуйста, выберите данные",
+  "PasswordType": "Тип пароля",
+  "OncePassword": "Одноразовый пароль",
+  "FixedPassword": "Фиксированный пароль",
+  "FixedPasswordWarning": "Фиксированные пароли могут быть скомпрометированы, поэтому используйте их с осторожностью; рекомендуется использовать одноразовые пароли",
+  "ExpireTime": "Время истечения",
+  "ShareByWebClient": "Поделиться через веб-клиент",
+  "Minutes": "{param} минута | {param} минуты",
+  "Hours": "{param} час | {param} часа",
+  "Days": "{param} день | {param} дня",
+  "Weeks": "{param} неделя | {param} недели",
+  "Months": "{param} месяц | {param} месяца",
+  "Forever": "Навсегда",
+  "Error": "Ошибка",
+  "IDNotExist": "ID не существует",
+  "RemoteDesktopOffline": "Удаленный рабочий стол отключен",
+  "KeyMismatch": "Несоответствие ключа",
+  "KeyOveruse": "Чрезмерное использование ключа",
+  "Link": "Ссылка",
+  "CopySuccess": "Копирование успешно",
+  "CopyFailed": "Ошибка копирования",
+  "Timeout": "Время ожидания истекло",
+  "AuditConnLog": "Журнал соединений",
+  "Peer": "Партнер | Партнеры",
+  "FromPeer": "От партнера",
+  "FromName": "От имени",
+  "CloseTime": "Время закрытия",
+  "AuditFileLog": "Журнал файлов",
+  "Common": "Общий",
+  "File": "Файл",
+  "Num": "Номер",
+  "Ip": "IP",
+  "FileName": "Имя файла",
+  "FileInfo": "Информация о файле",
+  "Path": "Путь",
+  "IndexNum": "Индексный номер",
+  "ToRemote": "К удаленному",
+  "ToLocal": "К локальному",
+  "AddressBookName": "Имя адресной книги",
+  "AddRule": "Добавить правило",
+  "ShareRules": "Правила обмена",
+  "Rule": "Правило",
+  "Read": "Чтение",
+  "ReadWrite": "Чтение и запись",
+  "FullControl": "Полный доступ",
+  "ShareTo": "Поделиться с",
+  "MyAddressBook": "Моя адресная книга",
+  "AddressBook": "Адресная книга",
+  "AddressBookNameManage": "Имена адресных книг",
+  "MyAddressBookTips": "«Моя адресная книга» является стандартным для системы, не может быть изменена или удалена",
+  "LastOnlineIp": "Последний IP онлайн",
+  "OldPassword": "Старый пароль",
+  "NewPasswordEqualOldPassword": "Новый пароль совпадает со старым паролем",
+  "NewPassword": "Новый пароль",
+  "ConfirmPassword": "Подтвердите пароль",
+  "PasswordNotMatchConfirmPassword": "Пароль и подтверждение пароля не совпадают",
+  "ToLogin": "Войти",
+  "UserToken": "Токен пользователя",
+  "MyPeer": "Мои устройства",
+  "BatchAddToAB": "Пакетное добавление в адресную книгу",
+  "BatchEditTags": "Пакетное редактирование тегов",
+  "User": "Пользователь",
+  "ShareRecord": "Записи доступа",
+  "Second": "Секунда",
+  "Captcha": "Captcha",
+  "ServerCmd": "Настройки сервера",
+  "Simple": "Простой",
+  "Advanced": "Расширенный",
+  "Available": "Доступно",
+  "NotAvailable": "Недоступно",
+  "ServerCmdTips": "Эта функция экспериментальная. Пожалуйста, убедитесь, что API и hbbs и hbbr находятся на одном адресе обратной петли. Для получения дополнительной информации обратитесь к {wiki}",
+  "Refresh": "Обновить",
+  "Save": "Сохранить",
+  "SendCustom": "Отправить настраиваемое",
+  "Send": "Отправить",
+  "SendCmd": "Отправить команду",
+  "Result": "Результат",
+  "DeviceGroupManage": "Группы устройств",
+  "Drop file here or click to upload": "Перетащите файл сюда или нажмите, чтобы загрузить",
+  "Please upload csv file": "Пожалуйста, загрузите файл csv",
+  "Columns": "Столбцы",
+  "You can reference export file": "Вы можете ссылаться на экспортируемый файл",
+  "Remark": "Примечание",
+  "Dashboard": "Дашборд",
+  "MenuDevices": "Устройства",
+  "MenuAddressBook": "Адресная книга",
+  "MenuUsers": "Пользователи",
+  "MenuLogs": "Логи и аудит",
+  "MenuServer": "Сервер",
+  "DevicesOnline": "Устройства онлайн",
+  "LoginsToday": "Входов сегодня",
+  "LoginsTotal": "Всего входов",
+  "LoginActivity14d": "Активность входов · 14 дней",
+  "RecentLogins": "Последние входы",
+  "QuickConnectPlaceholder": "Введите ID устройства для подключения…",
+  "Connect": "Подключить",
+  "SearchPlaceholder": "Поиск по ID, имени хоста, пользователю…",
+  "SearchStart": "Начните вводить ID или имя устройства",
+  "NothingFound": "Ничего не найдено",
+  "Favorites": "Избранное",
+  "Recent": "Недавние",
+  "KbdConnect": "подключиться",
+  "KbdClose": "закрыть",
+  "KbdOpen": "открыть",
+  "Done": "Готово",
+  "ColumnsHint": "Тяните заголовки · × скрыть · + добавить",
+  "AllColumnsShown": "все колонки показаны",
+  "Wol": "Разбудить (WoL)",
+  "WolSent": "Magic packet отправлен",
+  "WolNoMac": "У устройства не задан MAC. Укажите его в «Редактировать».",
+  "MacWol": "MAC (WoL)",
+  "ViewCards": "Плитки",
+  "ViewTable": "Таблица",
+  "Online": "Онлайн",
+  "Offline": "Офлайн",
+  "GroupDefaultName": "Группа по умолчанию",
+  "GroupShareName": "Общая группа",
+  "WelcomeHello": "👏 Привет, {name}! Добро пожаловать в RustDesk API",
+  "NoTag": "Без метки",
+  "HideOffline": "Скрыть офлайн",
+  "ShowOffline": "Показать офлайн",
+  "RelayServersTitle": "Ретрансляторы",
+  "RelayServersDesc": "Адреса ретрансляторов",
+  "AlwaysRelayTitle": "Всегда через relay",
+  "AlwaysRelayDesc": "Весь трафик через ретранслятор",
+  "MustLoginTitle": "Требовать вход",
+  "MustLoginDesc": "Вход обязателен для подключения",
+  "UsageTitle": "Использование",
+  "UsageDesc": "Трафик relay по IP",
+  "BlockListTitle": "Блок-лист",
+  "BlockListDesc": "Заблокированные IP",
+  "BlackListTitle": "Чёрный список",
+  "BlackListDesc": "Забаненные IP",
+  "View": "Просмотр"
 }

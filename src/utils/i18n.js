@@ -1,3 +1,4 @@
+import { createI18n } from 'vue-i18n'
 import en from '@/utils/i18n/en.json'
 import fr from '@/utils/i18n/fr.json'
 import zhCN from '@/utils/i18n/zh_CN.json'
@@ -7,27 +8,28 @@ import es from '@/utils/i18n/es.json'
 import zhTW from '@/utils/i18n/zh_TW.json'
 import { useAppStore } from '@/store/app'
 
-const trans = {
-  'en': en,
-  'fr': fr,
-  'zh-CN': zhCN,
-  'ko': ko,
-  'ru': ru,
-  'es': es,
-  'zh-TW': zhTW,
-}
-export function T (key, params, num = 0) {
-  const appStore = useAppStore()
-  const lang = appStore.setting.lang
-  const tran = trans[lang]?.[key]
-  if (!tran) {
-    return key
-  }
-  const msg = num > 1 ? (tran.Other ? tran.Other : tran.One) : tran.One
-  //msg 是这样 {name} is name
-  //params 是这样 {name: 'zhangsan'}
-  //替换
-  return msg.replace(/{(\w+)}/g, function (match, key) {
-    return params[key] || match
-  })
+// Движок — vue-i18n (плюрализация "one | other", интерполяция {param}, фолбэк, предупреждения о пропусках).
+export const i18n = createI18n({
+  legacy: false,
+  globalInjection: true,
+  locale: 'en',
+  fallbackLocale: 'en',
+  missingWarn: false,
+  fallbackWarn: false,
+  messages: {
+    en,
+    fr,
+    'zh-CN': zhCN,
+    ko,
+    ru,
+    es,
+    'zh-TW': zhTW,
+  },
+})
+
+// Обёртка совместимости со старым API T(key, params, num) — чтобы не трогать ~50 файлов.
+// Локаль берём из appStore (как и раньше). num — счётчик для плюрализации.
+export function T(key, params = {}, num) {
+  const locale = useAppStore().setting.lang
+  return i18n.global.t(key, num ?? 1, { named: params, locale })
 }

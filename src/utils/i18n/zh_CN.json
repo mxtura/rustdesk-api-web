@@ -1,701 +1,235 @@
 {
-  "Login": {
-    "One": "登录"
-  },
-  "Logout": {
-    "One": "退出登录"
-  },
-  "Register": {
-    "One": "注册"
-  },
-  "Confirm": {
-    "One": "确认"
-  },
-  "Username": {
-    "One": "用户名"
-  },
-  "Password": {
-    "One": "密码"
-  },
-  "LoginSuccess": {
-    "One": "登录成功"
-  },
-  "ForgotPassword": {
-    "One": "忘记密码"
-  },
-  "ResetPassword": {
-    "One": "重置密码"
-  },
-  "ChangePassword": {
-    "One": "修改密码"
-  },
-  "Userinfo": {
-    "One": "个人资料"
-  },
-  "ParamRequired": {
-    "One": "{param} 是必须的"
-  },
-  "HasBind": {
-    "One": "已绑定"
-  },
-  "NoBind": {
-    "One": "未绑定"
-  },
-  "UnBind": {
-    "One": "解绑"
-  },
-  "ToBind": {
-    "One": "绑定"
-  },
-  "Confirm?": {
-    "One": "确定{param}?"
-  },
-  "Cancel": {
-    "One": "取消"
-  },
-  "Platform": {
-    "One": "平台"
-  },
-  "Status": {
-    "One": "状态"
-  },
-  "Actions": {
-    "One": "操作"
-  },
-  "Filter": {
-    "One": "筛选"
-  },
-  "Add": {
-    "One": "添加"
-  },
-  "Hostname": {
-    "One": "主机名"
-  },
-  "Alias": {
-    "One": "别名"
-  },
-  "Hash": {
-    "One": "哈希"
-  },
-  "Tags": {
-    "One": "标签"
-  },
-  "Edit": {
-    "One": "编辑"
-  },
-  "Delete": {
-    "One": "删除"
-  },
-  "Create": {
-    "One": "创建"
-  },
-  "Update": {
-    "One": "更新"
-  },
-  "LoginName": {
-    "One": "登录名"
-  },
-  "Submit": {
-    "One": "提交"
-  },
-  "OperationSuccess": {
-    "One": "操作成功"
-  },
-  "Owner": {
-    "One": "所有者"
-  },
-  "Name": {
-    "One": "名称"
-  },
-  "Color": {
-    "One": "颜色"
-  },
-  "CreatedAt": {
-    "One": "创建时间"
-  },
-  "UpdatedAt": {
-    "One": "更新时间"
-  },
-  "Memory": {
-    "One": "内存"
-  },
-  "Os": {
-    "One": "操作系统"
-  },
-  "Uuid": {
-    "One": "UUID"
-  },
-  "Version": {
-    "One": "版本"
-  },
-  "Type": {
-    "One": "类型"
-  },
-  "Group": {
-    "One": "组"
-  },
-  "CommonGroup": {
-    "One": "普通组"
-  },
-  "CommonGroupNote": {
-    "One": "只有管理员才能查看群组成员及其设备"
-  },
-  "SharedGroup": {
-    "One": "共享组"
-  },
-  "SharedGroupNote": {
-    "One": "所有用户都可以查看群组成员及其设备"
-  },
-  "Nickname": {
-    "One": "昵称"
-  },
-  "UserTags": {
-    "One": "用户标签"
-  },
-  "UserAddressBook": {
-    "One": "用户地址簿"
-  },
-  "IsAdmin": {
-    "One": "是否管理员"
-  },
-  "PleaseInputNewPassword": {
-    "One": "请输入新密码"
-  },
-  "AutoRegister": {
-    "One": "自动注册"
-  },
-  "AutoRegisterNote": {
-    "One": "如果启用，则当用户使用 OAuth 登录时，将自动注册一个帐户，而无需绑定现有帐户"
-  },
-  "ThirdName": {
-    "One": "第三方名称"
-  },
-  "Close": {
-    "One": "关闭"
-  },
-  "OauthBinding": {
-    "One": "您正在授权绑定"
-  },
-  "OauthLogining": {
-    "One": "您正在授权登录"
-  },
-  "OauthCloseNote": {
-    "One": "如不是您发起的授权，请直接关闭页面"
-  },
-  "OperationSuccessAndCloseAfter3Seconds": {
-    "One": "操作成功，3秒后将自动关闭页面"
-  },
-  "ConfirmOauth": {
-    "One": "确认授权"
-  },
-  "Device": {
-    "One": "设备"
-  },
-  "ChangeLang": {
-    "One": "ToEnglish"
-  },
-  "My": {
-    "One": "个人"
-  },
-  "Info": {
-    "One": "信息"
-  },
-  "AddressBooks": {
-    "One": "地址簿"
-  },
-  "System": {
-    "One": "系统"
-  },
-  "PeerManage": {
-    "One": "设备管理"
-  },
-  "AddressBookManage": {
-    "One": "地址簿管理"
-  },
-  "GroupManage": {
-    "One": "群组管理"
-  },
-  "UserManage": {
-    "One": "用户管理"
-  },
-  "UserAdd": {
-    "One": "用户添加"
-  },
-  "UserEdit": {
-    "One": "用户编辑"
-  },
-  "TagsManage": {
-    "One": "标签管理"
-  },
-  "OauthManage": {
-    "One": "Oauth管理"
-  },
-  "LoginLog": {
-    "One": "登录日志"
-  },
-  "LastOnlineTime": {
-    "One": "最后在线时间"
-  },
-  "JustNow": {
-    "One": "刚刚"
-  },
-  "MinutesAgo": {
-    "One": "{param} 分钟前"
-  },
-  "HoursAgo": {
-    "One": "{param} 小时前"
-  },
-  "DaysAgo": {
-    "One": "{param} 天前"
-  },
-  "MonthsAgo": {
-    "One": "{param} 月前"
-  },
-  "YearsAgo": {
-    "One": "{param} 年前"
-  },
-  "MinutesLess": {
-    "One": "{param} 分钟内"
-  },
-  "HoursLess": {
-    "One": "{param} 小时内"
-  },
-  "DaysLess": {
-    "One": "{param} 天内"
-  },
-  "Export": {
-    "One": "导出"
-  },
-  "AddToAddressBook": {
-    "One": "添加到地址簿"
-  },
-  "BatchDelete": {
-    "One": "批量删除"
-  },
-  "PleaseSelectData": {
-    "One": "请选择数据"
-  },
-  "PasswordType": {
-    "One": "密码类型"
-  },
-  "OncePassword": {
-    "One": "一次性密码"
-  },
-  "FixedPassword": {
-    "One": "固定密码"
-  },
-  "FixedPasswordWarning": {
-    "One": "固定密码可能存在泄露风险，请谨慎使用，建议使用一次性密码"
-  },
-  "ExpireTime": {
-    "One": "过期时间"
-  },
-  "ShareByWebClient": {
-    "One": "通过 Web Client 分享"
-  },
-  "Minutes": {
-    "One": "{param} 分钟"
-  },
-  "Hours": {
-    "One": "{param} 小时"
-  },
-  "Days": {
-    "One": "{param} 天"
-  },
-  "Weeks": {
-    "One": "{param} 周"
-  },
-  "Months": {
-    "One": "{param} 月"
-  },
-  "Forever": {
-    "One": "永久"
-  },
-  "Error": {
-    "One": "错误"
-  },
-  "IDNotExist": {
-    "One": "ID 不存在"
-  },
-  "RemoteDesktopOffline": {
-    "One": "远程电脑不在线"
-  },
-  "KeyMismatch": {
-    "One": "KEY不匹配"
-  },
-  "KeyOveruse": {
-    "One": "KEY使用过度"
-  },
-  "Link": {
-    "One": "链接"
-  },
-  "CopySuccess": {
-    "One": "复制成功"
-  },
-  "CopyFailed": {
-    "One": "复制失败"
-  },
-  "Timeout": {
-    "One": "超时"
-  },
-  "AuditConnLog": {
-    "One": "连接日志"
-  },
-  "Peer": {
-    "One": "设备"
-  },
-  "FromPeer": {
-    "One": "来源设备"
-  },
-  "FromName": {
-    "One": "来源名称"
-  },
-  "CloseTime": {
-    "One": "关闭时间"
-  },
-  "AuditFileLog": {
-    "One": "文件日志"
-  },
-  "Common": {
-    "One": "普通"
-  },
-  "File": {
-    "One": "文件"
-  },
-  "Num": {
-    "One": "数量"
-  },
-  "Ip": {
-    "One": "IP"
-  },
-  "FileName": {
-    "One": "文件名"
-  },
-  "FileInfo": {
-    "One": "文件信息"
-  },
-  "Path": {
-    "One": "路径"
-  },
-  "IndexNum": {
-    "One": "序号"
-  },
-  "ToRemote": {
-    "One": "到远程"
-  },
-  "ToLocal": {
-    "One": "到本地"
-  },
-  "AddressBookName": {
-    "One": "地址簿名称"
-  },
-  "AddressBookCollection": {
-    "One": "地址簿集"
-  },
-  "AddRule": {
-    "One": "添加规则"
-  },
-  "ShareRules": {
-    "One": "分享规则"
-  },
-  "Rule": {
-    "One": "规则"
-  },
-  "Read": {
-    "One": "读取"
-  },
-  "ReadWrite": {
-    "One": "读写"
-  },
-  "FullControl": {
-    "One": "完全控制"
-  },
-  "ShareTo": {
-    "One": "分享给"
-  },
-  "MyAddressBook": {
-    "One": "我的地址簿"
-  },
-  "AddressBook": {
-    "One": "地址簿"
-  },
-  "AddressBookNameManage": {
-    "One": "地址簿名称"
-  },
-  "MyAddressBookTips": {
-    "One": "\"我的地址簿\"是系统默认，不可修改、删除"
-  },
-  "LastOnlineIp": {
-    "One": "最后在线IP"
-  },
-  "or login in with": {
-    "One": "或使用以下登陆"
-  },
-  "Optional, default is": {
-    "One": "可选, 默认值是"
-  },
-  "Check your IdP docs, without": {
-    "One": "检查IdP的文档, 不包含"
-  },
-  "For OIDC login without a password, enter any 4-20 letters": {
-    "One": "如果通过 OIDC 登录且未设置密码，请输入任意 4-20 个字符"
-  },
-  "OldPassword": {
-    "One": "旧密码"
-  },
-  "NewPassword": {
-    "One": "新密码"
-  },
-  "NewPasswordEqualOldPassword": {
-    "One": "新密码不能与旧密码相同"
-  },
-  "ConfirmPassword": {
-    "One": "确认密码"
-  },
-  "PasswordNotMatchConfirmPassword": {
-    "One": "密码与确认密码不匹配"
-  },
-  "ToLogin": {
-    "One": "去登录"
-  },
-  "UserToken": {
-    "One": "用户Token"
-  },
-  "Email": {
-    "One": "邮箱"
-  },
-  "MyPeer": {
-    "One": "我的设备"
-  },
-  "View": {
-    "One": "查看"
-  },
-  "Information": {
-    "One": "信息"
-  },
-  "BatchAddToAB": {
-    "One": "批量添加到地址簿"
-  },
-  "BatchEditTags": {
-    "One": "批量编辑标签"
-  },
-  "User": {
-    "One": "用户"
-  },
-  "ShareRecord": {
-    "One": "分享记录"
-  },
-  "Second": {
-    "One": "秒"
-  },
-  "Captcha": {
-    "One": "验证码"
-  },
-  "ServerCmd": {
-    "One": "服务器设置"
-  },
-  "Simple": {
-    "One": "简单"
-  },
-  "Advanced": {
-    "One": "高级"
-  },
-  "Available": {
-    "One": "可用"
-  },
-  "NotAvailable": {
-    "One": "不可用"
-  },
-  "ServerCmdTips": {
-    "One": "此处功能为实验性质，请确保api和 hbbs/hbbr 处于同一回环地址下，更多说明请参考 {wiki}"
-  },
-  "Refresh": {
-    "One": "刷新"
-  },
-  "Save": {
-    "One": "保存"
-  },
-  "SendCustom": {
-    "One": "发送自定义"
-  },
-  "Send": {
-    "One": "发送"
-  },
-  "SendCmd": {
-    "One": "发送命令"
-  },
-  "Result": {
-    "One": "结果"
-  },
-  "DeviceGroupManage": {
-    "One": "设备分组"
-  },
-  "Import": {
-    "One": "导入"
-  },
-  "Drop file here or click to upload": {
-    "One": "将文件拖到此处或单击上传"
-  },
-  "Please upload csv file": {
-    "One": "请上传csv文件"
-  },
-  "Columns": {
-    "One": "列"
-  },
-  "You can reference export file": {
-    "One": "您可以参考导出文件"
-  },
-  "Remark": {
-    "One": "备注"
-  },
-  "Dashboard": {
-    "One": "仪表盘"
-  },
-  "MenuDevices": {
-    "One": "设备"
-  },
-  "MenuAddressBook": {
-    "One": "地址簿"
-  },
-  "MenuUsers": {
-    "One": "用户"
-  },
-  "MenuLogs": {
-    "One": "日志与审计"
-  },
-  "MenuServer": {
-    "One": "服务器"
-  },
-  "DevicesOnline": {
-    "One": "在线设备"
-  },
-  "LoginsToday": {
-    "One": "今日登录"
-  },
-  "LoginsTotal": {
-    "One": "登录总数"
-  },
-  "LoginActivity14d": {
-    "One": "登录活动 · 14天"
-  },
-  "RecentLogins": {
-    "One": "最近登录"
-  },
-  "QuickConnectPlaceholder": {
-    "One": "输入设备ID进行连接…"
-  },
-  "Connect": {
-    "One": "连接"
-  },
-  "SearchPlaceholder": {
-    "One": "按ID、主机名、用户搜索…"
-  },
-  "SearchStart": {
-    "One": "开始输入设备ID或名称"
-  },
-  "NothingFound": {
-    "One": "未找到"
-  },
-  "Favorites": {
-    "One": "收藏"
-  },
-  "Recent": {
-    "One": "最近"
-  },
-  "KbdConnect": {
-    "One": "连接"
-  },
-  "KbdClose": {
-    "One": "关闭"
-  },
-  "KbdOpen": {
-    "One": "打开"
-  },
-  "Done": {
-    "One": "完成"
-  },
-  "ColumnsHint": {
-    "One": "拖动表头 · × 隐藏 · + 添加"
-  },
-  "AllColumnsShown": {
-    "One": "所有列已显示"
-  },
-  "Wol": {
-    "One": "唤醒 (WoL)"
-  },
-  "WolSent": {
-    "One": "已发送唤醒包"
-  },
-  "WolNoMac": {
-    "One": "未设置MAC，请在\"编辑\"中填写。"
-  },
-  "MacWol": {
-    "One": "MAC (WoL)"
-  },
-  "ViewCards": {
-    "One": "卡片"
-  },
-  "ViewTable": {
-    "One": "表格"
-  },
-  "Online": {
-    "One": "在线"
-  },
-  "Offline": {
-    "One": "离线"
-  },
-  "GroupDefaultName": {
-    "One": "默认组"
-  },
-  "GroupShareName": {
-    "One": "共享组"
-  },
-  "WelcomeHello": {
-    "One": "👏 你好 {name}，欢迎使用 RustDesk API"
-  },
-  "NoTag": {
-    "One": "无标签"
-  },
-  "HideOffline": {
-    "One": "隐藏离线"
-  },
-  "ShowOffline": {
-    "One": "显示离线"
-  },
-  "RelayServersTitle": {
-    "One": "中继服务器"
-  },
-  "RelayServersDesc": {
-    "One": "中继地址"
-  },
-  "AlwaysRelayTitle": {
-    "One": "始终中继"
-  },
-  "AlwaysRelayDesc": {
-    "One": "强制走中继"
-  },
-  "MustLoginTitle": {
-    "One": "必须登录"
-  },
-  "MustLoginDesc": {
-    "One": "连接前需登录"
-  },
-  "UsageTitle": {
-    "One": "使用情况"
-  },
-  "UsageDesc": {
-    "One": "各IP中继流量"
-  },
-  "BlockListTitle": {
-    "One": "阻止列表"
-  },
-  "BlockListDesc": {
-    "One": "被阻止的IP"
-  },
-  "BlackListTitle": {
-    "One": "黑名单"
-  },
-  "BlackListDesc": {
-    "One": "黑名单IP"
-  }
+  "Login": "登录",
+  "Logout": "退出登录",
+  "Register": "注册",
+  "Confirm": "确认",
+  "Username": "用户名",
+  "Password": "密码",
+  "LoginSuccess": "登录成功",
+  "ForgotPassword": "忘记密码",
+  "ResetPassword": "重置密码",
+  "ChangePassword": "修改密码",
+  "Userinfo": "个人资料",
+  "ParamRequired": "{param} 是必须的",
+  "HasBind": "已绑定",
+  "NoBind": "未绑定",
+  "UnBind": "解绑",
+  "ToBind": "绑定",
+  "Confirm?": "确定{param}?",
+  "Cancel": "取消",
+  "Platform": "平台",
+  "Status": "状态",
+  "Actions": "操作",
+  "Filter": "筛选",
+  "Add": "添加",
+  "Hostname": "主机名",
+  "Alias": "别名",
+  "Hash": "哈希",
+  "Tags": "标签",
+  "Edit": "编辑",
+  "Delete": "删除",
+  "Create": "创建",
+  "Update": "更新",
+  "LoginName": "登录名",
+  "Submit": "提交",
+  "OperationSuccess": "操作成功",
+  "Owner": "所有者",
+  "Name": "名称",
+  "Color": "颜色",
+  "CreatedAt": "创建时间",
+  "UpdatedAt": "更新时间",
+  "Memory": "内存",
+  "Os": "操作系统",
+  "Uuid": "UUID",
+  "Version": "版本",
+  "Type": "类型",
+  "Group": "组",
+  "CommonGroup": "普通组",
+  "CommonGroupNote": "只有管理员才能查看群组成员及其设备",
+  "SharedGroup": "共享组",
+  "SharedGroupNote": "所有用户都可以查看群组成员及其设备",
+  "Nickname": "昵称",
+  "UserTags": "用户标签",
+  "UserAddressBook": "用户地址簿",
+  "IsAdmin": "是否管理员",
+  "PleaseInputNewPassword": "请输入新密码",
+  "AutoRegister": "自动注册",
+  "AutoRegisterNote": "如果启用，则当用户使用 OAuth 登录时，将自动注册一个帐户，而无需绑定现有帐户",
+  "ThirdName": "第三方名称",
+  "Close": "关闭",
+  "OauthBinding": "您正在授权绑定",
+  "OauthLogining": "您正在授权登录",
+  "OauthCloseNote": "如不是您发起的授权，请直接关闭页面",
+  "OperationSuccessAndCloseAfter3Seconds": "操作成功，3秒后将自动关闭页面",
+  "ConfirmOauth": "确认授权",
+  "Device": "设备",
+  "ChangeLang": "ToEnglish",
+  "My": "个人",
+  "Info": "信息",
+  "AddressBooks": "地址簿",
+  "System": "系统",
+  "PeerManage": "设备管理",
+  "AddressBookManage": "地址簿管理",
+  "GroupManage": "群组管理",
+  "UserManage": "用户管理",
+  "UserAdd": "用户添加",
+  "UserEdit": "用户编辑",
+  "TagsManage": "标签管理",
+  "OauthManage": "Oauth管理",
+  "LoginLog": "登录日志",
+  "LastOnlineTime": "最后在线时间",
+  "JustNow": "刚刚",
+  "MinutesAgo": "{param} 分钟前",
+  "HoursAgo": "{param} 小时前",
+  "DaysAgo": "{param} 天前",
+  "MonthsAgo": "{param} 月前",
+  "YearsAgo": "{param} 年前",
+  "MinutesLess": "{param} 分钟内",
+  "HoursLess": "{param} 小时内",
+  "DaysLess": "{param} 天内",
+  "Export": "导出",
+  "AddToAddressBook": "添加到地址簿",
+  "BatchDelete": "批量删除",
+  "PleaseSelectData": "请选择数据",
+  "PasswordType": "密码类型",
+  "OncePassword": "一次性密码",
+  "FixedPassword": "固定密码",
+  "FixedPasswordWarning": "固定密码可能存在泄露风险，请谨慎使用，建议使用一次性密码",
+  "ExpireTime": "过期时间",
+  "ShareByWebClient": "通过 Web Client 分享",
+  "Minutes": "{param} 分钟",
+  "Hours": "{param} 小时",
+  "Days": "{param} 天",
+  "Weeks": "{param} 周",
+  "Months": "{param} 月",
+  "Forever": "永久",
+  "Error": "错误",
+  "IDNotExist": "ID 不存在",
+  "RemoteDesktopOffline": "远程电脑不在线",
+  "KeyMismatch": "KEY不匹配",
+  "KeyOveruse": "KEY使用过度",
+  "Link": "链接",
+  "CopySuccess": "复制成功",
+  "CopyFailed": "复制失败",
+  "Timeout": "超时",
+  "AuditConnLog": "连接日志",
+  "Peer": "设备",
+  "FromPeer": "来源设备",
+  "FromName": "来源名称",
+  "CloseTime": "关闭时间",
+  "AuditFileLog": "文件日志",
+  "Common": "普通",
+  "File": "文件",
+  "Num": "数量",
+  "Ip": "IP",
+  "FileName": "文件名",
+  "FileInfo": "文件信息",
+  "Path": "路径",
+  "IndexNum": "序号",
+  "ToRemote": "到远程",
+  "ToLocal": "到本地",
+  "AddressBookName": "地址簿名称",
+  "AddressBookCollection": "地址簿集",
+  "AddRule": "添加规则",
+  "ShareRules": "分享规则",
+  "Rule": "规则",
+  "Read": "读取",
+  "ReadWrite": "读写",
+  "FullControl": "完全控制",
+  "ShareTo": "分享给",
+  "MyAddressBook": "我的地址簿",
+  "AddressBook": "地址簿",
+  "AddressBookNameManage": "地址簿名称",
+  "MyAddressBookTips": "\"我的地址簿\"是系统默认，不可修改、删除",
+  "LastOnlineIp": "最后在线IP",
+  "or login in with": "或使用以下登陆",
+  "Optional, default is": "可选, 默认值是",
+  "Check your IdP docs, without": "检查IdP的文档, 不包含",
+  "For OIDC login without a password, enter any 4-20 letters": "如果通过 OIDC 登录且未设置密码，请输入任意 4-20 个字符",
+  "OldPassword": "旧密码",
+  "NewPassword": "新密码",
+  "NewPasswordEqualOldPassword": "新密码不能与旧密码相同",
+  "ConfirmPassword": "确认密码",
+  "PasswordNotMatchConfirmPassword": "密码与确认密码不匹配",
+  "ToLogin": "去登录",
+  "UserToken": "用户Token",
+  "Email": "邮箱",
+  "MyPeer": "我的设备",
+  "View": "查看",
+  "Information": "信息",
+  "BatchAddToAB": "批量添加到地址簿",
+  "BatchEditTags": "批量编辑标签",
+  "User": "用户",
+  "ShareRecord": "分享记录",
+  "Second": "秒",
+  "Captcha": "验证码",
+  "ServerCmd": "服务器设置",
+  "Simple": "简单",
+  "Advanced": "高级",
+  "Available": "可用",
+  "NotAvailable": "不可用",
+  "ServerCmdTips": "此处功能为实验性质，请确保api和 hbbs/hbbr 处于同一回环地址下，更多说明请参考 {wiki}",
+  "Refresh": "刷新",
+  "Save": "保存",
+  "SendCustom": "发送自定义",
+  "Send": "发送",
+  "SendCmd": "发送命令",
+  "Result": "结果",
+  "DeviceGroupManage": "设备分组",
+  "Import": "导入",
+  "Drop file here or click to upload": "将文件拖到此处或单击上传",
+  "Please upload csv file": "请上传csv文件",
+  "Columns": "列",
+  "You can reference export file": "您可以参考导出文件",
+  "Remark": "备注",
+  "Dashboard": "仪表盘",
+  "MenuDevices": "设备",
+  "MenuAddressBook": "地址簿",
+  "MenuUsers": "用户",
+  "MenuLogs": "日志与审计",
+  "MenuServer": "服务器",
+  "DevicesOnline": "在线设备",
+  "LoginsToday": "今日登录",
+  "LoginsTotal": "登录总数",
+  "LoginActivity14d": "登录活动 · 14天",
+  "RecentLogins": "最近登录",
+  "QuickConnectPlaceholder": "输入设备ID进行连接…",
+  "Connect": "连接",
+  "SearchPlaceholder": "按ID、主机名、用户搜索…",
+  "SearchStart": "开始输入设备ID或名称",
+  "NothingFound": "未找到",
+  "Favorites": "收藏",
+  "Recent": "最近",
+  "KbdConnect": "连接",
+  "KbdClose": "关闭",
+  "KbdOpen": "打开",
+  "Done": "完成",
+  "ColumnsHint": "拖动表头 · × 隐藏 · + 添加",
+  "AllColumnsShown": "所有列已显示",
+  "Wol": "唤醒 (WoL)",
+  "WolSent": "已发送唤醒包",
+  "WolNoMac": "未设置MAC，请在\"编辑\"中填写。",
+  "MacWol": "MAC (WoL)",
+  "ViewCards": "卡片",
+  "ViewTable": "表格",
+  "Online": "在线",
+  "Offline": "离线",
+  "GroupDefaultName": "默认组",
+  "GroupShareName": "共享组",
+  "WelcomeHello": "👏 你好 {name}，欢迎使用 RustDesk API",
+  "NoTag": "无标签",
+  "HideOffline": "隐藏离线",
+  "ShowOffline": "显示离线",
+  "RelayServersTitle": "中继服务器",
+  "RelayServersDesc": "中继地址",
+  "AlwaysRelayTitle": "始终中继",
+  "AlwaysRelayDesc": "强制走中继",
+  "MustLoginTitle": "必须登录",
+  "MustLoginDesc": "连接前需登录",
+  "UsageTitle": "使用情况",
+  "UsageDesc": "各IP中继流量",
+  "BlockListTitle": "阻止列表",
+  "BlockListDesc": "被阻止的IP",
+  "BlackListTitle": "黑名单",
+  "BlackListDesc": "黑名单IP"
 }
