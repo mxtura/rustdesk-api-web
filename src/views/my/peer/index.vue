@@ -57,41 +57,23 @@
       </div>
 
       <!-- ТАБЛИЦА -->
-      <el-table v-else :data="listRes.list" v-loading="listRes.loading" border size="small" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center"/>
-        <el-table-column prop="id" label="ID" align="center" width="150">
-          <template #default="{row}">
-            <span>{{ row.id }} <el-icon @click="handleClipboard(row.id, $event)"><CopyDocument/></el-icon></span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="cpu" label="CPU" align="center" width="100" show-overflow-tooltip/>
-        <el-table-column prop="hostname" :label="T('Hostname')" align="center" width="120"/>
-        <el-table-column prop="memory" :label="T('Memory')" align="center" width="120"/>
-        <el-table-column prop="os" :label="T('Os')" align="center" width="120" show-overflow-tooltip/>
-        <el-table-column prop="last_online_time" :label="T('LastOnlineTime')" align="center" min-width="120">
-          <template #default="{row}">
-            <div class="last_oline_time">
-              <span> {{ row.last_online_time ? timeAgo(row.last_online_time * 1000) : '-' }}</span> <span class="dot" :class="{red: timeDis(row.last_online_time) >= 60, green: timeDis(row.last_online_time)< 60}"></span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="last_online_ip" :label="T('LastOnlineIp')" align="center" min-width="120"/>
-        <el-table-column prop="username" :label="T('Username')" align="center" width="120"/>
-        <el-table-column prop="uuid" :label="T('Uuid')" align="center" width="120" show-overflow-tooltip/>
-        <el-table-column prop="version" :label="T('Version')" align="center" width="80"/>
-        <el-table-column prop="alias" :label="T('Alias')" align="center" width="80"/>
-        <el-table-column prop="created_at" :label="T('CreatedAt')" align="center" width="150"/>
-        <el-table-column prop="updated_at" :label="T('UpdatedAt')" align="center" width="150"/>
-        <el-table-column :label="T('Actions')" align="center" width="500" class-name="table-actions" fixed="right">
-          <template #default="{row}">
-            <el-button type="success" @click="connectByClient(row.id)">{{ T('Link') }}</el-button>
-            <el-button v-if="appStore.setting.appConfig.web_client" type="success" @click="toWebClientLink(row)">Web Client</el-button>
-            <el-button type="primary" @click="toAddressBook(row)">{{ T('AddToAddressBook') }}</el-button>
-            <el-button @click="toView(row)">{{ T('View') }}</el-button>
-            <!--            <el-button type="danger" @click="del(row)">{{ T('Delete') }}</el-button>-->
-          </template>
-        </el-table-column>
-      </el-table>
+      <device-table v-else :list="listRes.list" :loading="listRes.loading"
+                    :columns="peerColumns" storage-key="my_peer_columns_v1"
+                    :actions-width="210" @selection-change="handleSelectionChange">
+        <template #actions="{ row }">
+          <el-button type="primary" size="small" @click="connectByClient(row.id)">{{ T('Link') }}</el-button>
+          <el-dropdown trigger="click">
+            <el-button size="small" :icon="MoreFilled"></el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-if="appStore.setting.appConfig.web_client" @click="toWebClientLink(row)">Web Client</el-dropdown-item>
+                <el-dropdown-item @click="toAddressBook(row)">{{ T('AddToAddressBook') }}</el-dropdown-item>
+                <el-dropdown-item @click="toView(row)">{{ T('View') }}</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </template>
+      </device-table>
     </el-card>
     <el-card class="list-page" shadow="hover">
       <el-pagination background
@@ -221,11 +203,29 @@
   import { handleClipboard } from '@/utils/clipboard'
   import { batchCreateFromPeers } from '@/api/my/address_book'
   import DeviceCard from '@/components/DeviceCard.vue'
+  import DeviceTable from '@/components/DeviceTable.vue'
 
   const appStore = useAppStore()
   // режим отображения: плитки / таблица
   const viewMode = ref(localStorage.getItem('my_peer_view_mode') || 'cards')
   watch(viewMode, (v) => localStorage.setItem('my_peer_view_mode', v))
+
+  // колонки таблицы (настраиваются/перетаскиваются в DeviceTable)
+  const peerColumns = [
+    { name: 'id', label: 'ID', raw: true, width: 150, visible: true },
+    { name: 'hostname', label: 'Hostname', width: 120, visible: true },
+    { name: 'memory', label: 'Memory', width: 100, visible: true },
+    { name: 'os', label: 'Os', minWidth: 150, visible: true },
+    { name: 'last_online_time', label: 'LastOnlineTime', minWidth: 150, visible: true },
+    { name: 'last_online_ip', label: 'LastOnlineIp', width: 130, visible: true },
+    { name: 'username', label: 'Username', width: 120, visible: true },
+    { name: 'version', label: 'Version', width: 90, visible: true },
+    { name: 'cpu', label: 'CPU', raw: true, minWidth: 160, visible: false },
+    { name: 'uuid', label: 'Uuid', minWidth: 150, visible: false },
+    { name: 'alias', label: 'Alias', width: 100, visible: false },
+    { name: 'created_at', label: 'CreatedAt', width: 160, visible: false },
+    { name: 'updated_at', label: 'UpdatedAt', width: 160, visible: false },
+  ]
   const listRes = reactive({
     list: [], total: 0, loading: false,
   })
