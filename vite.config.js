@@ -1,6 +1,8 @@
 import { defineConfig, loadEnv } from 'vite'
 import * as path from 'path'
 import vue from '@vitejs/plugin-vue'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -60,6 +62,19 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      // авто-импорт композиционных API (Vue/Router/Pinia/VueUse) — меньше boilerplate
+      AutoImport({
+        imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
+        dts: 'src/auto-imports.d.ts',
+        eslintrc: { enabled: false },
+      }),
+      // авто-регистрация локальных компонентов из src/components (Element Plus остаётся глобальным)
+      Components({
+        dirs: ['src/components'],
+        dts: 'src/components.d.ts',
+      }),
+    ],
   }
 })

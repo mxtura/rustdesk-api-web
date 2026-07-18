@@ -204,11 +204,11 @@
   import { batchCreateFromPeers } from '@/api/my/address_book'
   import DeviceCard from '@/components/DeviceCard.vue'
   import DeviceTable from '@/components/DeviceTable.vue'
+  import { useLocalStorage } from '@vueuse/core'
 
   const appStore = useAppStore()
-  // режим отображения: плитки / таблица
-  const viewMode = ref(localStorage.getItem('my_peer_view_mode') || 'cards')
-  watch(viewMode, (v) => localStorage.setItem('my_peer_view_mode', v))
+  // режим отображения: плитки / таблица (сохраняется через VueUse)
+  const viewMode = useLocalStorage('my_peer_view_mode', 'cards')
 
   // колонки таблицы (настраиваются/перетаскиваются в DeviceTable)
   const peerColumns = [

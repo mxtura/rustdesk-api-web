@@ -130,6 +130,7 @@
   import { Grid, Menu, MoreFilled, Message, Calendar, Document, Notebook, Edit } from '@element-plus/icons-vue'
   import { groupDisplayName } from '@/utils/group'
   import UserEditDialog from '@/views/user/UserEditDialog.vue'
+  import { useLocalStorage } from '@vueuse/core'
 
   const {
     listRes,
@@ -140,8 +141,7 @@
     toExport,
   } = useRepositories()
 
-  const viewMode = ref(localStorage.getItem('user_view_mode') || 'cards')
-  watch(viewMode, (v) => localStorage.setItem('user_view_mode', v))
+  const viewMode = useLocalStorage('user_view_mode', 'cards')
 
   onMounted(getGroups)
   onMounted(getList)

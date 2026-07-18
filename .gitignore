@@ -17,3 +17,7 @@ yarn-error.log*
 *.local
 
 yarn.lock
+
+# авто-генерируемые декларации unplugin-*
+src/auto-imports.d.ts
+src/components.d.ts

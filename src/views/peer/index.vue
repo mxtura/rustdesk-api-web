@@ -279,6 +279,7 @@
 <script setup>
   import { computed, onActivated, onMounted, onUnmounted, nextTick, reactive, ref, watch } from 'vue'
   import Sortable from 'sortablejs'
+  import { useLocalStorage } from '@vueuse/core'
   import { batchRemove, create, list, remove, update, wol } from '@/api/peer'
   import { list as groupList } from '@/api/device_group'
   import { ElMessage, ElMessageBox } from 'element-plus'
@@ -439,8 +440,7 @@
   }
 
   // режим отображения: плитки / таблица
-  const viewMode = ref(localStorage.getItem('peer_view_mode') || 'cards')
-  watch(viewMode, (v) => localStorage.setItem('peer_view_mode', v))
+  const viewMode = useLocalStorage('peer_view_mode', 'cards')
 
   const isOnline = (row) => !!row.last_online_time && timeDis(row.last_online_time) < 60
 
