@@ -48,7 +48,7 @@
   import { getV2ShareUrl } from '@/utils/webclient'
   import * as sha256 from 'fast-sha256'
   import { shareByWebClient } from '@/api/address_book'
-  import { CopyDocument } from '@element-plus/icons'
+  import { CopyDocument } from '@element-plus/icons-vue'
   import { handleClipboard } from '@/utils/clipboard'
   import { ElMessageBox } from 'element-plus'
 
@@ -68,7 +68,6 @@
     init()
   })
   const init = () => {
-    console.log('init')
     formData.id = props.id
     formData.hash = props.hash
     formData.password = ''

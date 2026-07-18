@@ -56,7 +56,7 @@
 
 <script setup>
   import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
-  import { Search, StarFilled } from '@element-plus/icons'
+  import { Search, StarFilled } from '@element-plus/icons-vue'
   import { T } from '@/utils/i18n'
   import { list as peerList } from '@/api/peer'
   import { connectByClient } from '@/utils/peer'

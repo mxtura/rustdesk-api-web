@@ -36,7 +36,7 @@
   import { T } from '@/utils/i18n'
   import { timeAgo } from '@/utils/time'
   import { handleClipboard } from '@/utils/clipboard'
-  import { CopyDocument, Cpu, Coin, Monitor, Connection } from '@element-plus/icons'
+  import { CopyDocument, Cpu, Coin, Monitor, Connection } from '@element-plus/icons-vue'
 
   // Единая карточка устройства для страниц пиров (админ и личные).
   const props = defineProps({

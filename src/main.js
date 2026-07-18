@@ -9,7 +9,7 @@ import { pinia } from '@/store'
 import '@/permission'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/styles/style.scss'
-import * as ElementIcons from '@element-plus/icons'
+import * as ElementIcons from '@element-plus/icons-vue'
 
 // Тема по умолчанию — тёмная (glass premium). vueuse хранит выбор в localStorage.
 if (!localStorage.getItem('vueuse-color-scheme')) {

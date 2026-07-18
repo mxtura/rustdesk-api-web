@@ -86,7 +86,7 @@
   import { list as userList } from '@/api/user'
   import { list as loginLogList } from '@/api/login_log'
   import { connectByClient } from '@/utils/peer'
-  import { Monitor, Grid } from '@element-plus/icons'
+  import { Monitor, Grid } from '@element-plus/icons-vue'
   import QRCode from 'qrcode'
 
   const quickId = ref('')

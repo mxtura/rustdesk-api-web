@@ -1,0 +1,4 @@
+dist
+node_modules
+src/utils/webclient
+src/utils/i18n/*.json

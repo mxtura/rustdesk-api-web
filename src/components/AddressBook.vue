@@ -135,7 +135,7 @@
   import { connectByClient } from '@/utils/peer'
   import { toWebClientLink } from '@/utils/webclient'
   import { handleClipboard } from '@/utils/clipboard'
-  import { MoreFilled, Plus, Close, Search, ArrowLeft } from '@element-plus/icons'
+  import { MoreFilled, Plus, Close, Search, ArrowLeft } from '@element-plus/icons-vue'
   import PlatformIcons from '@/components/icons/platform.vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useRepositories } from '@/views/address_book'

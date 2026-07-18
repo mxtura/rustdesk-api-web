@@ -1,12 +1,25 @@
 {
-  "name": "hello-vue3",
+  "name": "rustdesk-api-web",
   "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "format": "prettier --write \"src/**/*.{js,ts,vue,scss}\"",
+    "prepare": "husky || true"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": "eslint --fix",
+    "*.{js,ts,vue,scss,json,md}": "prettier --write"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
     "axios": "1.8.2",
     "clipboard": "2.0.4",
     "element-plus": "^2.8.2",
@@ -22,12 +35,17 @@
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
-    "@element-plus/icons": "0.0.11",
+    "@eslint/js": "^9.17.0",
     "@vitejs/plugin-vue": "5.2.1",
-    "dotenv": "^10.0.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "globals": "^15.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "prettier": "^3.4.2",
     "qs": "^6.10.2",
     "sass": "^1.43.4",
-    "sass-loader": "^12.3.0",
     "ts-proto": "^1.141.1",
     "vite": "6.3.4"
   }

@@ -289,7 +289,7 @@
   import { loadAllUsers } from '@/global'
   import { useAppStore } from '@/store/app'
   import { connectByClient } from '@/utils/peer'
-  import { ArrowDown, ArrowUp, CopyDocument, Setting, MoreFilled, Grid, Menu, Close, Cpu, Coin, Monitor, Connection } from '@element-plus/icons'
+  import { ArrowDown, ArrowUp, CopyDocument, Setting, MoreFilled, Grid, Menu, Close, Cpu, Coin, Monitor, Connection } from '@element-plus/icons-vue'
   import { handleClipboard } from '@/utils/clipboard'
   import { batchCreateFromPeers } from '@/api/address_book'
   import { useRepositories as useCollectionRepositories } from '@/views/address_book/collection'
@@ -488,11 +488,9 @@
     const reader = new FileReader()
     reader.onload = async (e) => {
       const data = e.target.result
-      console.log(data)
       //组装数据
       const rows = data.split('\n')
       const keys = rows[0].split(',')
-      console.log(keys, rows.slice(1).map(row => row.split(',')))
       const values = rows.slice(1).map(row => {
         const obj = {}
         row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).forEach((v, i) => {
@@ -511,7 +509,6 @@
           }
         })
       })
-      console.log(values)
       const pa = []
       values.map(item => {
         pa.push(create(item))

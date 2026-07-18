@@ -57,7 +57,7 @@
   import { T } from '@/utils/i18n'
   import { timeAgo } from '@/utils/time'
   import { handleClipboard } from '@/utils/clipboard'
-  import { Setting, Close, CopyDocument } from '@element-plus/icons'
+  import { Setting, Close, CopyDocument } from '@element-plus/icons-vue'
   import Sortable from 'sortablejs'
 
   // Единая таблица устройств с настройкой/перетаскиванием колонок.

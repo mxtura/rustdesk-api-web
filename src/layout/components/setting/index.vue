@@ -58,7 +58,7 @@
   import { T } from '@/utils/i18n'
   import { useRouter } from 'vue-router'
   import { useDark } from '@vueuse/core'
-  import { Sunny, Moon } from '@element-plus/icons'
+  import { Sunny, Moon } from '@element-plus/icons-vue'
 
   const userStore = useUserStore()
   const user = userStore

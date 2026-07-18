@@ -127,7 +127,7 @@
   import { update } from '@/api/user'
   import { ElMessage } from 'element-plus'
   import { onMounted, ref, watch } from 'vue'
-  import { Grid, Menu, MoreFilled, Message, Calendar, Document, Notebook, Edit } from '@element-plus/icons'
+  import { Grid, Menu, MoreFilled, Message, Calendar, Document, Notebook, Edit } from '@element-plus/icons-vue'
   import { groupDisplayName } from '@/utils/group'
   import UserEditDialog from '@/views/user/UserEditDialog.vue'
 
