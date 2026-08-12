@@ -33,6 +33,7 @@
   "LoginName": "Nombre de inicio de sesión",
   "Submit": "Enviar",
   "OperationSuccess": "Operación exitosa",
+  "OperationFailed": "Operación fallida",
   "Owner": "Propietario",
   "Name": "Nombre",
   "Color": "Color",

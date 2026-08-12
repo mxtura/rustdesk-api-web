@@ -33,6 +33,7 @@
   "LoginName": "Nom de connexion",
   "Submit": "Envoyer",
   "OperationSuccess": "Opération réussie",
+  "OperationFailed": "Échec de l'opération",
   "Owner": "Propriétaire",
   "Name": "Nom",
   "Color": "Couleur",

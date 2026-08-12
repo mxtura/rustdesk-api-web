@@ -1,10 +1,10 @@
 <template>
   <el-dialog
-      :model-value="visible"
-      :title="userId ? T('UserEdit') : T('UserAdd')"
-      width="560"
-      @update:model-value="v => emit('update:visible', v)"
-      @open="onOpen"
+    :model-value="visible"
+    :title="userId ? T('UserEdit') : T('UserAdd')"
+    width="560"
+    @update:model-value="v => emit('update:visible', v)"
+    @open="onOpen"
   >
     <el-form ref="root" label-position="top" :model="form" :rules="rules" class="ued-form">
       <el-row :gutter="16">
@@ -15,7 +15,13 @@
         </el-col>
         <el-col :span="12">
           <el-form-item :label="userId ? T('NewPassword') : T('Password')" prop="password">
-            <el-input v-model="form.password" type="password" show-password autocomplete="new-password" :placeholder="userId ? '••••••' : ''"/>
+            <el-input
+              v-model="form.password"
+              type="password"
+              show-password
+              autocomplete="new-password"
+              :placeholder="userId ? '••••••' : ''"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -35,19 +41,19 @@
 
       <el-form-item :label="T('Group')" prop="group_id" required>
         <el-select v-model="form.group_id" style="width: 100%">
-          <el-option v-for="item in groupsList" :key="item.id" :label="gname(item.name)" :value="item.id"/>
+          <el-option v-for="item in groupsList" :key="item.id" :label="gname(item.name)" :value="item.id" />
         </el-select>
       </el-form-item>
 
       <el-row :gutter="16">
         <el-col :span="12">
           <el-form-item :label="T('IsAdmin')" prop="is_admin">
-            <el-switch v-model="form.is_admin" :active-value="true" :inactive-value="false"/>
+            <el-switch v-model="form.is_admin" :active-value="true" :inactive-value="false" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item :label="T('Status')" prop="status" required>
-            <el-switch v-model="form.status" :active-value="ENABLE_STATUS" :inactive-value="DISABLE_STATUS"/>
+            <el-switch v-model="form.status" :active-value="ENABLE_STATUS" :inactive-value="DISABLE_STATUS" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -68,7 +74,8 @@
   import { ref, reactive } from 'vue'
   import { T } from '@/utils/i18n'
   import { ElMessage } from 'element-plus'
-  import { create, update, detail, changePwd } from '@/api/user'
+  import { detail } from '@/api/user'
+  import { saveUser } from '@/views/user/save'
   import { list as groupList } from '@/api/group'
   import { ENABLE_STATUS, DISABLE_STATUS } from '@/utils/common_options'
   import { groupDisplayName as gname } from '@/utils/group'
@@ -81,7 +88,17 @@
 
   const root = ref(null)
   const groupsList = ref([])
-  const emptyForm = () => ({ id: 0, username: '', email: '', nickname: '', group_id: null, is_admin: false, status: ENABLE_STATUS, remark: '', password: '' })
+  const emptyForm = () => ({
+    id: 0,
+    username: '',
+    email: '',
+    nickname: '',
+    group_id: null,
+    is_admin: false,
+    status: ENABLE_STATUS,
+    remark: '',
+    password: '',
+  })
   const form = reactive(emptyForm())
 
   const rules = {
@@ -107,14 +124,10 @@
   const save = async () => {
     const ok = await root.value.validate().catch(() => false)
     if (!ok) return
-    if (props.userId) {
-      const res = await update(form).catch(() => false)
-      if (!res || res.code !== 0) return
-      if (form.password) await changePwd({ id: props.userId, password: form.password }).catch(() => false)
-    } else {
-      const res = await create(form).catch(() => false)
-      if (!res || res.code !== 0) return
-      if (form.password && res.data?.id) await changePwd({ id: res.data.id, password: form.password }).catch(() => false)
+    const res = await saveUser(form, props.userId)
+    if (!res.ok) {
+      ElMessage.error(res.error || T('OperationFailed'))
+      return
     }
     ElMessage.success(T('OperationSuccess'))
     emit('update:visible', false)
@@ -123,15 +136,15 @@
 </script>
 
 <style scoped lang="scss">
-.ued-form :deep(.el-form-item__label) {
-  padding-bottom: 2px;
-  font-size: 13px;
-  color: var(--el-text-color-secondary);
-}
-.ued-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 8px;
-}
+  .ued-form :deep(.el-form-item__label) {
+    padding-bottom: 2px;
+    font-size: 13px;
+    color: var(--el-text-color-secondary);
+  }
+  .ued-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+  }
 </style>

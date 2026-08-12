@@ -33,6 +33,7 @@
   "LoginName": "登入名",
   "Submit": "提交",
   "OperationSuccess": "操作成功",
+  "OperationFailed": "操作失敗",
   "Owner": "所有者",
   "Name": "名稱",
   "Color": "顏色",

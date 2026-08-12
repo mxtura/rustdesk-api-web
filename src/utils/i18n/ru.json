@@ -35,6 +35,7 @@
   "LoginName": "Имя для входа",
   "Submit": "Отправить",
   "OperationSuccess": "Операция выполнена успешно",
+  "OperationFailed": "Операция не выполнена",
   "Owner": "Владелец",
   "Name": "Имя",
   "Color": "Цвет",

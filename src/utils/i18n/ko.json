@@ -33,6 +33,7 @@
   "LoginName": "로그인 이름",
   "Submit": "제출",
   "OperationSuccess": "작업 성공",
+  "OperationFailed": "작업 실패",
   "Owner": "소유자",
   "Name": "이름",
   "Color": "색상",

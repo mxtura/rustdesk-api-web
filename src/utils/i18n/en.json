@@ -35,6 +35,7 @@
   "LoginName": "Login Name",
   "Submit": "Submit",
   "OperationSuccess": "Operation Success",
+  "OperationFailed": "Operation Failed",
   "Owner": "Owner",
   "Name": "Name",
   "Color": "Color",
