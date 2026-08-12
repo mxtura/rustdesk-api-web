@@ -1,57 +1,52 @@
 <template>
   <div class="upload-order-file">
     <el-upload
-            ref="upload"
-            :on-success="fileUploadSuccess"
-            :before-upload="beforeFileUpload"
-            :on-remove="fileRemove"
-            :on-exceed="onExceed"
-            :on-error="onError"
-            name="file"
-            :multiple="multiple"
-            :file-list="fileList"
-            :action="fileUploadHost"
-            :data="fileUploadData"
-            :headers="headers"
-            list-type="picture-card"
-            :limit="limit"
-            accept="image/*"
-            :drag="drag"
+      ref="upload"
+      :on-success="fileUploadSuccess"
+      :before-upload="beforeFileUpload"
+      :on-remove="fileRemove"
+      :on-exceed="onExceed"
+      :on-error="onError"
+      name="file"
+      :multiple="multiple"
+      :file-list="fileList"
+      :action="fileUploadHost"
+      :data="fileUploadData"
+      :headers="headers"
+      list-type="picture-card"
+      :limit="limit"
+      accept="image/*"
+      :drag="drag"
     >
       <template #default>
         <div class="default-slot">
           <slot name="default">
             <div>
               <el-icon class="default-icon">
-                <plus/>
+                <plus />
               </el-icon>
               <div class="drag-tips">点击上传<span v-if="drag">或直接拖入文件</span></div>
             </div>
           </slot>
         </div>
       </template>
-      <template #file="{file}">
-        <img
-                v-if="file.status === 'success'"
-                class="el-upload-list__item-thumbnail"
-                :src="file.url"
-                alt=""
-        >
+      <template #file="{ file }">
+        <img v-if="file.status === 'success'" class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         <label class="el-upload-list__item-status-label">
           <el-icon color="white">
-            <check/>
+            <check />
           </el-icon>
         </label>
         <el-progress
-                v-if="file.status === 'uploading'"
-                type="circle"
-                :stroke-width="6"
-                :percentage="parseInt(file.percentage)"
+          v-if="file.status === 'uploading'"
+          type="circle"
+          :stroke-width="6"
+          :percentage="parseInt(file.percentage)"
         />
         <span v-else-if="file.status === 'success'" class="el-upload-list__item-actions">
-          <el-icon class="el-upload-list__item-icon" @click="leftImage(file)"><arrow-left/></el-icon>
-          <el-icon class="el-upload-list__item-icon" @click="removeImage(file)"><Delete/></el-icon>
-          <el-icon class="el-upload-list__item-icon" @click="rightImage(file)"><arrow-right/></el-icon>
+          <el-icon class="el-upload-list__item-icon" @click="leftImage(file)"><arrow-left /></el-icon>
+          <el-icon class="el-upload-list__item-icon" @click="removeImage(file)"><Delete /></el-icon>
+          <el-icon class="el-upload-list__item-icon" @click="rightImage(file)"><arrow-right /></el-icon>
         </span>
       </template>
     </el-upload>
@@ -59,13 +54,13 @@
 </template>
 <script>
   import { defineComponent, ref, computed, reactive, unref, readonly, toRefs } from 'vue'
-  import { Plus, ZoomIn, Delete, ArrowLeft, ArrowRight, Check } from '@element-plus/icons-vue'
+  import { Plus, Delete, ArrowLeft, ArrowRight, Check } from '@element-plus/icons-vue'
   import { useOss } from '@/components/form/upload/oss'
   import { ElMessage } from 'element-plus'
   import { useLocal } from '@/components/form/upload/local'
 
   export default defineComponent({
-    name: 'imagesUpload',
+    name: 'ImagesUpload',
     props: {
       drag: {
         type: Boolean,
@@ -104,10 +99,13 @@
         default: '148px',
       },
     },
-    components: { Plus, ZoomIn, Delete, ArrowLeft, ArrowRight, Check },
-    setup (props, context) {
-
-      let fileList = computed(() => props.modelValue.map(url => { return { url, status: 'success' } }))
+    components: { Plus, Delete, ArrowLeft, ArrowRight, Check },
+    setup(props, context) {
+      let fileList = computed(() =>
+        props.modelValue.map(url => {
+          return { url, status: 'success' }
+        }),
+      )
 
       let fileUpload = reactive({
         fileUploadHost: '',
@@ -122,7 +120,7 @@
         fileUpload = useLocal(props.beforeUpload, props.host)
       }
 
-      function leftImage (file) {
+      function leftImage(file) {
         let fList = unref(fileList)
         const index = fList.findIndex(f => f.url === file.url)
         if (index === 0 || index === -1) {
@@ -132,7 +130,7 @@
         updateValue(fList)
       }
 
-      function rightImage (file) {
+      function rightImage(file) {
         let fList = unref(fileList)
         const index = fList.findIndex(f => f.url === file.url)
         if (index === fList.length - 1 || index === -1) {
@@ -142,14 +140,14 @@
         updateValue(fList)
       }
 
-      function removeImage (file) {
+      function removeImage(file) {
         let fList = unref(fileList)
         const index = fList.findIndex(f => f.url === file.url)
         fList.splice(index, 1)
         updateValue(fList)
       }
 
-      function updateValue (_fileList) {
+      function updateValue(_fileList) {
         let fList = unref(_fileList)
         context.emit(
           'update:modelValue',
@@ -157,22 +155,20 @@
         )
       }
 
-      function fileRemove (file, _fileList) {
+      function fileRemove(file, _fileList) {
         updateValue(_fileList)
       }
 
-      function onError () {
+      function onError() {}
 
-      }
-
-      function fileUploadSuccess (response, file, _fileList) {
+      function fileUploadSuccess(response, file, _fileList) {
         file.url = response?.data?.url || file.url
         if (_fileList.every(f => f.status === 'success')) {
           updateValue(_fileList)
         }
       }
 
-      function onExceed () {
+      function onExceed() {
         ElMessage.error('超出数量限制')
       }
 
@@ -227,7 +223,6 @@
       color: #999;
     }
 
-
     ::v-deep(.el-upload-list__item) {
       transition: none !important;
     }
@@ -268,5 +263,4 @@
       }
     }
   }
-
 </style>

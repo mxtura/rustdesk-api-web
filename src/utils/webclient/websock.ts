@@ -47,14 +47,14 @@ export default class Websock {
     //   k[1] += 1;
     //   data = globals.encrypt(data, k[1], k[0]);
     // }
-    this._websocket.send(data);
+    this._websocket.send(data as ArrayBufferView<ArrayBuffer>);
   }
 
   sendRendezvous(data: rendezvous.DeepPartial<rendezvous.RendezvousMessage>) {
     this._websocket.send(
       rendezvous.RendezvousMessage.encode(
         rendezvous.RendezvousMessage.fromPartial(data)
-      ).finish()
+      ).finish() as ArrayBufferView<ArrayBuffer>
     );
   }
 

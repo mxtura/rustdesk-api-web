@@ -18,32 +18,54 @@
       </div>
     </transition>
 
-    <el-table ref="peerTable" :data="list" v-loading="loading" border size="small"
-              :row-key="rowKey" @selection-change="v => emit('selection-change', v)">
-      <el-table-column v-if="selectable" type="selection" width="45" align="center"/>
-      <el-table-column v-for="c in shownColumns" :key="c.name" :prop="c.name" :min-width="colWidth(c)"
-                       align="center" show-overflow-tooltip>
+    <el-table
+      ref="peerTable"
+      v-loading="loading"
+      :data="list"
+      border
+      size="small"
+      :row-key="rowKey"
+      @selection-change="(v: Peer[]) => emit('selection-change', v)"
+    >
+      <el-table-column v-if="selectable" type="selection" width="45" align="center" />
+      <el-table-column
+        v-for="c in shownColumns"
+        :key="c.name"
+        :prop="c.name"
+        :min-width="colWidth(c)"
+        align="center"
+        show-overflow-tooltip
+      >
         <template #header>
           <span class="col-h" :class="{ editing: editCols }" :data-col="c.name">
             {{ colLabel(c) }}
-            <el-icon v-if="editCols" class="col-x" @click.stop="hideCol(c)"><Close/></el-icon>
+            <el-icon v-if="editCols" class="col-x" @click.stop="hideCol(c)"><Close /></el-icon>
           </span>
         </template>
         <template #default="{ row }">
           <template v-if="c.name === 'id'">
-            {{ row.id }} <el-icon class="copy-ic" @click="copyId(row.id, $event)"><CopyDocument/></el-icon>
+            {{ row.id }} <el-icon class="copy-ic" @click="copyId(row.id, $event)"><CopyDocument /></el-icon>
           </template>
           <template v-else-if="c.name === 'last_online_time'">
             <div class="last_oline_time">
               <span>{{ row.last_online_time ? timeAgo(row.last_online_time * 1000) : '-' }}</span>
-              <span class="dot" :class="{ red: secAgo(row.last_online_time) >= 60, green: secAgo(row.last_online_time) < 60 }"></span>
+              <span
+                class="dot"
+                :class="{ red: secAgo(row.last_online_time) >= 60, green: secAgo(row.last_online_time) < 60 }"
+              ></span>
             </div>
           </template>
           <slot v-else :name="'col-' + c.name" :row="row">{{ row[c.name] || '-' }}</slot>
         </template>
       </el-table-column>
 
-      <el-table-column :label="T('Actions')" align="center" :width="actionsWidth" class-name="table-actions" fixed="right">
+      <el-table-column
+        :label="T('Actions')"
+        align="center"
+        :width="actionsWidth"
+        class-name="table-actions"
+        fixed="right"
+      >
         <template #default="{ row }">
           <slot name="actions" :row="row"></slot>
         </template>
@@ -142,9 +164,7 @@
     const order = [...el.querySelectorAll('.col-h[data-col]')].map((s: any) => s.dataset.col as string)
     if (!order.length) return
     const seen = new Set(order)
-    const reordered = order
-      .map(n => visibleColumns.value.find(c => c.name === n))
-      .filter(Boolean) as ColState[]
+    const reordered = order.map(n => visibleColumns.value.find(c => c.name === n)).filter(Boolean) as ColState[]
     const rest = visibleColumns.value.filter(c => !seen.has(c.name))
     visibleColumns.value = [...reordered, ...rest]
     persistCols()
@@ -162,10 +182,7 @@
       draggable: 'th.el-table__cell',
       filter: '.el-table-column--selection, .table-actions',
       onMove: (e: any) =>
-        !(
-          e.related.classList.contains('el-table-column--selection') ||
-          e.related.classList.contains('table-actions')
-        ),
+        !(e.related.classList.contains('el-table-column--selection') || e.related.classList.contains('table-actions')),
       onEnd: applyDomOrder,
     })
   }
@@ -174,61 +191,97 @@
 </script>
 
 <style scoped lang="scss">
-.dt-toolbar {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 12px;
-}
+  .dt-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+  }
 
-.col-edit-panel {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 16px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
-  border-radius: var(--radius-md);
-  background: var(--el-color-primary-light-9);
-  border: 1px solid var(--glass-border);
-}
-.cep-tip { font-size: 12px; color: var(--el-text-color-secondary); }
-.col-add-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.cab-chip { cursor: pointer; transition: all 0.15s ease; }
-.cab-chip:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
-.cab-empty { font-size: 12px; color: var(--el-text-color-secondary); }
+  .col-edit-panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    border-radius: var(--radius-md);
+    background: var(--el-color-primary-light-9);
+    border: 1px solid var(--glass-border);
+  }
+  .cep-tip {
+    font-size: 12px;
+    color: var(--el-text-color-secondary);
+  }
+  .col-add-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .cab-chip {
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .cab-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .cab-empty {
+    font-size: 12px;
+    color: var(--el-text-color-secondary);
+  }
 
-:deep(.col-h) {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-:deep(.col-h.editing) { cursor: grab; }
-:deep(.col-x) {
-  cursor: pointer;
-  font-size: 13px;
-  padding: 2px;
-  border-radius: 50%;
-  color: var(--el-text-color-secondary);
-  transition: all 0.15s ease;
-}
-:deep(.col-x:hover) { color: #fff; background: var(--el-color-danger); }
-:deep(.el-table__header-wrapper thead th.el-table__cell) { transition: background 0.15s ease; }
-.copy-ic { cursor: pointer; vertical-align: middle; }
-:deep(.sortable-ghost) { opacity: 0.4; }
-:deep(.sortable-chosen) { background: var(--el-color-primary-light-9); }
+  :deep(.col-h) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :deep(.col-h.editing) {
+    cursor: grab;
+  }
+  :deep(.col-x) {
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px;
+    border-radius: 50%;
+    color: var(--el-text-color-secondary);
+    transition: all 0.15s ease;
+  }
+  :deep(.col-x:hover) {
+    color: #fff;
+    background: var(--el-color-danger);
+  }
+  :deep(.el-table__header-wrapper thead th.el-table__cell) {
+    transition: background 0.15s ease;
+  }
+  .copy-ic {
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  :deep(.sortable-ghost) {
+    opacity: 0.4;
+  }
+  :deep(.sortable-chosen) {
+    background: var(--el-color-primary-light-9);
+  }
 
-.last_oline_time {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.dot {
-  width: 6px;
-  height: 6px;
-  display: block;
-  border-radius: 50%;
-  margin-left: 10px;
-  &.red { background-color: red; }
-  &.green { background-color: green; }
-}
+  .last_oline_time {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    display: block;
+    border-radius: 50%;
+    margin-left: 10px;
+    &.red {
+      background-color: red;
+    }
+    &.green {
+      background-color: green;
+    }
+  }
 </style>

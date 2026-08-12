@@ -1,12 +1,14 @@
 <template>
-  <el-tag v-for="(t, i) in tags"
-          :key="t.name"
-          class="tag"
-          :closable="t.closeable"
-          @close="close(t)"
-          @click="toTag(t)"
-          :type="t.active?'primary':'info'"
-          :effect="t.active?'dark':'plain'">
+  <el-tag
+    v-for="t in tags"
+    :key="t.name"
+    class="tag"
+    :closable="t.closeable"
+    :type="t.active ? 'primary' : 'info'"
+    :effect="t.active ? 'dark' : 'plain'"
+    @close="close(t)"
+    @click="toTag(t)"
+  >
     {{ T(t.title) }}
   </el-tag>
 </template>
@@ -19,19 +21,19 @@
 
   export default defineComponent({
     name: 'Index',
-    setup () {
+    setup() {
       const tags = ref([])
       const tagsStore = useTagsStore()
       const route = useRoute()
       const router = useRouter()
       tags.value = tagsStore.tags
 
-      const addTag = (route) => {
+      const addTag = route => {
         if (!route.meta?.hide && route.name) {
           tagsStore.addTag(route)
         }
       }
-      const close = (tag) => {
+      const close = tag => {
         tagsStore.removeTag(tag)
         if (tag.active) {
           toLastTag()
@@ -49,14 +51,14 @@
         addTag(route)
       }
 
-      const toTag = (tag) => {
+      const toTag = tag => {
         if (tag.name !== route.name) {
           router.push({ name: tag.name })
         }
       }
 
       onMounted(init)
-      watch(route, (val) => {
+      watch(route, val => {
         addTag(val)
       })
       return {
@@ -72,12 +74,11 @@
 </script>
 
 <style lang="scss" scoped>
+  .tag {
+    border-radius: 0;
+    cursor: pointer;
 
-.tag {
-  border-radius: 0;
-  cursor: pointer;
-
-  &.active {
+    &.active {
+    }
   }
-}
 </style>

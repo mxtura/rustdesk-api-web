@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="login-card">
-      <img src="@/assets/logo.png" alt="logo" class="login-logo"/>
+      <img src="@/assets/logo.png" alt="logo" class="login-logo" />
 
       <el-form v-if="!disablePwd" label-position="top" class="login-form">
         <el-form-item :label="T('Username')">
@@ -9,30 +9,37 @@
         </el-form-item>
 
         <el-form-item :label="T('Password')">
-          <el-input v-model="form.password" type="password" name="password" autocomplete="current-password" @keyup.enter.native="login" show-password
-                    class="login-input"></el-input>
+          <el-input
+            v-model="form.password"
+            type="password"
+            name="password"
+            autocomplete="current-password"
+            show-password
+            class="login-input"
+            @keyup.enter="login"
+          ></el-input>
         </el-form-item>
-        <el-form-item :label="T('Captcha')" v-if="captchaCode">
-          <el-input v-model="form.captcha" @keyup.enter.native="login"  class="login-input captcha-input">
+        <el-form-item v-if="captchaCode" :label="T('Captcha')">
+          <el-input v-model="form.captcha" class="login-input captcha-input" @keyup.enter="login">
             <template #append>
-              <img :src="captchaCode.b64" @click="loadCaptcha" class="captcha" alt="captcha"/>
+              <img :src="captchaCode.b64" class="captcha" alt="captcha" @click="loadCaptcha" />
             </template>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="login" type="primary" class="login-button">{{ T('Login') }}</el-button>
-          <el-button v-if="allowRegister" @click="register" class="login-button">{{ T('Register') }}</el-button>
+          <el-button type="primary" class="login-button" @click="login">{{ T('Login') }}</el-button>
+          <el-button v-if="allowRegister" class="login-button" @click="register">{{ T('Register') }}</el-button>
         </el-form-item>
       </el-form>
 
-      <div class="divider" v-if="options.length > 0 && !disablePwd">
+      <div v-if="options.length > 0 && !disablePwd" class="divider">
         <span>{{ T('or login in with') }}</span>
       </div>
 
       <div class="oidc-options">
         <div v-for="(option, index) in options" :key="index" class="oidc-option">
-          <el-button @click="handleOIDCLogin(option.name)" class="oidc-btn">
-            <img :src="getProviderImage(option.name)" alt="provider" class="oidc-icon"/>
+          <el-button class="oidc-btn" @click="handleOIDCLogin(option.name)">
+            <img :src="getProviderImage(option.name)" alt="provider" class="oidc-icon" />
             <span>{{ T(option.name) }}</span>
           </el-button>
         </div>
@@ -78,13 +85,13 @@
     password: '',
     platform: platform,
     captcha: '',
-    captcha_id: ''
+    captcha_id: '',
   })
 
   const captchaCode = ref('')
   const redirect = route.query?.redirect
   // куда вести после входа: дашборд доступен только с правами (админ/*), иначе личный раздел
-  const landingPath = (userData) => {
+  const landingPath = userData => {
     const names = userData?.route_names || []
     const canDash = names.includes('*') || names.includes('Dashboard')
     return canDash ? '/dashboard' : '/'
@@ -108,7 +115,7 @@
     form.captcha_id = captchaRes.data.captcha.id
   }
 
-  const handleOIDCLogin = (provider) => {
+  const handleOIDCLogin = provider => {
     userStore.oidc(provider, platform, browser)
   }
 
@@ -126,7 +133,7 @@
     default: defaultImage,
   }
 
-  const getProviderImage = (provider) => {
+  const getProviderImage = provider => {
     return providerImageMap[provider.toLowerCase()] || providerImageMap.default
   }
 
@@ -136,7 +143,7 @@
     try {
       const res = await loginOptions().catch(_ => false)
       if (!res || !res.data) return console.error('No valid response received')
-      res.data.ops.map(option => (options.push({ name: option }))) // 创建新的对象数组
+      res.data.ops.map(option => options.push({ name: option })) // 创建新的对象数组
       if (res.data.auto_oidc) {
         // 如果有自动OIDC登录选项，直接调用第一个
         handleOIDCLogin(res.data.ops[0])
@@ -174,120 +181,120 @@
 </script>
 
 <style scoped lang="scss">
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.login-card {
-  width: 380px;
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--glass-border-strong);
-  padding: 44px 40px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lift);
-  text-align: center;
-}
-
-h1 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.login-form {
-  margin-bottom: 20px;
-}
-
-.login-input {
-  width: 100%;
-  .captcha{
-    cursor: pointer;
-    width: 150px;
-  }
-}
-.captcha-input{
-  :deep(.el-input-group__append) {
-    border-radius: 5px;
-    padding: 0;
-    overflow: hidden;
-  }
-}
-
-.login-button {
-  width: 100%;
-  height: 40px;
-  margin-bottom: 20px;
-  margin-left: 0;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  margin: 20px 0;
-  font-size: 14px;
-  color: #888;
-
-  &::before,
-  &::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background-color: #ddd;
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
   }
 
-  &::before {
+  .login-card {
+    width: 380px;
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border-strong);
+    padding: 44px 40px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    text-align: center;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .login-form {
+    margin-bottom: 20px;
+  }
+
+  .login-input {
+    width: 100%;
+    .captcha {
+      cursor: pointer;
+      width: 150px;
+    }
+  }
+  .captcha-input {
+    :deep(.el-input-group__append) {
+      border-radius: 5px;
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+
+  .login-button {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    margin-left: 0;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #888;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background-color: #ddd;
+    }
+
+    &::before {
+      margin-right: 10px;
+    }
+
+    &::after {
+      margin-left: 10px;
+    }
+  }
+
+  .oidc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .oidc-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: black;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .oidc-icon {
+    width: 24px;
+    height: 24px;
     margin-right: 10px;
   }
 
-  &::after {
-    margin-left: 10px;
+  .login-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    display: block;
   }
-}
 
-.oidc-options {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.oidc-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  height: 50px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  color: black;
-  font-size: 14px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.oidc-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
-}
-
-.login-logo {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 20px;
-  display: block;
-}
-
-.el-form-item {
-  ::v-deep(.el-form-item__label) {
-    color: var(--el-text-color-regular);
+  .el-form-item {
+    ::v-deep(.el-form-item__label) {
+      color: var(--el-text-color-regular);
+    }
   }
-}
 </style>

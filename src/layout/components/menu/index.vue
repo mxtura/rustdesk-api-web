@@ -1,15 +1,15 @@
 <template>
   <el-menu
-          class="menus"
-          :collapse="isCollapse"
-          :default-active="activeIndex"
-          unique-opened
-          background-color="#2d3a4b"
-          text-color="#fff"
-          active-text-color="#409eff"
-          router
+    class="menus"
+    :collapse="isCollapse"
+    :default-active="activeIndex"
+    unique-opened
+    background-color="#2d3a4b"
+    text-color="#fff"
+    active-text-color="#409eff"
+    router
   >
-    <menu-item v-for="(route,index) in routes" :key="route.name" :route="route"></menu-item>
+    <menu-item v-for="route in routes" :key="route.name" :route="route"></menu-item>
   </el-menu>
 </template>
 
@@ -21,11 +21,9 @@
   import { useAppStore } from '@/store/app'
 
   export default defineComponent({
-    name: 'Menu',
-    created () {
-    },
+    name: 'AppMenu',
     components: { MenuItem },
-    setup () {
+    setup() {
       const routes = ref([])
       const route = useRoute()
       const app = useAppStore()
@@ -39,7 +37,7 @@
         isCollapse,
       }
     },
-
+    created() {},
   })
 </script>
 
@@ -50,8 +48,6 @@
     &:not(.el-menu--collapse) {
       width: var(--sideBarWidth);
     }
-
   }
 </style>
-<style>
-</style>
+<style></style>

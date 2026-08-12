@@ -1,5 +1,6 @@
 import js from '@eslint/js'
 import vue from 'eslint-plugin-vue'
+import tsParser from '@typescript-eslint/parser'
 import globals from 'globals'
 import prettier from 'eslint-config-prettier'
 
@@ -30,6 +31,22 @@ export default [
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       // в проекте есть один контролируемый v-html (ссылка на wiki)
       'vue/no-v-html': 'off',
+    },
+  },
+  {
+    // <script lang="ts"> внутри .vue — vue-eslint-parser делегирует разбор скрипта TS-парсеру
+    files: ['**/*.vue'],
+    languageOptions: {
+      parserOptions: {
+        parser: tsParser,
+      },
+    },
+  },
+  {
+    // отдельные .ts-файлы вне webclient (который в ignores выше)
+    files: ['**/*.ts'],
+    languageOptions: {
+      parser: tsParser,
     },
   },
   prettier,

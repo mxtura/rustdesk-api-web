@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="login-card">
-      <img src="@/assets/logo.png" alt="logo" class="login-logo"/>
+      <img src="@/assets/logo.png" alt="logo" class="login-logo" />
       <el-form ref="f" :model="form" label-position="top" class="login-form" :rules="rules">
         <el-form-item :label="T('Username')" prop="username">
           <el-input v-model="form.username" class="login-input"></el-input>
@@ -12,16 +12,20 @@
         </el-form-item>
 
         <el-form-item :label="T('Password')" prop="password">
-          <el-input v-model="form.password" type="password" show-password
-                    class="login-input"></el-input>
+          <el-input v-model="form.password" type="password" show-password class="login-input"></el-input>
         </el-form-item>
         <el-form-item :label="T('ConfirmPassword')" prop="confirm_password">
-          <el-input v-model="form.confirm_password" type="password" @keyup.enter.native="submit" show-password
-                    class="login-input"></el-input>
+          <el-input
+            v-model="form.confirm_password"
+            type="password"
+            show-password
+            class="login-input"
+            @keyup.enter="submit"
+          ></el-input>
         </el-form-item>
         <el-form-item label="">
-          <el-button @click="submit" class="login-button" type="success">{{ T('Submit') }}</el-button>
-          <el-button @click="toLogin" class="login-button">{{ T('ToLogin') }}</el-button>
+          <el-button class="login-button" type="success" @click="submit">{{ T('Submit') }}</el-button>
+          <el-button class="login-button" @click="toLogin">{{ T('ToLogin') }}</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -46,15 +50,11 @@
     confirm_password: '',
   })
   const rules = {
-    username: [
-      { required: true, message: T('ParamRequired', { param: T('Username') }), trigger: 'blur' },
-    ],
+    username: [{ required: true, message: T('ParamRequired', { param: T('Username') }), trigger: 'blur' }],
     // email: [
     //   { required: true, message: T('ParamRequired', { param: T('Email') }), trigger: 'blur' },
     // ],
-    password: [
-      { required: true, message: T('ParamRequired', { param: T('Password') }), trigger: 'blur' },
-    ],
+    password: [{ required: true, message: T('ParamRequired', { param: T('Password') }), trigger: 'blur' }],
     confirm_password: [
       { required: true, message: T('ParamRequired', { param: T('ConfirmPassword') }), trigger: 'blur' },
       {
@@ -64,7 +64,8 @@
           } else {
             callback()
           }
-        }, trigger: 'blur',
+        },
+        trigger: 'blur',
       },
     ],
   }
@@ -85,73 +86,72 @@
   }
   const toLogin = () => {
     router.push('/login')
-
   }
 </script>
 
 <style scoped lang="scss">
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #2d3a4b;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.login-card {
-  width: 360px;
-  background-color: #283342;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-h1 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.login-form {
-  margin-bottom: 20px;
-}
-
-.login-input {
-  width: 100%;
-}
-
-.login-button {
-  width: 100%;
-  height: 40px;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  margin-left: 0;
-}
-
-.login-logo {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 20px;
-  display: block;
-}
-
-.el-form-item {
-  ::v-deep(.el-form-item__label) {
-    color: #fff;
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #2d3a4b;
+    padding: 20px;
+    box-sizing: border-box;
   }
 
-  .el-input {
-    ::v-deep(.el-input__wrapper) {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: transparent;
-    }
+  .login-card {
+    width: 360px;
+    background-color: #283342;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
 
-    ::v-deep(input) {
+  h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .login-form {
+    margin-bottom: 20px;
+  }
+
+  .login-input {
+    width: 100%;
+  }
+
+  .login-button {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-left: 0;
+  }
+
+  .login-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    display: block;
+  }
+
+  .el-form-item {
+    ::v-deep(.el-form-item__label) {
       color: #fff;
     }
+
+    .el-input {
+      ::v-deep(.el-input__wrapper) {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: transparent;
+      }
+
+      ::v-deep(input) {
+        color: #fff;
+      }
+    }
   }
-}
 </style>

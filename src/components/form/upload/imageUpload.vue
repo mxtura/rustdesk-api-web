@@ -1,27 +1,27 @@
 <template>
   <div class="upload-order-file">
     <el-upload
-            size="mini"
-            ref="upload"
-            :on-success="fileUploadSuccess"
-            :before-upload="beforeFileUpload"
-            :on-preview="onPreview"
-            :on-remove="fileRemove"
-            :on-error="onError"
-            name="file"
-            :file-list="fileList"
-            :action="fileUploadHost"
-            :data="fileUploadData"
-            :headers="headers"
-            list-type="picture-card"
-            :limit="0"
-            accept="image/*"
+      ref="upload"
+      size="mini"
+      :on-success="fileUploadSuccess"
+      :before-upload="beforeFileUpload"
+      :on-preview="onPreview"
+      :on-remove="fileRemove"
+      :on-error="onError"
+      name="file"
+      :file-list="fileList"
+      :action="fileUploadHost"
+      :data="fileUploadData"
+      :headers="headers"
+      list-type="picture-card"
+      :limit="0"
+      accept="image/*"
     >
       <template #default>
         <div class="default-slot">
           <slot name="default">
             <el-icon class="default-icon">
-              <plus/>
+              <plus />
             </el-icon>
           </slot>
         </div>
@@ -34,13 +34,12 @@
 </template>
 <script>
   import { defineComponent, ref, computed, reactive, unref, readonly, toRefs } from 'vue'
-  import { Plus, ZoomIn, Delete, ArrowLeft, ArrowRight, Check } from '@element-plus/icons-vue'
+  import { Plus } from '@element-plus/icons-vue'
   import { useOss } from '@/components/form/upload/oss'
-  import { ElMessage } from 'element-plus'
   import { useLocal } from '@/components/form/upload/local'
 
   export default defineComponent({
-    name: 'imageUpload',
+    name: 'ImageUpload',
     props: {
       limit: {
         type: Number,
@@ -69,12 +68,12 @@
         default: '148px',
       },
     },
-    components: { Plus, ZoomIn, Delete, ArrowLeft, ArrowRight, Check },
-    setup (props, context) {
+    components: { Plus },
+    setup(props, context) {
       const showPreview = ref(false)
       const showImage = ref('')
 
-      let fileList = computed(() => props.modelValue ? [{ url: props.modelValue, status: 'success' }] : [])
+      let fileList = computed(() => (props.modelValue ? [{ url: props.modelValue, status: 'success' }] : []))
 
       let fileUpload = reactive({
         fileUploadHost: '',
@@ -89,30 +88,25 @@
         fileUpload = useLocal(props.beforeUpload, props.host)
       }
 
-      function removeImage (file) {
+      function removeImage(file) {
         let fList = unref(fileList)
         const index = fList.findIndex(f => f.url === file.url)
         fList.splice(index, 1)
         updateValue(fList)
       }
 
-      function updateValue (_fileList) {
+      function updateValue(_fileList) {
         let fList = unref(_fileList)
-        context.emit(
-          'update:modelValue',
-          fList.length ? fList[0].url : '',
-        )
+        context.emit('update:modelValue', fList.length ? fList[0].url : '')
       }
 
-      function fileRemove (file, _fileList) {
+      function fileRemove(file, _fileList) {
         updateValue(_fileList)
       }
 
-      function onError () {
+      function onError() {}
 
-      }
-
-      function fileUploadSuccess (response, file, _fileList) {
+      function fileUploadSuccess(response, file, _fileList) {
         file.url = response?.data?.url || file.url
         if (_fileList.length > 1) {
           _fileList.splice(0, 1)
@@ -122,7 +116,7 @@
         }
       }
 
-      function onPreview (file) {
+      function onPreview(file) {
         showImage.value = file.url
         showPreview.value = true
       }
@@ -148,10 +142,8 @@
 
 <style scoped lang="scss">
   .upload-order-file {
-
     ::v-deep(.el-upload-list__item-thumbnail) {
       object-fit: contain;
-
     }
 
     ::v-deep(.el-upload--picture-card) {
@@ -173,7 +165,6 @@
       width: v-bind(width) !important;
       height: v-bind(width) !important;
     }
-
 
     .default-slot {
       height: 100%;

@@ -19,25 +19,20 @@
     </el-form-item>
     <el-form-item :label="T('ExpireTime')" prop="expire" required>
       <el-select v-model="formData.expire">
-        <el-option
-            v-for="item in expireTimes"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-        ></el-option>
+        <el-option v-for="item in expireTimes" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item v-if="link" :label="T('Link')">
       <el-input v-model="link" readonly>
         <template #append>
-          <el-button :icon="CopyDocument" @click="copyLink"/>
+          <el-button :icon="CopyDocument" @click="copyLink" />
         </template>
       </el-input>
     </el-form-item>
     <el-form-item>
       <el-button v-if="!link" @click="cancel">{{ T('Cancel') }}</el-button>
-      <el-button v-if="!link" :loading="loading" @click="submitShare" type="primary">{{ T('Submit') }}</el-button>
-      <el-button v-else @click="cancel" type="success">{{ T('Close') }}</el-button>
+      <el-button v-if="!link" :loading="loading" type="primary" @click="submitShare">{{ T('Submit') }}</el-button>
+      <el-button v-else type="success" @click="cancel">{{ T('Close') }}</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -64,9 +59,12 @@
     expire: 1800,
     hash: props.hash,
   })
-  watch(() => props.id, () => {
-    init()
-  })
+  watch(
+    () => props.id,
+    () => {
+      init()
+    },
+  )
   const init = () => {
     formData.id = props.id
     formData.hash = props.hash
@@ -85,7 +83,7 @@
     { label: T('Months', { param: 1 }, 1), value: 2592000 },
     { label: T('Forever'), value: 0 },
   ])
-  const changePwdType = (val) => {
+  const changePwdType = val => {
     if (val === 'fixed' && !formData.password) {
       formData.password = props.hash
     }
@@ -114,7 +112,7 @@
         loading.value = false
         return
       }
-      const p = hash([formData.password, res.salt])
+      const p = hashPassword([formData.password, res.salt])
       _formData.password = btoa(p.toString().split(',').map((v) => String.fromCharCode(v)).join(''))
     }*/
     const res = await shareByWebClient(_formData).catch(_ => false)
@@ -125,13 +123,13 @@
     loading.value = false
   }
 
-  const copyLink = (e) => {
+  const copyLink = e => {
     handleClipboard(link.value, e)
   }
 
-  const hash = (datas) => {
+  const hashPassword = datas => {
     const hasher = new sha256.Hash()
-    datas.forEach((data) => {
+    datas.forEach(data => {
       if (typeof data == 'string') {
         data = new TextEncoder().encode(data)
       }
@@ -139,9 +137,6 @@
     })
     return hasher.digest()
   }
-
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

@@ -5,16 +5,14 @@ import { ElMessageBox } from 'element-plus'
 import { T } from '@/utils/i18n'
 import { useAppStore } from '@/store/app'
 
-
-
 const app = useAppStore()
 
-export const toWebClientLink = (row) => {
+export const toWebClientLink = row => {
   //v2
   window.open(`${app.setting.rustdeskConfig.api_server}/webclient2/#/${row.id}`)
 }
 
-export async function getPeerSlat (id) {
+export async function getPeerSlat(id) {
   const [addr, port] = app.setting.rustdeskConfig.id_server.split(':')
   if (!addr) {
     return
@@ -33,7 +31,7 @@ export async function getPeerSlat (id) {
   })
   ws.sendRendezvous({ punch_hole_request })
   //rendezvous.RendezvousMessage
-  const msg = (await ws.next())
+  const msg = await ws.next()
   ws.close()
   const phr = msg.punch_hole_response
   const rr = msg.relay_response
@@ -76,17 +74,15 @@ export async function getPeerSlat (id) {
     // const secure = (await this.secure(pk)) || false;
     // globals.pushEvent("connection_ready", { secure, direct: false });
     while (true) {
-      const msg = (await _ws?.next())
+      const msg = await _ws?.next()
       if (msg?.hash) {
         _ws.close()
         return msg.hash
       }
     }
-    return false
   }
-
 }
 
-export function getV2ShareUrl (token) {
+export function getV2ShareUrl(token) {
   return `${app.setting.rustdeskConfig.api_server}/webclient2/#/?share_token=${token}`
 }

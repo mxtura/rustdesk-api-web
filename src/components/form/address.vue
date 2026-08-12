@@ -1,13 +1,13 @@
 <template>
   <el-form-item ref="formAddress" :label="label" :prop="prop">
     <el-select v-model="currentProvince" clearable placeholder="省" @change="changeProvince">
-      <el-option v-for="(_, name) in pca" :key="name" :label="name" :value="name"/>
+      <el-option v-for="(_, name) in pca" :key="name" :label="name" :value="name" />
     </el-select>
     <el-select v-model="currentCity" clearable placeholder="市" @change="changeCity">
-      <el-option v-for="(_, name) in cities" :key="name" :label="name" :value="name"/>
+      <el-option v-for="(_, name) in cities" :key="name" :label="name" :value="name" />
     </el-select>
     <el-select v-model="currentCounty" clearable placeholder="区" @change="changeCounty">
-      <el-option v-for="item in counties" :key="item" :label="item" :value="item"/>
+      <el-option v-for="item in counties" :key="item" :label="item" :value="item" />
     </el-select>
   </el-form-item>
 </template>
@@ -40,39 +40,41 @@
         default: '',
       },
     },
-    setup (props, context) {
+    setup(props, context) {
       const cities = computed(() => pca[props.province] || [])
-      const counties = computed(() => pca[props.province] && pca[props.province][props.city] ? pca[props.province][props.city] : [])
+      const counties = computed(() =>
+        pca[props.province] && pca[props.province][props.city] ? pca[props.province][props.city] : [],
+      )
 
       let currentProvince = computed({
         get: () => props.province,
-        set: (val) => {
+        set: val => {
           context.emit('update:province', val)
         },
       })
       let currentCity = computed({
         get: () => props.city,
-        set: (val) => {
+        set: val => {
           context.emit('update:city', val)
         },
       })
       let currentCounty = computed({
         get: () => props.county,
-        set: (val) => {
+        set: val => {
           context.emit('update:county', val)
         },
       })
 
-      const changeProvince = (val) => {
-        currentCity = ''
-        currentCounty = ''
+      const changeProvince = val => {
+        currentCity.value = ''
+        currentCounty.value = ''
         context.emit('changeProvince', val)
       }
-      const changeCity = (val) => {
-        currentCounty = ''
+      const changeCity = val => {
+        currentCounty.value = ''
         context.emit('changeCity', val)
       }
-      const changeCounty = (val) => {
+      const changeCounty = val => {
         context.emit('changeCounty', val)
       }
 
@@ -90,10 +92,7 @@
         changeCounty,
       }
     },
-
   })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
