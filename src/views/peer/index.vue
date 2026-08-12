@@ -231,7 +231,7 @@
 </template>
 
 <script setup>
-  import { computed, onActivated, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+  import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
   import { useLocalStorage } from '@vueuse/core'
   import { batchRemove, create, list, remove, update, wol } from '@/api/peer'
   import { list as groupList } from '@/api/device_group'
@@ -242,7 +242,7 @@
   import { loadAllUsers } from '@/global'
   import { useAppStore } from '@/store/app'
   import { connectByClient } from '@/utils/peer'
-  import { ArrowDown, ArrowUp, MoreFilled, Grid, Menu } from '@element-plus/icons-vue'
+  import { ArrowDown, MoreFilled, Grid, Menu } from '@element-plus/icons-vue'
   import { batchCreateFromPeers } from '@/api/address_book'
   import { useRepositories as useCollectionRepositories } from '@/views/address_book/collection'
   import createABForm from '@/views/peer/createABForm.vue'
@@ -352,7 +352,6 @@
     }
   }
   onMounted(getList)
-  onActivated(getList)
 
   watch(() => listQuery.page, getList)
 
@@ -489,10 +488,6 @@
     reader.readAsText(file)
     return false
   }
-  const toImport = () => {
-    ElMessage.warning('暂未实现')
-  }
-
   const ABFormVisible = ref(false)
   const clickRow = ref({})
   const toAddressBook = row => {

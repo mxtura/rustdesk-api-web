@@ -16,64 +16,57 @@
       </el-form>
     </el-card>
     <el-card class="list-body" shadow="hover">
-      <el-table :data="listRes.list" v-loading="listRes.loading" border @selection-change="handleSelectionChange">
-        <el-table-column type="selection" align="center" width="50"/>
-        <el-table-column prop="id" label="ID" align="center" width="100"/>
-        <el-table-column :label="T('Peer')" prop="peer_id" align="center" width="120"/>
-        <el-table-column :label="T('FromPeer')" prop="from_peer" align="center" width="120"/>
-        <el-table-column :label="T('FromName')" prop="from_name" align="center" width="120"/>
-        <el-table-column :label="T('Ip')" prop="ip" align="center" width="120"/>
+      <el-table v-loading="listRes.loading" :data="listRes.list" border @selection-change="handleSelectionChange">
+        <el-table-column type="selection" align="center" width="50" />
+        <el-table-column prop="id" label="ID" align="center" width="100" />
+        <el-table-column :label="T('Peer')" prop="peer_id" align="center" width="120" />
+        <el-table-column :label="T('FromPeer')" prop="from_peer" align="center" width="120" />
+        <el-table-column :label="T('FromName')" prop="from_name" align="center" width="120" />
+        <el-table-column :label="T('Ip')" prop="ip" align="center" width="120" />
         <el-table-column pop="type" :label="T('Type')" align="center" width="120">
-          <template #default="{row}">
+          <template #default="{ row }">
             <el-tag v-if="row.type === 1" type="warning">{{ T('File') }}</el-tag>
             <el-tag v-else>{{ T('Common') }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="uuid" label="uuid" align="center" width="120" show-overflow-tooltip/>
-        <el-table-column prop="created_at" :label="T('CreatedAt')" align="center"/>
-        <el-table-column :label="T('CloseTime')" prop="close_time" align="center"/>
+        <el-table-column prop="uuid" label="uuid" align="center" width="120" show-overflow-tooltip />
+        <el-table-column prop="created_at" :label="T('CreatedAt')" align="center" />
+        <el-table-column :label="T('CloseTime')" prop="close_time" align="center" />
         <el-table-column :label="T('Actions')" align="center" width="150">
-          <template #default="{row}">
+          <template #default="{ row }">
             <el-button type="danger" @click="del(row)">{{ T('Delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
     <el-card class="list-page" shadow="hover">
-      <el-pagination background
-                     layout="prev, pager, next, sizes, jumper"
-                     :page-sizes="[10,20,50,100]"
-                     v-model:page-size="listQuery.page_size"
-                     v-model:current-page="listQuery.page"
-                     :total="listRes.total">
+      <el-pagination
+        v-model:page-size="listQuery.page_size"
+        v-model:current-page="listQuery.page"
+        background
+        layout="prev, pager, next, sizes, jumper"
+        :page-sizes="[10, 20, 50, 100]"
+        :total="listRes.total"
+      >
       </el-pagination>
     </el-card>
   </div>
 </template>
 
 <script setup>
-  import { onActivated, onMounted, ref, watch } from 'vue'
+  import { onMounted, ref, watch } from 'vue'
   import { useRepositories } from '@/views/audit/reponsitories'
   import { T } from '@/utils/i18n'
 
-  const {
-    listRes,
-    listQuery,
-    getList,
-    handlerQuery,
-    del,
-    batchdel,
-    toExport,
-  } = useRepositories()
+  const { listRes, listQuery, getList, handlerQuery, del, batchdel, toExport } = useRepositories()
 
   onMounted(getList)
-  onActivated(getList)
 
   watch(() => listQuery.page, getList)
 
   watch(() => listQuery.page_size, handlerQuery)
   const multipleSelection = ref([])
-  const handleSelectionChange = (val) => {
+  const handleSelectionChange = val => {
     multipleSelection.value = val
   }
   const toBatchDelete = () => {
@@ -84,6 +77,4 @@
   }
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

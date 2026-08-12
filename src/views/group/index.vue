@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-  import { onMounted, reactive, watch, ref, onActivated } from 'vue'
+  import { onMounted, reactive, watch, ref } from 'vue'
   import { list, create, update, detail, remove } from '@/api/group'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { T } from '@/utils/i18n'
@@ -119,7 +119,6 @@
     }
   }
   onMounted(getList)
-  onActivated(getList)
 
   watch(() => listQuery.page, getList)
 

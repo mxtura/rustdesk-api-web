@@ -6,10 +6,11 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 import { T } from '@/utils/i18n'
 import { downBlob, jsonToCsv } from '@/utils/file'
 
-export function useRepositories () {
-
+export function useRepositories() {
   const listRes = reactive({
-    list: [], total: 0, loading: false,
+    list: [],
+    total: 0,
+    loading: false,
     groups: [],
   })
   const listQuery = reactive({
@@ -64,30 +65,22 @@ export function useRepositories () {
   }
 }
 
-export function useToEditOrAdd () {
+export function useToEditOrAdd() {
   const router = useRouter()
-  const toEdit = (row) => {
-    router.push('/user/edit/' + row.id)
-  }
-  const toAdd = () => {
-    router.push('/user/add')
-  }
-  const toTag = (row) => {
+  const toTag = row => {
     router.push('/user/tag/?user_id=' + row.id)
   }
-  const toAddressBook = (row) => {
+  const toAddressBook = row => {
     router.push('/user/addressBook/?user_id=' + row.id)
   }
   return {
-    toAdd,
-    toEdit,
     toTag,
     toAddressBook,
   }
 }
 
-export function useDel () {
-  const del = async (id) => {
+export function useDel() {
+  const del = async id => {
     const cf = await ElMessageBox.confirm(T('Confirm?', { param: T('Delete') }), {
       confirmButtonText: T('Confirm'),
       cancelButtonText: T('Cancel'),
@@ -108,8 +101,8 @@ export function useDel () {
   }
 }
 
-export function useChangePwd () {
-  const changePass = async (admin) => {
+export function useChangePwd() {
+  const changePass = async admin => {
     const input = await ElMessageBox.prompt(T('PleaseInputNewPassword'), T('ResetPassword'), {
       confirmButtonText: T('Confirm'),
       cancelButtonText: T('Cancel'),

@@ -185,18 +185,6 @@ export const asyncRoutes = [
         component: () => import('@/views/user/index.vue'),
       },
       {
-        path: '/user/add',
-        name: 'UserAdd',
-        meta: { title: 'UserAdd', hide: true },
-        component: () => import('@/views/user/edit.vue'),
-      },
-      {
-        path: '/user/edit/:id',
-        name: 'UserEdit',
-        meta: { title: 'UserEdit', hide: true },
-        component: () => import('@/views/user/edit.vue'),
-      },
-      {
         path: '/oauth',
         name: 'Oauth',
         meta: { title: 'OauthManage', icon: 'Link' },
@@ -261,12 +249,9 @@ export const asyncRoutes = [
     ],
   },
 ]
-export const lastRoutes = [
-  { path: '/:catchAll(.*)', redirect: '/404', meta: { hide: true } },
-]
+export const lastRoutes = [{ path: '/:catchAll(.*)', redirect: '/404', meta: { hide: true } }]
 
 export const router = createRouter({
   history: createWebHashHistory(),
   routes: constantRoutes,
 })
-
