@@ -19,9 +19,7 @@ jobs:
         run: npm run build
       - name: Unit tests
         run: npm test
-      - name: Lint (информационно)
+      - name: Lint
         run: npm run lint:check
-        continue-on-error: true
-      - name: Typecheck (информационно)
+      - name: Typecheck
         run: npm run typecheck
-        continue-on-error: true

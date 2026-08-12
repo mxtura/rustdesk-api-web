@@ -23,7 +23,6 @@ export default defineConfig(({ mode }) => {
         [env.VITE_SERVER_API || '/api']: {
           target: env.VITE_SERVER_PATH,
           changeOrigin: true,
-          secure: false, // бэкенд с самоподписанным сертом
         },
       },
     },
@@ -82,5 +81,10 @@ export default defineConfig(({ mode }) => {
         dts: 'src/components.d.ts',
       }),
     ],
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      include: ['src/**/*.{test,spec}.{js,ts}'],
+    },
   }
 })

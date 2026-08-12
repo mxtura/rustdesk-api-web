@@ -13,14 +13,10 @@ import '@/permission'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/styles/style.scss'
 import * as ElementIcons from '@element-plus/icons-vue'
+import { useDark } from '@vueuse/core'
 
-// Тема по умолчанию — тёмная (glass premium). vueuse хранит выбор в localStorage.
-if (!localStorage.getItem('vueuse-color-scheme')) {
-  localStorage.setItem('vueuse-color-scheme', 'dark')
-}
-if (localStorage.getItem('vueuse-color-scheme') === 'dark') {
-  document.documentElement.classList.add('dark')
-}
+// Тема по умолчанию — тёмная (glass premium); хранение и переключение — через useDark.
+useDark({ initialValue: 'dark' })
 
 const app = createApp(App)
 app.use(ElementPlus, { locale: zhCn })
@@ -44,7 +40,7 @@ app.use(VueQueryPlugin, {
     },
   },
 })
-for (let icon in ElementIcons){
-  app.component("ElIcon" +icon ,ElementIcons[icon])
+for (let icon in ElementIcons) {
+  app.component('ElIcon' + icon, ElementIcons[icon])
 }
 app.mount('#app')

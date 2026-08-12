@@ -5,8 +5,12 @@ export default defineConfig({
   testDir: './e2e',
   timeout: 30_000,
   use: {
-    baseURL: process.env.BASE_URL || 'https://193.33.124.73:9443',
-    ignoreHTTPSErrors: true, // самоподписанный серт
+    baseURL: process.env.BASE_URL || 'http://localhost:4173',
     headless: true,
+  },
+  webServer: {
+    command: 'npm run preview -- --port 4173',
+    url: 'http://localhost:4173',
+    reuseExistingServer: !process.env.CI,
   },
 })
