@@ -6,6 +6,7 @@ describe('osIcon', () => {
     expect(osIcon('Windows 10 Pro')).toBe('🪟')
     expect(osIcon('Ubuntu 24.04')).toBe('🐧')
     expect(osIcon('macOS 15')).toBe('🍎')
+    expect(osIcon('Darwin 23.6.0')).toBe('🍎')
     expect(osIcon('Android 14')).toBe('🤖')
   })
   it('на пустое значение отдаёт заглушку', () => {

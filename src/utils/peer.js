@@ -15,8 +15,9 @@ export const ONLINE_WINDOW_MS = 60_000
 
 export function osIcon(os) {
   const s = (os || '').toLowerCase()
+  // mac/ios/darwin — раньше проверки, иначе "darwin" ловится проверкой на "win"
+  if (s.includes('mac') || s.includes('ios') || s.includes('darwin')) return '🍎'
   if (s.includes('win')) return '🪟'
-  if (s.includes('mac') || s.includes('ios')) return '🍎'
   if (s.includes('android')) return '🤖'
   if (s.includes('linux') || s.includes('ubuntu') || s.includes('debian') || s.includes('fedora')) return '🐧'
   return '🖥️'
