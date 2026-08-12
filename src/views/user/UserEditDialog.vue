@@ -41,7 +41,7 @@
 
       <el-form-item :label="T('Group')" prop="group_id" required>
         <el-select v-model="form.group_id" style="width: 100%">
-          <el-option v-for="item in groupsList" :key="item.id" :label="gname(item.name)" :value="item.id" />
+          <el-option v-for="item in groupsList" :key="item.id" :label="gname(item)" :value="item.id" />
         </el-select>
       </el-form-item>
 

@@ -1,12 +1,15 @@
 import { T } from '@/utils/i18n'
 
-// Сид-группы бэкенда создаются на языке сервера (часто zh).
-// Показываем локализованное имя по языку панели, пользовательские имена не трогаем.
-const DEFAULT_GROUP_NAMES = new Set(['默认组', '默認组', '默認組', 'Default Group'])
-const SHARE_GROUP_NAMES = new Set(['共享组', '共享組', 'Shared Group'])
+// Тип группы приходит с бэкенда (model.GroupTypeShare == 2). Сравнение по имени
+// подменяло пользовательские группы с именем «Default Group» и отваливалось
+// после переименования системной группы.
+export const GROUP_TYPE_SHARE = 2
 
-export function groupDisplayName (name) {
-  if (DEFAULT_GROUP_NAMES.has(name)) return T('GroupDefaultName')
-  if (SHARE_GROUP_NAMES.has(name)) return T('GroupShareName')
-  return name || ''
+export function isShareGroup(group) {
+  return Number(group?.type) === GROUP_TYPE_SHARE
+}
+
+export function groupDisplayName(group) {
+  if (isShareGroup(group)) return T('SharedGroup')
+  return group?.name || ''
 }

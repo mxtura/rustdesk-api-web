@@ -194,7 +194,7 @@
   // локализация авто-групп по языку панели
   const groupName = id => {
     const g = listRes.groups?.find(x => x.id === id)
-    return g ? groupDisplayName(g.name) : '-'
+    return g ? groupDisplayName(g) : '-'
   }
 
   // аватар: первая буква + стабильный цвет по имени
