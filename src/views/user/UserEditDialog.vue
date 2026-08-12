@@ -75,7 +75,7 @@
   import { T } from '@/utils/i18n'
   import { ElMessage } from 'element-plus'
   import { saveUser } from '@/views/user/save'
-  import { useGetDetail, useSubmit } from '@/views/user/composables/edit'
+  import { useGetDetail, useSubmit, openUserForm } from '@/views/user/composables/edit'
   import { ENABLE_STATUS, DISABLE_STATUS } from '@/utils/common_options'
   import { groupDisplayName as gname } from '@/utils/group'
 
@@ -90,22 +90,10 @@
   const { rules } = useSubmit(form, props.userId)
 
   const onOpen = async () => {
-    if (props.userId) {
-      await getDetail(props.userId)
-    } else {
-      // дефолты для нового пользователя: включён, не админ
-      form.value = {
-        id: 0,
-        username: '',
-        email: '',
-        nickname: '',
-        group_id: null,
-        is_admin: false,
-        status: ENABLE_STATUS,
-        remark: '',
-        password: '',
-      }
-    }
+    // сброс + загрузка вынесены в openUserForm: если запрос упадёт, форма не
+    // должна остаться с данными ранее открытого пользователя (см. B12, круг 1)
+    const ok = await openUserForm(props.userId, form, getDetail)
+    if (!ok) emit('update:visible', false)
   }
 
   const save = async () => {
