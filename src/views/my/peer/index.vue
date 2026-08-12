@@ -307,21 +307,23 @@
       getList()
     }
   }*/
-  // смена размера страницы — вернуться на первую и сразу применить снимок
-  // (queryKey зависит от appliedQuery, а не от listQuery — без этого явного
-  // присваивания смена page_size не вызвала бы рефетч)
+  // смена размера страницы — сама по себе, без подхвата неподтверждённого
+  // фильтра: из живого listQuery берём только поля пагинации, остальное —
+  // из прежнего снимка. Подтверждённый фильтр переносится в запрос только
+  // по кнопке «Фильтр» (handlerQuery).
   watch(
     () => listQuery.page_size,
     () => {
       listQuery.page = 1
-      appliedQuery.value = { ...listQuery }
+      appliedQuery.value = { ...appliedQuery.value, page: 1, page_size: listQuery.page_size }
     },
   )
-  // смена страницы через пагинацию — применить снимок по той же причине
+  // смена страницы через пагинацию — та же логика: меняем только номер
+  // страницы, не подхватывая недопечатанный фильтр из живого listQuery.
   watch(
     () => listQuery.page,
     () => {
-      appliedQuery.value = { ...listQuery }
+      appliedQuery.value = { ...appliedQuery.value, page: listQuery.page }
     },
   )
 
