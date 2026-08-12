@@ -17,8 +17,16 @@ export const useUserStore = defineStore({
     route_names: [],
   }),
 
+  getters: {
+    // Единственный источник признака «админ» в приложении: наличие '*'
+    // в route_names, которое выдаёт бэкенд при логине (см. header.vue).
+    // Поля is_admin в состоянии текущего пользователя нет — это поле
+    // хранится только в записях управляемых пользователей (views/user).
+    isAdmin: state => (state.route_names || []).includes('*'),
+  },
+
   actions: {
-    logout () {
+    logout() {
       removeToken()
       removeCode()
       this.$patch({
@@ -27,7 +35,7 @@ export const useUserStore = defineStore({
       })
     },
 
-    saveUserData (userData) {
+    saveUserData(userData) {
       // useAppStore().getAppConfig()
       setToken(userData.token)
       //
@@ -40,7 +48,7 @@ export const useUserStore = defineStore({
       }
     },
 
-    async login (form) {
+    async login(form) {
       const res = await login(form).catch(e => e)
       if (!res.code) {
         useAppStore().loadConfig()
@@ -51,7 +59,7 @@ export const useUserStore = defineStore({
         return Promise.reject(res)
       }
     },
-    async info () {
+    async info() {
       const res = await current().catch(_ => false)
       if (res) {
         useAppStore().loadConfig()
@@ -65,7 +73,7 @@ export const useUserStore = defineStore({
       }
       return false
     },
-    async oidc (provider, platform, browser) {
+    async oidc(provider, platform, browser) {
       // oidc data need to be implement
       const data = {
         deviceInfo: {
@@ -75,7 +83,7 @@ export const useUserStore = defineStore({
         },
         id: `${platform}-${browser}`,
         op: provider, // 传入的 provider
-        uuid: '',//crypto.randomUUID(), // 自动生成 UUID
+        uuid: '', //crypto.randomUUID(), // 自动生成 UUID
       }
       const res = await oidcAuth(data).catch(_ => false)
       if (res) {
@@ -88,8 +96,8 @@ export const useUserStore = defineStore({
         }
       }
     },
-    async query (code) {
-      const params = { 'code': code, uuid: '' }
+    async query(code) {
+      const params = { code: code, uuid: '' }
       const res = await oidcQuery(params).catch(_ => false)
       if (res) {
         removeCode()
