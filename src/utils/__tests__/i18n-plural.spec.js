@@ -40,4 +40,16 @@ describe('русская плюрализация', () => {
     expect(t('YearsAgo', 5)).toBe('5 лет назад')
     expect(t('YearsAgo', 11)).toBe('11 лет назад')
   })
+
+  // регресс: строки были в двух формах с {param} — pluralRules возвращал индекс 2,
+  // которого не было в массиве, и для "5 минут" выходило "5 минуты"
+  it('менее (минуты/часы/дни)', () => {
+    expect(t('MinutesLess', 1)).toBe('Менее 1 минуты')
+    expect(t('MinutesLess', 2)).toBe('Менее 2 минут')
+    expect(t('MinutesLess', 5)).toBe('Менее 5 минут')
+    expect(t('HoursLess', 1)).toBe('Менее 1 часа')
+    expect(t('HoursLess', 5)).toBe('Менее 5 часов')
+    expect(t('DaysLess', 1)).toBe('Менее 1 дня')
+    expect(t('DaysLess', 5)).toBe('Менее 5 дней')
+  })
 })
