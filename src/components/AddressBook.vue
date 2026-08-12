@@ -227,7 +227,7 @@
   import { T } from '@/utils/i18n'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { useAppStore } from '@/store/app'
-  import { connectByClient } from '@/utils/peer'
+  import { connectByClient, isPeerOnline } from '@/utils/peer'
   import { toWebClientLink } from '@/utils/webclient'
   import { handleClipboard } from '@/utils/clipboard'
   import { MoreFilled, Plus, Close, Search, ArrowLeft } from '@element-plus/icons-vue'
@@ -319,7 +319,7 @@
     }
   }
 
-  const isOnline = row => !!row.peer?.last_online_time && (Date.now() - row.peer.last_online_time * 1000) / 1000 < 60
+  const isOnline = row => isPeerOnline(row.peer?.last_online_time)
   const tagArr = row =>
     Array.isArray(row.tags) ? row.tags : row.tags ? String(row.tags).split(',').filter(Boolean) : []
   const platIcon = row => platformList.find(p => p.label === row.platform)?.icon

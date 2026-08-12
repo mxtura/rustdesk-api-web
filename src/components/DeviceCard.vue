@@ -51,6 +51,7 @@
   import { T } from '@/utils/i18n'
   import { timeAgo } from '@/utils/time'
   import { handleClipboard } from '@/utils/clipboard'
+  import { osIcon as osIconFor, isPeerOnline } from '@/utils/peer'
   import { CopyDocument, Cpu, Coin, Monitor, Connection } from '@element-plus/icons-vue'
   import type { Peer } from '@/types/models'
 
@@ -65,15 +66,8 @@
   )
   const emit = defineEmits<{ toggle: [value: boolean] }>()
 
-  const isOnline = computed(() => !!props.row.last_online_time && Date.now() / 1000 - props.row.last_online_time < 60)
-  const osIcon = computed(() => {
-    const s = (props.row.os || '').toLowerCase()
-    if (s.includes('win')) return '🪟'
-    if (s.includes('mac') || s.includes('ios') || s.includes('darwin')) return '🍎'
-    if (s.includes('android')) return '🤖'
-    if (s.includes('linux')) return '🐧'
-    return '🖥️'
-  })
+  const isOnline = computed(() => isPeerOnline(props.row.last_online_time))
+  const osIcon = computed(() => osIconFor(props.row.os))
   const copyId = (e: MouseEvent) => handleClipboard(props.row.id, e)
 </script>
 

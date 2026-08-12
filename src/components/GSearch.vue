@@ -60,7 +60,7 @@
   import { T } from '@/utils/i18n'
   import { peerListApi } from '@/utils/peerApi'
   import { useUserStore } from '@/store/user'
-  import { connectByClient } from '@/utils/peer'
+  import { connectByClient, osIcon } from '@/utils/peer'
 
   const open = ref(false)
   const q = ref('')
@@ -68,15 +68,6 @@
   const peers = ref([])
   const favIds = ref(JSON.parse(localStorage.getItem('peer_favorites') || '[]'))
   const recent = ref(JSON.parse(localStorage.getItem('peer_recent') || '[]'))
-
-  const osIcon = os => {
-    const s = (os || '').toLowerCase()
-    if (s.includes('win')) return '🪟'
-    if (s.includes('mac') || s.includes('ios') || s.includes('darwin')) return '🍎'
-    if (s.includes('android')) return '🤖'
-    if (s.includes('linux')) return '🐧'
-    return '🖥️'
-  }
 
   const results = computed(() => {
     const s = q.value.trim().toLowerCase()

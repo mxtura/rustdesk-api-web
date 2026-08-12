@@ -51,7 +51,7 @@
               <span>{{ row.last_online_time ? timeAgo(row.last_online_time * 1000) : '-' }}</span>
               <span
                 class="dot"
-                :class="{ red: secAgo(row.last_online_time) >= 60, green: secAgo(row.last_online_time) < 60 }"
+                :class="{ red: !isPeerOnline(row.last_online_time), green: isPeerOnline(row.last_online_time) }"
               ></span>
             </div>
           </template>
@@ -79,6 +79,7 @@
   import { T } from '@/utils/i18n'
   import { timeAgo } from '@/utils/time'
   import { handleClipboard } from '@/utils/clipboard'
+  import { isPeerOnline } from '@/utils/peer'
   import { Setting, Close, CopyDocument } from '@element-plus/icons-vue'
   import Sortable from 'sortablejs'
   import type { ColumnDef, Peer } from '@/types/models'
@@ -152,7 +153,6 @@
     c.visible = true
     persistCols()
   }
-  const secAgo = (t?: number) => Date.now() / 1000 - (t || 0)
   const copyId = (id: string, e: MouseEvent) => handleClipboard(id, e)
 
   // drag-reorder заголовков мышкой
