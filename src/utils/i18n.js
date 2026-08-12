@@ -16,6 +16,17 @@ export const i18n = createI18n({
   fallbackLocale: 'en',
   missingWarn: false,
   fallbackWarn: false,
+  // Правило склонения для русского: 0=«1 минуту», 1=«2 минуты», 2=«5/11 минут».
+  pluralRules: {
+    ru: choice => {
+      const n = Math.abs(choice) % 100
+      const n1 = n % 10
+      if (n > 10 && n < 20) return 2
+      if (n1 > 1 && n1 < 5) return 1
+      if (n1 === 1) return 0
+      return 2
+    },
+  },
   messages: {
     en,
     fr,
@@ -32,7 +43,5 @@ export const i18n = createI18n({
 export function T(key, params = {}, num) {
   // как старый T: нестроковый/пустой ключ возвращаем как есть (vue-i18n на undefined кидает ошибку)
   if (typeof key !== 'string' || key === '') return key ?? ''
-  return typeof num === 'number'
-    ? i18n.global.t(key, num, { named: params })
-    : i18n.global.t(key, params)
+  return typeof num === 'number' ? i18n.global.t(key, num, { named: params }) : i18n.global.t(key, params)
 }
