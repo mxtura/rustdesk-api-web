@@ -1,17 +1,23 @@
 <template>
-  <div class="dash" v-loading="loading">
+  <div v-loading="loading" class="dash">
     <!-- быстрое подключение -->
     <el-card class="quick-connect" shadow="never">
       <div class="qc-row">
-        <el-icon class="qc-ic"><Monitor/></el-icon>
-        <el-input v-model="quickId" :placeholder="T('QuickConnectPlaceholder')" class="qc-input" clearable @keyup.enter="doConnect"/>
+        <el-icon class="qc-ic"><Monitor /></el-icon>
+        <el-input
+          v-model="quickId"
+          :placeholder="T('QuickConnectPlaceholder')"
+          class="qc-input"
+          clearable
+          @keyup.enter="doConnect"
+        />
         <el-button type="primary" :disabled="!quickId" @click="doConnect">{{ T('Connect') }}</el-button>
         <el-popover placement="bottom-end" :width="212" trigger="click" @show="genQr">
           <template #reference>
             <el-button :disabled="!quickId" :icon="Grid">QR</el-button>
           </template>
           <div class="qc-qr">
-            <img v-if="qrData" :src="qrData" alt="qr"/>
+            <img v-if="qrData" :src="qrData" alt="qr" />
             <div class="qc-qr-cap">rustdesk://{{ quickId }}</div>
           </div>
         </el-popover>
@@ -23,7 +29,9 @@
       <div class="stat-card">
         <div class="stat-ic ic-green">🖥️</div>
         <div class="stat-body">
-          <div class="stat-val">{{ onlineCount }}<span class="stat-sub">/ {{ peerTotal }}</span></div>
+          <div class="stat-val">
+            {{ onlineCount }}<span class="stat-sub">/ {{ peerTotal }}</span>
+          </div>
           <div class="stat-label">{{ T('DevicesOnline') }}</div>
         </div>
       </div>
@@ -80,36 +88,64 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, computed } from 'vue'
+  import { ref, computed } from 'vue'
+  import { useQuery } from '@tanstack/vue-query'
   import { T } from '@/utils/i18n'
   import { list as peerList } from '@/api/peer'
   import { list as userList } from '@/api/user'
   import { list as loginLogList } from '@/api/login_log'
-  import { connectByClient } from '@/utils/peer'
+  import { connectByClient, isPeerOnline } from '@/utils/peer'
   import { Monitor, Grid } from '@element-plus/icons-vue'
   import QRCode from 'qrcode'
 
   const quickId = ref('')
   const qrData = ref('')
-  const doConnect = () => { if (quickId.value) connectByClient(quickId.value.trim()) }
+  const doConnect = () => {
+    if (quickId.value) connectByClient(quickId.value.trim())
+  }
   const genQr = async () => {
     if (!quickId.value) return
     qrData.value = await QRCode.toDataURL(`rustdesk://${quickId.value.trim()}`, { width: 184, margin: 1 })
   }
 
-  const loading = ref(false)
-  const peers = ref([])
-  const peerTotal = ref(0)
-  const userTotal = ref(0)
-  const logTotal = ref(0)
-  const logs = ref([])
+  // Кэш через useQuery: раньше данные выкачивались заново при каждом заходе
+  // на дашборд (1000 устройств + 500 записей журнала). Теперь — раз в 60
+  // секунд, и переход между экранами переиспользует уже загруженное.
+  //
+  // page_size журнала входов урезан с 500 до 100: для активности за 14 дней
+  // это окно репрезентативно только при домашнем масштабе нагрузки (единицы
+  // входов в день); если объём вырастет, счётчики за период нужно будет
+  // считать агрегатом на сервере, а не постранично на клиенте.
+  const { data, isFetching } = useQuery({
+    queryKey: ['dashboard'],
+    queryFn: async () => {
+      const [p, u, l] = await Promise.all([
+        peerList({ page: 1, page_size: 200 }).catch(() => null),
+        userList({ page: 1, page_size: 1 }).catch(() => null),
+        loginLogList({ page: 1, page_size: 100 }).catch(() => null),
+      ])
+      return {
+        peers: p?.data?.list || [],
+        peerTotal: p?.data?.total || 0,
+        userTotal: u?.data?.total || 0,
+        logins: l?.data?.list || [],
+        logTotal: l?.data?.total || 0,
+      }
+    },
+    staleTime: 60_000,
+  })
 
-  const onlineCount = computed(() =>
-    peers.value.filter(p => p.last_online_time && (Date.now() - p.last_online_time * 1000) / 1000 < 60).length,
-  )
+  const loading = isFetching
+  const peers = computed(() => data.value?.peers || [])
+  const peerTotal = computed(() => data.value?.peerTotal || 0)
+  const userTotal = computed(() => data.value?.userTotal || 0)
+  const logTotal = computed(() => data.value?.logTotal || 0)
+  const logs = computed(() => data.value?.logins || [])
 
-  const pad = (n) => (n < 10 ? '0' + n : '' + n)
-  const dayKey = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+  const onlineCount = computed(() => peers.value.filter(p => isPeerOnline(p.last_online_time)).length)
+
+  const pad = n => (n < 10 ? '0' + n : '' + n)
+  const dayKey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
 
   const loginsToday = computed(() => {
     const t = dayKey(new Date())
@@ -138,122 +174,204 @@
     return days
   })
   const maxCount = computed(() => Math.max(1, ...activity.value.map(d => d.count)))
-  const barH = (c) => Math.round((c / maxCount.value) * 100)
+  const barH = c => Math.round((c / maxCount.value) * 100)
 
   const recent = computed(() => logs.value.slice(0, 8))
-
-  const load = async () => {
-    loading.value = true
-    const [p, u, l] = await Promise.all([
-      peerList({ page: 1, page_size: 1000 }).catch(() => null),
-      userList({ page: 1, page_size: 1 }).catch(() => null),
-      loginLogList({ page: 1, page_size: 500 }).catch(() => null),
-    ])
-    if (p) { peers.value = p.data.list || []; peerTotal.value = p.data.total || 0 }
-    if (u) { userTotal.value = u.data.total || 0 }
-    if (l) { logs.value = l.data.list || []; logTotal.value = l.data.total || 0 }
-    loading.value = false
-  }
-  onMounted(load)
 </script>
 
 <style scoped lang="scss">
-.dash { display: flex; flex-direction: column; gap: 20px; }
+  .dash {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-/* быстрое подключение */
-.quick-connect :deep(.el-card__body) { padding: 16px 20px; }
-.qc-row { display: flex; align-items: center; gap: 12px; }
-.qc-ic { font-size: 22px; color: var(--accent); flex-shrink: 0; }
-.qc-input { flex: 1; }
-.qc-qr { text-align: center; }
-.qc-qr img { width: 184px; height: 184px; border-radius: 8px; display: block; }
-.qc-qr-cap { font-size: 11px; color: var(--el-text-color-secondary); margin-top: 8px; word-break: break-all; }
+  /* быстрое подключение */
+  .quick-connect :deep(.el-card__body) {
+    padding: 16px 20px;
+  }
+  .qc-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .qc-ic {
+    font-size: 22px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .qc-input {
+    flex: 1;
+  }
+  .qc-qr {
+    text-align: center;
+  }
+  .qc-qr img {
+    width: 184px;
+    height: 184px;
+    border-radius: 8px;
+    display: block;
+  }
+  .qc-qr-cap {
+    font-size: 11px;
+    color: var(--el-text-color-secondary);
+    margin-top: 8px;
+    word-break: break-all;
+  }
 
-/* статы */
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-.stat-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 20px;
-  border-radius: var(--radius-lg);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-soft);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-.stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
-.stat-ic {
-  width: 52px; height: 52px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 26px;
-  border-radius: 14px;
-  flex-shrink: 0;
-}
-.ic-green { background: rgba(34, 197, 94, 0.15); }
-.ic-blue { background: rgba(0, 113, 255, 0.15); }
-.ic-violet { background: rgba(124, 92, 255, 0.15); }
-.ic-amber { background: rgba(245, 158, 11, 0.15); }
-.stat-val { font-size: 28px; font-weight: 700; line-height: 1.1; }
-.stat-sub { font-size: 15px; font-weight: 500; color: var(--el-text-color-secondary); margin-left: 4px; }
-.stat-label { font-size: 13px; color: var(--el-text-color-secondary); margin-top: 4px; }
+  /* статы */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .stat-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-soft);
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+  .stat-ic {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    border-radius: 14px;
+    flex-shrink: 0;
+  }
+  .ic-green {
+    background: rgba(34, 197, 94, 0.15);
+  }
+  .ic-blue {
+    background: rgba(0, 113, 255, 0.15);
+  }
+  .ic-violet {
+    background: rgba(124, 92, 255, 0.15);
+  }
+  .ic-amber {
+    background: rgba(245, 158, 11, 0.15);
+  }
+  .stat-val {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .stat-sub {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--el-text-color-secondary);
+    margin-left: 4px;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--el-text-color-secondary);
+    margin-top: 4px;
+  }
 
-/* строка график + последние */
-.dash-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 16px;
-}
-@media (max-width: 1100px) { .dash-row { grid-template-columns: 1fr; } }
+  /* строка график + последние */
+  .dash-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 1100px) {
+    .dash-row {
+      grid-template-columns: 1fr;
+    }
+  }
 
-.card-title { font-weight: 600; margin-bottom: 18px; }
+  .card-title {
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
 
-/* график */
-.chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  height: 200px;
-}
-.bar-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  height: 100%;
-  gap: 6px;
-}
-.bar {
-  width: 100%;
-  max-width: 26px;
-  min-height: 3px;
-  border-radius: 6px 6px 0 0;
-  background: var(--accent-grad);
-  transition: height 0.3s ease;
-}
-.bar-x { font-size: 10px; color: var(--el-text-color-secondary); white-space: nowrap; }
+  /* график */
+  .chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 200px;
+  }
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 6px;
+  }
+  .bar {
+    width: 100%;
+    max-width: 26px;
+    min-height: 3px;
+    border-radius: 6px 6px 0 0;
+    background: var(--accent-grad);
+    transition: height 0.3s ease;
+  }
+  .bar-x {
+    font-size: 10px;
+    color: var(--el-text-color-secondary);
+    white-space: nowrap;
+  }
 
-/* последние входы */
-.recent-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--glass-border);
-}
-.recent-item:last-child { border-bottom: none; }
-.ri-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.ri-dot.b { background: var(--accent); }
-.ri-dot.v { background: #7c5cff; }
-.ri-main { flex: 1; min-width: 0; }
-.ri-user { font-size: 13px; font-weight: 500; }
-.ri-meta { font-size: 11px; color: var(--el-text-color-secondary); }
-.ri-time { font-size: 11px; color: var(--el-text-color-secondary); white-space: nowrap; }
-.recent-empty { color: var(--el-text-color-secondary); text-align: center; padding: 20px; }
+  /* последние входы */
+  .recent-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .recent-item:last-child {
+    border-bottom: none;
+  }
+  .ri-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .ri-dot.b {
+    background: var(--accent);
+  }
+  .ri-dot.v {
+    background: #7c5cff;
+  }
+  .ri-main {
+    flex: 1;
+    min-width: 0;
+  }
+  .ri-user {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .ri-meta {
+    font-size: 11px;
+    color: var(--el-text-color-secondary);
+  }
+  .ri-time {
+    font-size: 11px;
+    color: var(--el-text-color-secondary);
+    white-space: nowrap;
+  }
+  .recent-empty {
+    color: var(--el-text-color-secondary);
+    text-align: center;
+    padding: 20px;
+  }
 </style>
