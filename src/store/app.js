@@ -11,11 +11,11 @@ import { admin, app, server } from '@/api/config'
 
 const langs = {
   'zh-CN': { name: '中文', value: zhCn, sideBarWidth: '210px' },
-  'en': { name: 'English', value: en, sideBarWidth: '230px' },
-  'fr': { name: 'Français', value: fr, sideBarWidth: '280px' },
-  'ko': { name: '한국어', value: ko, sideBarWidth: '230px' },
-  'ru': { name: 'Русский', value: ru, sideBarWidth: '250px' },
-  'es': { name: 'Español', value: es, sideBarWidth: '280px' },
+  en: { name: 'English', value: en, sideBarWidth: '230px' },
+  fr: { name: 'Français', value: fr, sideBarWidth: '280px' },
+  ko: { name: '한국어', value: ko, sideBarWidth: '230px' },
+  ru: { name: 'Русский', value: ru, sideBarWidth: '250px' },
+  es: { name: 'Español', value: es, sideBarWidth: '280px' },
   'zh-TW': { name: '中文繁体', value: zhTw, sideBarWidth: '210px' },
 }
 const defaultLang = localStorage.getItem('lang') || navigator.language || 'zh-CN'
@@ -24,7 +24,6 @@ export const useAppStore = defineStore({
   state: () => ({
     setting: {
       title: 'Rustdesk API Admin',
-      hello: '',
       sideIsCollapse: false,
       logo,
       langs: langs,
@@ -34,47 +33,46 @@ export const useAppStore = defineStore({
         web_client: 1,
       },
       rustdeskConfig: {
-        'id_server': '',
-        'key': '',
-        'relay_server': '',
-        'api_server': '',
+        id_server: '',
+        key: '',
+        relay_server: '',
+        api_server: '',
       },
     },
   }),
 
   actions: {
-    sideCollapse () {
+    sideCollapse() {
       this.setting.sideIsCollapse = !this.setting.sideIsCollapse
     },
-    setLang (lang) {
+    setLang(lang) {
       this.setting.lang = lang
       this.setting.locale = langs[lang]
       localStorage.setItem('lang', lang)
     },
-    changeLang (v) {
+    changeLang(v) {
       this.setLang(v)
     },
-    loadConfig () {
+    loadConfig() {
       this.getAppConfig()
       this.getAdminConfig()
       this.loadRustdeskConfig()
     },
-    getAppConfig () {
+    getAppConfig() {
       return app().then(res => {
         this.setting.appConfig = res.data
       })
     },
-    getAdminConfig () {
+    getAdminConfig() {
       return admin().then(res => {
         this.replaceAdminTitle(res.data.title)
-        this.setting.hello = res.data.hello
       })
     },
-    replaceAdminTitle (newTitle) {
+    replaceAdminTitle(newTitle) {
       document.title = document.title.replace(`- ${this.setting.title}`, `- ${newTitle}`)
       this.setting.title = newTitle
     },
-    async loadRustdeskConfig () {
+    async loadRustdeskConfig() {
       const res = await server().catch(_ => false)
       if (res) {
         this.setting.rustdeskConfig = res.data
@@ -83,7 +81,6 @@ export const useAppStore = defineStore({
         localStorage.setItem(`${prefix}key`, res.data.key)
         localStorage.setItem(`${prefix}api-server`, res.data.api_server)
       }
-
     },
   },
 })

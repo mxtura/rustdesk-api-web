@@ -4,49 +4,36 @@
     <el-icon-fold v-else></el-icon-fold>
   </el-icon>
   <div class="header-logo">
-    <img :src="setting.logo" alt="" class="logo">
-    <div class="title">{{roleTitle}}</div>
+    <img :src="setting.logo" alt="" class="logo" />
+    <div class="title">{{ title }}</div>
   </div>
   <Setting></Setting>
 </template>
 
 <script>
   import { defineComponent, computed } from 'vue'
-  import HeaderMenu from '@/layout/components/menu/index.vue'
   import Setting from '@/layout/components/setting/index.vue'
   import { useAppStore } from '@/store/app'
-  import { useUserStore } from '@/store/user'
-  import { T } from '@/utils/i18n'
-  import GTags from '@/layout/components/tags/index.vue'
 
   export default defineComponent({
     name: 'LayerHeader',
-    created () {
-    },
-    components: { HeaderMenu, Setting, GTags },
-    watch: {},
-    setup (props) {
+    components: { Setting },
+    setup() {
       const appStore = useAppStore()
-      const userStore = useUserStore()
       const setting = computed(() => appStore.setting)
-      // заголовок по роли: админ (route_names содержит '*') / обычный юзер
-      const roleTitle = computed(() => {
-        const isAdmin = (userStore.route_names || []).includes('*')
-        const key = isAdmin ? 'PanelTitleAdmin' : 'PanelTitleUser'
-        const t = T(key)
-        if (t !== key) return t
-        return isAdmin ? 'RustDesk · Admin' : 'RustDesk · Panel'
-      })
+      // название панели из настроек сервера (/admin-config), с запасным вариантом
+      const title = computed(() => appStore.setting.title || 'RustDesk')
       const expandOrFoldSlider = () => {
         appStore.sideCollapse()
       }
       return {
         setting,
-        roleTitle,
+        title,
         expandOrFoldSlider,
       }
     },
-
+    watch: {},
+    created() {},
   })
 </script>
 
@@ -76,9 +63,5 @@
       height: 30px;
     }
   }
-
-
 </style>
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
