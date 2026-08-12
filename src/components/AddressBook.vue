@@ -91,12 +91,26 @@
             clearable
             class="ab-search"
           />
+          <el-button v-if="!isAdmin" type="primary" :disabled="!selected.length" @click="openBatchEditTags">{{
+            T('BatchEditTags')
+          }}</el-button>
           <el-button type="primary" :icon="Plus" @click="addDevice">{{ T('Add') }}</el-button>
         </div>
 
         <div class="dev-grid">
-          <div v-for="row in filtered" :key="row.row_id || row.id" class="dev-card">
+          <div
+            v-for="row in filtered"
+            :key="row.row_id || row.id"
+            class="dev-card"
+            :class="{ selected: selected.includes(row.row_id) }"
+          >
             <div class="dev-top">
+              <el-checkbox
+                v-if="!isAdmin"
+                class="dev-select"
+                :model-value="selected.includes(row.row_id)"
+                @change="toggleSelect(row.row_id)"
+              />
               <PlatformIcons :name="platIcon(row)" class="dev-os" color="#fff" />
             </div>
             <div class="dev-name" :title="devName(row)">{{ devName(row) }}</div>
@@ -110,6 +124,11 @@
                     <el-dropdown-item @click="connectByClient(row.id)">{{ T('Link') }}</el-dropdown-item>
                     <el-dropdown-item v-if="appStore.setting.appConfig.web_client" @click="toWebClientLink(row)"
                       >Web Client</el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      v-if="!isAdmin && appStore.setting.appConfig.web_client"
+                      @click="toShowShare(row)"
+                      >{{ T('ShareByWebClient') }}</el-dropdown-item
                     >
                     <el-dropdown-item @click="toEdit(row)">{{ T('Edit') }}</el-dropdown-item>
                     <el-dropdown-item divided @click="del(row)">{{ T('Delete') }}</el-dropdown-item>
@@ -165,12 +184,46 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+
+      <!-- диалог общего доступа через веб-клиент -->
+      <el-dialog
+        v-model="shareToWebClientVisible"
+        width="600"
+        :title="T('ShareByWebClient')"
+        :close-on-click-modal="false"
+      >
+        <shareByWebClient
+          :id="shareToWebClientForm.id"
+          :hash="shareToWebClientForm.hash"
+          @cancel="shareToWebClientVisible = false"
+        />
+      </el-dialog>
+
+      <!-- диалог пакетной правки тегов -->
+      <el-dialog v-model="batchEditTagVisible" width="500" :title="T('BatchEditTags')">
+        <el-form :model="batchEditTagsFormData" label-width="120px" class="dialog-form">
+          <el-form-item :label="T('Tags')" prop="tags">
+            <el-select v-model="batchEditTagsFormData.tags" multiple>
+              <el-option
+                v-for="item in tagListResForBatchEdit.list"
+                :key="item.name"
+                :label="item.name"
+                :value="item.name"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button @click="batchEditTagVisible = false">{{ T('Cancel') }}</el-button>
+            <el-button type="primary" @click="submitBatchEditTags">{{ T('Submit') }}</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { ref, computed, onMounted, watch } from 'vue'
+  import { ref, reactive, computed, onMounted, watch } from 'vue'
   import { T } from '@/utils/i18n'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { useAppStore } from '@/store/app'
@@ -180,7 +233,8 @@
   import { MoreFilled, Plus, Close, Search, ArrowLeft } from '@element-plus/icons-vue'
   import PlatformIcons from '@/components/icons/platform.vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { useRepositories } from '@/views/address_book'
+  import { useRepositories, useBatchUpdateTagsRepositories } from '@/views/address_book'
+  import shareByWebClient from '@/views/address_book/components/shareByWebClient.vue'
   import * as myCol from '@/api/my/address_book_collection'
   import * as adminCol from '@/api/address_book_collection'
   import * as myTag from '@/api/my/tag'
@@ -228,6 +282,43 @@
   const hideOffline = ref(false)
   const search = ref('')
 
+  // общий доступ через веб-клиент (одноразовая ссылка с паролем) — доступен
+  // только в собственной адресной книге пользователя, как и раньше до рефакторинга
+  const shareToWebClientVisible = ref(false)
+  const shareToWebClientForm = reactive({ id: '', hash: '' })
+  const toShowShare = row => {
+    shareToWebClientForm.id = row.id
+    shareToWebClientForm.hash = row.hash
+    shareToWebClientVisible.value = true
+  }
+
+  // пакетная правка тегов: выбор карточек + существующий хук с готовым запросом
+  const selected = ref([])
+  const toggleSelect = row_id => {
+    const i = selected.value.indexOf(row_id)
+    if (i >= 0) selected.value.splice(i, 1)
+    else selected.value.push(row_id)
+  }
+  const {
+    tagListRes: tagListResForBatchEdit,
+    getTagList: getTagListForBatchEdit,
+    visible: batchEditTagVisible,
+    show: showBatchEditTags,
+    formData: batchEditTagsFormData,
+    submit: _submitBatchEditTags,
+  } = useBatchUpdateTagsRepositories()
+  const openBatchEditTags = () => {
+    batchEditTagsFormData.value.row_ids = [...selected.value]
+    showBatchEditTags()
+  }
+  const submitBatchEditTags = async () => {
+    const res = await _submitBatchEditTags().catch(_ => false)
+    if (res) {
+      selected.value = []
+      reload()
+    }
+  }
+
   const isOnline = row => !!row.peer?.last_online_time && (Date.now() - row.peer.last_online_time * 1000) / 1000 < 60
   const tagArr = row =>
     Array.isArray(row.tags) ? row.tags : row.tags ? String(row.tags).split(',').filter(Boolean) : []
@@ -257,6 +348,7 @@
   })
 
   const reload = () => {
+    selected.value = []
     if (isAdmin) {
       if (!userId.value) {
         listRes.list = []
@@ -376,6 +468,7 @@
       if (lockedUserId) onUserChange()
     } else {
       getCollectionList()
+      getTagListForBatchEdit()
       reload()
     }
   })
@@ -545,12 +638,22 @@
     box-shadow: var(--shadow-lift);
     border-color: var(--glass-border-strong);
   }
+  .dev-card.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
   .dev-top {
+    position: relative;
     height: 96px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(160deg, rgba(0, 113, 255, 0.18), rgba(0, 113, 255, 0.04));
+  }
+  .dev-select {
+    position: absolute;
+    top: 8px;
+    left: 8px;
   }
   .dev-os {
     width: 44px;
