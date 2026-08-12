@@ -71,12 +71,11 @@
 </template>
 
 <script setup>
-  import { ref, reactive } from 'vue'
+  import { ref } from 'vue'
   import { T } from '@/utils/i18n'
   import { ElMessage } from 'element-plus'
-  import { detail } from '@/api/user'
   import { saveUser } from '@/views/user/save'
-  import { list as groupList } from '@/api/group'
+  import { useGetDetail, useSubmit } from '@/views/user/composables/edit'
   import { ENABLE_STATUS, DISABLE_STATUS } from '@/utils/common_options'
   import { groupDisplayName as gname } from '@/utils/group'
 
@@ -87,44 +86,32 @@
   const emit = defineEmits(['update:visible', 'success'])
 
   const root = ref(null)
-  const groupsList = ref([])
-  const emptyForm = () => ({
-    id: 0,
-    username: '',
-    email: '',
-    nickname: '',
-    group_id: null,
-    is_admin: false,
-    status: ENABLE_STATUS,
-    remark: '',
-    password: '',
-  })
-  const form = reactive(emptyForm())
-
-  const rules = {
-    username: [{ required: true, message: T('ParamRequired', { param: T('Username') }) }],
-    group_id: [{ required: true, message: T('ParamRequired', { param: T('Group') }) }],
-    status: [{ required: true, message: T('ParamRequired', { param: T('Status') }) }],
-  }
-
-  const loadGroups = async () => {
-    const res = await groupList({ page_size: 9999 }).catch(() => false)
-    if (res) groupsList.value = res.data.list
-  }
+  const { form, getDetail, groupsList } = useGetDetail(props.userId)
+  const { rules } = useSubmit(form, props.userId)
 
   const onOpen = async () => {
-    loadGroups()
-    Object.assign(form, emptyForm())
     if (props.userId) {
-      const res = await detail(props.userId).catch(() => false)
-      if (res) Object.assign(form, res.data)
+      await getDetail(props.userId)
+    } else {
+      // дефолты для нового пользователя: включён, не админ
+      form.value = {
+        id: 0,
+        username: '',
+        email: '',
+        nickname: '',
+        group_id: null,
+        is_admin: false,
+        status: ENABLE_STATUS,
+        remark: '',
+        password: '',
+      }
     }
   }
 
   const save = async () => {
     const ok = await root.value.validate().catch(() => false)
     if (!ok) return
-    const res = await saveUser(form, props.userId)
+    const res = await saveUser(form.value, props.userId)
     if (!res.ok) {
       ElMessage.error(res.error || T('OperationFailed'))
       return
